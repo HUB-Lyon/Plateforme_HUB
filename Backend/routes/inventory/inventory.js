@@ -25,7 +25,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/category/:category', async (req, res) => {
     try {
         const data = await get_group_item(req.params.category);
         res.status(200).json(data);
