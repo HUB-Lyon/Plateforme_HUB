@@ -14,6 +14,7 @@ const iconMap = {
   invoices: InboxIcon,
 };
 
+// car wrapper function half made by elias (same as before, corrected by the tuto)
 export default async function CardWrapper() {
   const {
     numberOfInvoices,

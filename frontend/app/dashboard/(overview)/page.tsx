@@ -10,7 +10,7 @@ import {
   CardsSkeleton,
 } from '@/app/ui/skeletons';
 
- 
+//all made by elias 
 export default async function Page() {
   return (
     <main>

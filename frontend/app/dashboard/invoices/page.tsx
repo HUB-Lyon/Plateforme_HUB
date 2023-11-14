@@ -5,7 +5,8 @@ import { CreateInvoice } from '@/app/ui/invoices/buttons';
 import { lusitana } from '@/app/ui/fonts';
 import { InvoicesTableSkeleton } from '@/app/ui/skeletons';
 import { Suspense } from 'react';
- 
+
+//half made by elias (but most corrected by the tuto in a better way)
 export default async function Page() {
   return (
     <div className="w-full">

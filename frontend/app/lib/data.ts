@@ -14,6 +14,9 @@ import { unstable_noStore as noStore } from 'next/cache';
 
 export async function fetchRevenue() {
   noStore();
+  
+  //de nostore à console.log after 3 sec et juste les autres no store made by elias
+
   // This is equivalent to in fetch(..., {cache: 'no-store'}).
 
   try {
