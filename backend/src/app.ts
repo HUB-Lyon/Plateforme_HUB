@@ -4,7 +4,7 @@ import sqlClient from './config/db.js';
 const app = express();
 const port = 3000;
 
-app.get('/', async (req: Request, res: Response) => {
+app.get('/', (req: Request, res: Response) => {
   res.send('Hello World');
 });
 
