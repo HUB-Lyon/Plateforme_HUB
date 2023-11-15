@@ -3,7 +3,7 @@ import postgres from 'postgres';
 
 dotenv.config();
 
-const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD, ENDPOINT_ID } = process.env;
+const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD, PGPORT, ENDPOINT_ID } = process.env;
 
 interface ConnectionOptions {
     host: string;
@@ -22,7 +22,7 @@ const options: ConnectionOptions = {
     database: PGDATABASE!,
     username: PGUSER!,
     password: PGPASSWORD!,
-    port: 5432,
+    port: parseInt(PGPORT!, 10),
     ssl: 'require',
     connection: {
         options: `project=${ENDPOINT_ID}`,
