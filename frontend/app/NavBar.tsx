@@ -1,6 +1,5 @@
-"use client"
 import Link from '../node_modules/next/link';
-import './globals.css';
+import { classNames } from './utils';
 import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import {
@@ -12,15 +11,11 @@ import {
 } from '@heroicons/react/24/outline'
 
 const navigation = [
-  { name: 'Projects', href: '/Project', icon: FolderIcon, current: false },
-  { name: 'Inventory', href: '/Inventory', icon: DocumentDuplicateIcon, current: false },
+  { name: 'Projects', href: '/project', icon: FolderIcon, current: false },
+  { name: 'Inventory', href: '/inventory', icon: DocumentDuplicateIcon, current: false },
 ]
 
-function classNames(...classes: string[]): string {
-  return classes.filter(Boolean).join(' ');
-}
-
-export default function MyNavBar() {
+export default function NavBar() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
@@ -63,7 +58,7 @@ export default function MyNavBar() {
                           </ul>
                         </li>
                         <li className="mt-auto">
-                          <a href="Parameter" className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-indigo-200 hover:bg-indigo-700 hover:text-white" >
+                          <a href="parameter" className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-indigo-200 hover:bg-indigo-700 hover:text-white" >
                             <Cog6ToothIcon className="h-6 w-6 shrink-0 text-indigo-200 group-hover:text-white" aria-hidden="true" />
                             Settings
                           </a>
@@ -99,7 +94,7 @@ export default function MyNavBar() {
                   </ul>
                 </li>
                 <li className="mt-auto">
-                  <a href="Parameter" className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-indigo-200 hover:bg-indigo-700 hover:text-white" >
+                  <a href="parameter" className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-indigo-200 hover:bg-indigo-700 hover:text-white" >
                     <Cog6ToothIcon className="h-6 w-6 shrink-0 text-indigo-200 group-hover:text-white" aria-hidden="true" />
                     Settings
                   </a>
