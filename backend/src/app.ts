@@ -3,7 +3,7 @@ import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 
-import usersRouter from './routes/users/users.js';
+import usersRouter from './routes/users/router_users.js';
 import authRouter from './routes/auth/auth.js';
 
 const app = express();

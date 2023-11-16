@@ -30,8 +30,7 @@ router.get('/id', isAuthenticated, async (req: Request, res: Response, next: Nex
 
 router.get('/profile', isAuthenticated, async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-        const graphResponse = await user_connection(GRAPH_ME_ENDPOINT, req.session.accessToken);
-        res.render('profile', { profile: graphResponse });
+        await user_connection(GRAPH_ME_ENDPOINT, req.session.accessToken);
     } catch (error) {
         next(error);
     }
