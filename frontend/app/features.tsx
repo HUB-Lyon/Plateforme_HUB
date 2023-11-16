@@ -17,6 +17,6 @@ export const useWindowWidth = () => {
 };
 
 export const MarginNavBarHandle = (windowWidth: number) => {
-  const marginLeftValue = windowWidth >= 1024 ? 'ml-[288px]' : '0';
+  const marginLeftValue = windowWidth >= 1025 ? 'ml-[18rem]' : '0';
   return marginLeftValue;
 };
