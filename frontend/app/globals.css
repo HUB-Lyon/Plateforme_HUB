@@ -2,12 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.App {
-  background-color: #e5e7eb;
-  color: rgb(0, 0, 0);
-  font-size: calc(7px + 2vmin);
-}
-
 .flex-box {
   @apply h-auto bg-white rounded-lg shadow-lg flex ml-[5%] mt-[4%];
 }
