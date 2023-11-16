@@ -9,6 +9,8 @@ import authRouter from './routes/auth/auth.js';
 const app = express();
 const port = 3000;
 
+const logger_mode = 1;
+
 app.use(
   session({
     secret: process.env.EXPRESS_SESSION_SECRET!,
@@ -21,7 +23,7 @@ app.use(
   })
 );
 
-app.use(logger('dev'));
+app.use(logger(logger_mode ? 'dev' : 'common'));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
