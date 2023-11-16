@@ -3,8 +3,6 @@
  * Licensed under the MIT License.
  */
 
-import axios, { AxiosResponse } from 'axios';
-
 async function user_connection(endpoint: string, accessToken: string): Promise<any> {
     const options = {
         headers: {
@@ -13,8 +11,11 @@ async function user_connection(endpoint: string, accessToken: string): Promise<a
     };
     console.log(`Request made to ${endpoint} at : ` + new Date().toString());
     try {
-        const response: AxiosResponse = await axios.get(endpoint, options);
-        return await response.data;
+        const response = await fetch(endpoint, options);
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return await response.json();
     } catch (error) {
         throw new Error(error);
     }

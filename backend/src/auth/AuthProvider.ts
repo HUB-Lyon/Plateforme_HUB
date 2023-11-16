@@ -1,6 +1,5 @@
 import * as dotenv from 'dotenv';
 import * as msal from '@azure/msal-node';
-import axios from 'axios';
 
 import { msalConfig } from '../config/authConfig.js';
 
@@ -212,14 +211,8 @@ class AuthProvider {
 
         try {
             // Calling the cloud discovery API
-            const response = await axios.get(endpoint, {
-                params: {
-                    'api-version': '1.1',
-                    'authorization_endpoint': `${authority}/oauth2/v2.0/authorize`,
-                },
-            });
-
-            return response.data;
+            const response = await fetch(`${endpoint}?api-version=1.1&authorization_endpoint=${authority}/oauth2/v2.0/authorize`);
+            return await response.json();
         } catch (error) {
             throw error;
         }
@@ -231,8 +224,8 @@ class AuthProvider {
 
         try {
             // Calling the API to retrieve OIDC authority metadata
-            const response = await axios.get(endpoint);
-            return response.data;
+            const response = await fetch(endpoint);
+            return await response.json();
         } catch (error) {
             console.log(error);
         }
