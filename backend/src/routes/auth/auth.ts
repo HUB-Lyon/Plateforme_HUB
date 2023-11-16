@@ -12,7 +12,7 @@ import { REDIRECT_URI, POST_LOGOUT_REDIRECT_URI } from '../../config/authConfig.
 const router: Router = express.Router();
 
 router.get('/signin', authProvider.login({
-    scopes: [],
+    scopes: ['User.Read'],
     redirectUri: REDIRECT_URI,
     successRedirect: '/'
 }));

@@ -24,13 +24,9 @@ function isAuthenticated(req: Request, res: Response, next: NextFunction): void 
     next();
 }
 
-router.get('/id', isAuthenticated, async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    res.render('id', { idTokenClaims: req.session.account.idTokenClaims });
-});
-
 router.get('/profile', isAuthenticated, async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-        await user_connection(GRAPH_ME_ENDPOINT, req.session.accessToken);
+        res.json(await user_connection(GRAPH_ME_ENDPOINT, req.session.accessToken));
     } catch (error) {
         next(error);
     }

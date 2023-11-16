@@ -2,14 +2,15 @@ import express, { Request, Response } from 'express';
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
+import dotenv from 'dotenv';
 
 import usersRouter from './routes/users/router_users.js';
 import authRouter from './routes/auth/auth.js';
 
+dotenv.config({ path: '.env' });
+
 const app = express();
 const port = 3000;
-
-const logger_mode = 1;
 
 app.use(
   session({
@@ -23,7 +24,7 @@ app.use(
   })
 );
 
-app.use(logger(logger_mode ? 'dev' : 'common'));
+app.use(logger(process.env.NODE_ENV === 'prod' ? 'dev' : 'common'));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));

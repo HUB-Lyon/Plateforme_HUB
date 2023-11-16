@@ -14,7 +14,7 @@ async function user_connection(endpoint: string, accessToken: string): Promise<a
     console.log(`Request made to ${endpoint} at : ` + new Date().toString());
     try {
         const response: AxiosResponse = await axios.get(endpoint, options);
-        return response.data;
+        return await response.data;
     } catch (error) {
         throw new Error(error);
     }
