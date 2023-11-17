@@ -39,7 +39,7 @@ export default function NavBar() {
                   <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-blue-950 px-6 pb-4">
                     <div className="flex h-16 shrink-0 items-center mt-5">
                       <a href="/">
-                        <img className="h-60 w-auto" src="image/epitech.png" alt="Your Company" />
+                        <img className="h-60 w-auto" src="image/epitech.png" alt="Hub Platform: Return to home" />
                       </a>
                     </div>
                     <nav className="flex flex-1 flex-col mt-5">
@@ -57,7 +57,7 @@ export default function NavBar() {
                           </ul>
                         </li>
                         <li className="mt-auto">
-                          <a href="parameter" className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-indigo-200 hover:bg-indigo-700 hover:text-white" >
+                          <a href="settings" className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-indigo-200 hover:bg-indigo-700 hover:text-white" >
                             <Cog6ToothIcon className="h-6 w-6 shrink-0 text-indigo-200 group-hover:text-white" aria-hidden="true" />
                             Settings
                           </a>
@@ -75,7 +75,7 @@ export default function NavBar() {
           <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-blue-950 px-6 pb-4">
             <div className="flex h-16 shrink-0 items-center mt-5">
               <a href="/">
-                <img className="h-60 w-auto" src="image/epitech.png" alt="Your Company" />
+                <img className="h-60 w-auto" src="image/epitech.png" alt="Hub Platform: Return to home" />
               </a>
             </div>
             <nav className="flex flex-1 flex-col mt-5">
@@ -93,7 +93,7 @@ export default function NavBar() {
                   </ul>
                 </li>
                 <li className="mt-auto">
-                  <a href="parameter" className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-indigo-200 hover:bg-indigo-700 hover:text-white" >
+                  <a href="settings" className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-indigo-200 hover:bg-indigo-700 hover:text-white" >
                     <Cog6ToothIcon className="h-6 w-6 shrink-0 text-indigo-200 group-hover:text-white" aria-hidden="true" />
                     Settings
                   </a>
