@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 .flex-box {
-  @apply h-auto bg-white rounded-lg shadow-lg flex ml-[5%] mt-[4%];
+  @apply h-auto bg-white rounded-lg shadow-lg flex mt-20;
 }

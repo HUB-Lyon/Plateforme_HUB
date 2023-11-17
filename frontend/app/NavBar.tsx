@@ -1,4 +1,3 @@
-import Link from '../node_modules/next/link';
 import { classNames } from './utils';
 import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
@@ -39,9 +38,9 @@ export default function NavBar() {
                   </Transition.Child>
                   <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-blue-950 px-6 pb-4">
                     <div className="flex h-16 shrink-0 items-center mt-5">
-                      <Link href="/">
+                      <a href="/">
                         <img className="h-60 w-auto" src="image/epitech.png" alt="Your Company" />
-                      </Link>
+                      </a>
                     </div>
                     <nav className="flex flex-1 flex-col mt-5">
                       <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -75,9 +74,9 @@ export default function NavBar() {
         <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
           <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-blue-950 px-6 pb-4">
             <div className="flex h-16 shrink-0 items-center mt-5">
-              <Link href="/">
+              <a href="/">
                 <img className="h-60 w-auto" src="image/epitech.png" alt="Your Company" />
-              </Link>
+              </a>
             </div>
             <nav className="flex flex-1 flex-col mt-5">
               <ul role="list" className="flex flex-1 flex-col gap-y-7">
