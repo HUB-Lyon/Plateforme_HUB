@@ -16,10 +16,9 @@ declare module 'express' {
 
 const router = express.Router();
 
-// Custom middleware to check authentication state
 function isAuthenticated(req: Request, res: Response, next: NextFunction): void {
     if (!req.session.isAuthenticated) {
-        return res.redirect('/auth/signin'); // Redirect to the sign-in route
+        return res.redirect('/auth/signin');
     }
     next();
 }

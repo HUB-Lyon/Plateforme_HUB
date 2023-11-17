@@ -9,7 +9,6 @@ async function user_connection(endpoint: string, accessToken: string): Promise<a
             Authorization: `Bearer ${accessToken}`,
         },
     };
-    console.log(`Request made to ${endpoint} at : ` + new Date().toString());
     try {
         const response = await fetch(endpoint, options);
         if (!response.ok) {
