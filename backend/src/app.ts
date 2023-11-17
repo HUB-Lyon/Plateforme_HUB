@@ -24,7 +24,7 @@ app.use(
   })
 );
 
-app.use(logger(process.env.NODE_ENV === 'prod' ? 'dev' : 'common'));
+app.use(logger(process.env.NODE_ENV === 'prod' ? 'common' : 'dev'));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
