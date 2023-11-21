@@ -1,34 +1,20 @@
 import dotenv from 'dotenv';
-import postgres from 'postgres';
+import { DataSource, In } from 'typeorm';
+import { Inventory } from '../entity/inventory.js';
 
 dotenv.config();
 
-const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD, PGPORT, ENDPOINT_ID } = process.env;
+const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD, PGPORT, ENDPOINT_ID, } = process.env;
 
-interface ConnectionOptions {
-    host: string;
-    database: string;
-    username: string;
-    password: string;
-    port: number;
-    ssl: 'require';
-    connection: {
-        options: string;
-    };
-}
-
-const options: ConnectionOptions = {
+export const myDataSource: DataSource = new DataSource({
+    type: 'postgres',
     host: PGHOST!,
-    database: PGDATABASE!,
+    port: parseInt(PGPORT!, 10),
     username: PGUSER!,
     password: PGPASSWORD!,
-    port: parseInt(PGPORT!, 10),
-    ssl: 'require',
-    connection: {
-        options: `project=${ENDPOINT_ID}`,
-    },
-};
-
-const sqlClient = postgres(options);
-
-export default sqlClient;
+    database: PGDATABASE!,
+    entities: [Inventory],
+    logging: true,
+    synchronize: true,
+    ssl: true
+});

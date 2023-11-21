@@ -1,4 +1,6 @@
-import express, { Request, Response } from 'express';
+import express , {Router, Request, Response} from 'express';
+import { myDataSource } from './config/db.js';
+import inventoryRouter from './routes/inventory.js';
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
@@ -11,6 +13,15 @@ dotenv.config({ path: '.env' });
 
 const app = express();
 const port = 3000;
+
+myDataSource
+  .initialize()
+  .then(() => {
+    console.log('Database connected');
+  })
+  .catch((err) => {
+    console.log("Error connecting to database", err);
+  });
 
 app.use(
   session({
@@ -29,8 +40,10 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 
+app.use('/inventory', inventoryRouter);
 app.use('/users', usersRouter);
 app.use('/auth', authRouter);
+
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello World');
