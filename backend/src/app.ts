@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express, { Application, Request, Response } from 'express';
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
@@ -9,7 +9,7 @@ import authRouter from './routes/auth/auth.js';
 
 dotenv.config({ path: '.env' });
 
-const app = express();
+const app: Application = express();
 const port = 3000;
 
 app.use(
@@ -36,6 +36,8 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Hello World');
 });
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Server is listening on ${port}`);
 });
+
+export { app , server };
