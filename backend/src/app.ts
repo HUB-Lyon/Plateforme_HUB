@@ -1,4 +1,4 @@
-import express , {Application, Request, Response} from 'express';
+import express, { Application, Request, Response } from 'express';
 import { dataBase } from './config/db.js';
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
