@@ -15,17 +15,15 @@ import swaggerUi from 'swagger-ui-express';
 const swaggerDefinition = {
   openapi: '3.0.0',
   info: {
-    title: 'Express API',
+    title: 'Plateforme HUB',
     version: '1.0.0',
   },
 };
 
-const options = {
+const swaggerSpec = swaggerJSDoc({
   swaggerDefinition,
   apis: [`dist/routes/**/*.js`],
-};
-
-const swaggerSpec = swaggerJSDoc(options);
+});
 
 dotenv.config({ path: '.env' });
 
@@ -47,8 +45,8 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-    httpOnly: true,
-    secure: false,
+      httpOnly: true,
+      secure: false,
     },
   })
 );
@@ -61,7 +59,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/inventory', inventoryRouter);
 app.use('/users', usersRouter);
 app.use('/auth', authRouter);
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, { explorer: true }));
+app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerSpec, { explorer: true }));
 
 
 app.get('/', (req: Request, res: Response) => {
