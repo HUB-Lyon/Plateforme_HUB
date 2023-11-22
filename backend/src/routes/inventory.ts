@@ -6,7 +6,10 @@ const inventoryRouter = Router();
 
 inventoryRouter.get('/', async (req: Request, res: Response) => {
     try {
-        const result = await myDataSource.getRepository(Inventory).createQueryBuilder('inventory').getMany();
+        const result = await myDataSource
+            .getRepository(Inventory)
+            .createQueryBuilder('inventory')
+            .getMany();
         res.status(200).json(result);
     } catch (err) {
         res.status(500).json({ err: `Error during data retrieval` });
@@ -15,7 +18,13 @@ inventoryRouter.get('/', async (req: Request, res: Response) => {
 
 inventoryRouter.get('/:id', async (req: Request, res: Response) => {
     try {
-        const result = await myDataSource.getRepository(Inventory).createQueryBuilder('inventory').where('inventory.id = :id', { id: req.params.id }).getOne();
+        const result = await myDataSource
+            .getRepository(Inventory)
+            .createQueryBuilder('inventory')
+            .where('inventory.id = :id', {
+                id: req.params.id
+            })
+            .getOne();
         res.status(200).json(result);
     } catch (err) {
         res.status(500).json({ err: `Error during data retrieval` });
@@ -24,7 +33,13 @@ inventoryRouter.get('/:id', async (req: Request, res: Response) => {
 
 inventoryRouter.get('/category/:id', async (req: Request, res: Response) => {
     try {
-        const result = await myDataSource.getRepository(Inventory).createQueryBuilder('inventory').where('inventory.category = :category', { category: req.params.id }).getMany();
+        const result = await myDataSource
+            .getRepository(Inventory)
+            .createQueryBuilder('inventory')
+            .where('inventory.category = :category', {
+                category: req.params.id
+            })
+            .getMany();
         res.status(200).json(result);
     } catch (err) {
         res.status(500).json({ err: `Error during data retrieval` });
@@ -33,8 +48,13 @@ inventoryRouter.get('/category/:id', async (req: Request, res: Response) => {
 
 inventoryRouter.post('/', async (req: Request, res: Response) => {
     try {
-        await myDataSource.getRepository(Inventory).createQueryBuilder('inventory').insert().values(req.body).execute();
-        res.status(200).json({ message: `Data inserted` });
+        const result = await myDataSource
+            .getRepository(Inventory)
+            .createQueryBuilder('inventory')
+            .insert()
+            .values(req.body)
+            .execute();
+        res.status(201).json(result);
     } catch (err) {
         res.status(500).json({ err: `Error during data insertion` });
     }
@@ -42,8 +62,15 @@ inventoryRouter.post('/', async (req: Request, res: Response) => {
 
 inventoryRouter.delete('/:id', async (req: Request, res: Response) => {
     try {
-        await myDataSource.getRepository(Inventory).createQueryBuilder('inventory').delete().where('inventory.id = :id', { id: req.params.id }).execute();
-        res.status(200).json({ message: `Data deleted` });
+        await myDataSource
+            .getRepository(Inventory)
+            .createQueryBuilder('inventory')
+            .delete()
+            .where('inventory.id = :id', {
+                id: req.params.id
+            })
+            .execute();
+        res.status(202).json({ message: `Data deleted` });
     } catch (err) {
         res.status(500).json({ err : `Error during data deletion` });
     }
@@ -51,8 +78,16 @@ inventoryRouter.delete('/:id', async (req: Request, res: Response) => {
 
 inventoryRouter.patch('/:id', async (req: Request, res: Response) => {
     try {
-        await myDataSource.getRepository(Inventory).createQueryBuilder('inventory').update().set(req.body).where('inventory.id = :id', { id: req.params.id }).execute();
-        res.status(200).json({ message: `Data updated` });
+        const result = await myDataSource
+            .getRepository(Inventory)
+            .createQueryBuilder('inventory')
+            .update()
+            .set(req.body)
+            .where('inventory.id = :id', {
+                id: req.params.id
+            })
+            .execute();
+        res.status(200).json(result);
     } catch (err) {
         res.status(500).json({ err: `Error during data update` });
     }
