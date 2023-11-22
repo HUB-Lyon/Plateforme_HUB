@@ -1,4 +1,6 @@
-import express, { Request, Response } from 'express';
+import express , {Router, Request, Response} from 'express';
+import { DataBase } from './config/db.js';
+import inventoryRouter from './routes/inventory.js';
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
@@ -25,6 +27,15 @@ dotenv.config({ path: '.env' });
 const app = express();
 const port = 3000;
 
+DataBase
+  .initialize()
+  .then(() => {
+    console.log('Database connected');
+  })
+  .catch((err) => {
+    console.log("Error connecting to database", err);
+  });
+
 app.use(
   session({
     secret: process.env.EXPRESS_SESSION_SECRET!,
@@ -42,9 +53,11 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 
+app.use('/inventory', inventoryRouter);
 app.use('/users', usersRouter);
 app.use('/auth', authRouter);
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerSpec, { explorer: true }));
+
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello World');

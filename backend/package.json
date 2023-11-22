@@ -21,7 +21,9 @@
     "morgan": "~1.9.1",
     "postgres": "^3.4.3",
     "swagger-jsdoc": "5.0.1",
-    "swagger-ui-express": "^5.0.0"
+    "swagger-ui-express": "^5.0.0",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.3.17"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.6",
