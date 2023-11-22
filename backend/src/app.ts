@@ -1,5 +1,5 @@
 import express , {Router, Request, Response} from 'express';
-import { myDataSource } from './config/db.js';
+import { DataBase } from './config/db.js';
 import inventoryRouter from './routes/inventory.js';
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
@@ -14,7 +14,7 @@ dotenv.config({ path: '.env' });
 const app = express();
 const port = 3000;
 
-myDataSource
+DataBase
   .initialize()
   .then(() => {
     console.log('Database connected');
