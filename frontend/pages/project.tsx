@@ -1,21 +1,21 @@
 import { GetServerSideProps } from 'next';
 
-const Project: React.FC<{ data: string }> = ({ data }) => {
+const Project: React.FC<{ projects: string[] }> = ({ projects }) => {
   return (
-    <div>
+    <>
       <h1>Project</h1>
-      <p>{data}</p>
-    </div>
+      <p>{projects}</p>
+    </>
   );
 };
 
 export default Project;
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const data = 'Données côté serveur';
+  const projects: string[] = [];
   return {
     props: {
-      data,
+      projects,
     },
   };
 };

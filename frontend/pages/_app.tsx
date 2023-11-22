@@ -3,7 +3,7 @@ import '../styles/globals.css';
 import RootLayout from './component/RootLayout';
 import { AppProps } from 'next/app';
 
-const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
+const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <RootLayout>
       <Component {...pageProps} />
@@ -11,4 +11,4 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
   );
 };
 
-export default MyApp;
+export default App;
