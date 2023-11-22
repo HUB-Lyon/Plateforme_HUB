@@ -1,4 +1,4 @@
-import Link from '../node_modules/next/link';
+import Link from '../../node_modules/next/link';
 import { classNames } from './utils';
 import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
