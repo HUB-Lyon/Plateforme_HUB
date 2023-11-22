@@ -5,12 +5,11 @@ import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import dotenv from 'dotenv';
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
 
 import usersRouter from './routes/users/router_users.js';
 import authRouter from './routes/auth/auth.js';
-
-import swaggerJSDoc from 'swagger-jsdoc';
-import swaggerUi from 'swagger-ui-express';
 
 const swaggerDefinition = {
   openapi: '3.0.0',
