@@ -19,7 +19,7 @@ export default function NavBar() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
-      <div>
+      <>
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog as="div" className="relative z-50 lg:hidden" onClose={setSidebarOpen}>
             <Transition.Child as={Fragment} enter="transition-opacity ease-linear duration-300" enterFrom="opacity-0" enterTo="opacity-100" leave="transition-opacity ease-linear duration-300" leaveFrom="opacity-100" leaveTo="opacity-0" >
@@ -108,6 +108,6 @@ export default function NavBar() {
           <span className="sr-only">Open sidebar</span>
           <Bars3Icon className="fixed top-0 h-6 w-6 fixed" aria-hidden="true" />
         </button>
-      </div>
+      </>
   )
 }
