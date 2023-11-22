@@ -3,9 +3,22 @@ import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import dotenv from 'dotenv';
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
 
 import usersRouter from './routes/users/router_users.js';
 import authRouter from './routes/auth/auth.js';
+
+const swaggerSpec = swaggerJSDoc({
+  swaggerDefinition : {
+    openapi: '3.0.0',
+    info: {
+      title: 'Plateforme HUB',
+      version: '1.0.0',
+    },
+  },
+  apis: [`dist/routes/**/*.js`],
+});
 
 dotenv.config({ path: '.env' });
 
@@ -31,6 +44,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use('/users', usersRouter);
 app.use('/auth', authRouter);
+app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerSpec, { explorer: true }));
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello World');
