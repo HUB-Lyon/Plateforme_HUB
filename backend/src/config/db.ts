@@ -1,12 +1,12 @@
 import dotenv from 'dotenv';
-import { DataSource, In } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { Inventory } from '../entity/inventory.js';
 
 dotenv.config();
 
 const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD, PGPORT } = process.env;
 
-export const myDataSource: DataSource = new DataSource({
+export const DataBase: DataSource = new DataSource({
     type: 'postgres',
     host: PGHOST!,
     port: parseInt(PGPORT!, 10),
