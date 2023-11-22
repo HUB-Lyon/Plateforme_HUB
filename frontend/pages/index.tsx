@@ -1,7 +1,7 @@
-"use client"
-import Link from '../node_modules/next/link';
+import React from 'react';
+import Link from 'next/link';
 
-function Home() {
+const Home: React.FC = () => {
   return (
     <div className="flex flex-col items-center">
       <h1 className='font-bold'>WELCOME TO THE EPITECH LYON HUB WEBSITE</h1>
@@ -12,7 +12,7 @@ function Home() {
         <Link href="/project" className='lg:text-3xl md:text-2xl text-md p-4 font-bold'>PROJECTS</Link>
       </div>
     </div>
-    );
-}
+  );
+};
 
 export default Home;
