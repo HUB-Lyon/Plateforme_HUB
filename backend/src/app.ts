@@ -11,16 +11,14 @@ import swaggerUi from 'swagger-ui-express';
 import usersRouter from './routes/users/router_users.js';
 import authRouter from './routes/auth/auth.js';
 
-const swaggerDefinition = {
-  openapi: '3.0.0',
-  info: {
-    title: 'Plateforme HUB',
-    version: '1.0.0',
-  },
-};
-
 const swaggerSpec = swaggerJSDoc({
-  swaggerDefinition,
+  swaggerDefinition : {
+    openapi: '3.0.0',
+    info: {
+      title: 'Plateforme HUB',
+      version: '1.0.0',
+    },
+  },
   apis: [`dist/routes/**/*.js`],
 });
 
