@@ -1,6 +1,6 @@
 import React from 'react';
 import '../styles/globals.css';
-import RootLayout from './RootLayout';
+import RootLayout from './component/RootLayout';
 import { AppProps } from 'next/app';
 
 const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
