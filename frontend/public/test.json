@@ -1,0 +1,20 @@
+{
+    "ingredients": [
+      {
+        "id": 1,
+        "name": "blé",
+        "category": "Base"
+      },
+      {
+        "id": 2,
+        "name": "Oeufs",
+        "category": "Base"
+      },
+      {
+        "id": 3,
+        "name": "Sucre",
+        "category": "Édulcorant"
+      }
+    ]
+  }
+  
