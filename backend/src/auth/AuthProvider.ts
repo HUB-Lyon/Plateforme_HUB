@@ -3,7 +3,7 @@ import * as msal from '@azure/msal-node';
 
 import { msalConfig } from '../config/authConfig.js';
 
-dotenv.config({ path: '.env.dev' });
+dotenv.config({ path: '.env' });
 
 class AuthProvider {
     msalConfig: msal.Configuration;
