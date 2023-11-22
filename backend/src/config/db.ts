@@ -4,7 +4,7 @@ import { Inventory } from '../entity/inventory.js';
 
 dotenv.config();
 
-const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD, PGPORT, ENDPOINT_ID, } = process.env;
+const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD, PGPORT } = process.env;
 
 export const myDataSource: DataSource = new DataSource({
     type: 'postgres',
