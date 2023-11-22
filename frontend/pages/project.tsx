@@ -4,7 +4,11 @@ const Project: React.FC<{ projects: string[] }> = ({ projects }) => {
   return (
     <>
       <h1>Project</h1>
-      <p>{projects}</p>
+      <ul>
+        {projects.map((project, index) => (
+          <li key={index}>{project}</li>
+        ))}
+      </ul>
     </>
   );
 };

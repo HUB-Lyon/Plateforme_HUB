@@ -11,7 +11,7 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
       </Head>
       <NavBar />
       <div className="lg:ml-72 mt-16">
-        <div>{children}</div>
+        {children}
       </div>
     </>
   );
