@@ -40,7 +40,6 @@ function CreateProject() {
   };
 
   useEffect(() => {
-    // To be change with link to json real path that backend provide
     fetch('/test.json')
       .then(response => response.json())
       .then(data => setMaterialList(data.ingredients.map((ingredient: any) => ingredient.name)))
@@ -81,11 +80,6 @@ function CreateProject() {
       material,
       selectedFile,
     };
-    // To be removed (for test)
-    console.log('Data retrieved:', formData);
-    console.log('Data retrieved:', listOfParticipant);
-    console.log('Data retrieved:', material);
-    console.log('Selected File:', selectedFile);
   };
 
   return (
