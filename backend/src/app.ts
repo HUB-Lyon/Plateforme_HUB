@@ -1,6 +1,5 @@
 import express , {Router, Request, Response} from 'express';
 import { DataBase } from './config/db.js';
-import inventoryRouter from './routes/inventory.js';
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
@@ -8,8 +7,10 @@ import dotenv from 'dotenv';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 
-import usersRouter from './routes/users/router_users.js';
 import authRouter from './routes/auth/auth.js';
+import inventoryRouter from './routes/inventory/inventory.js';
+import projectRouter from './routes/projects/projects.js';
+import usersRouter from './routes/users/router_users.js';
 
 const swaggerSpec = swaggerJSDoc({
   swaggerDefinition : {
@@ -53,9 +54,10 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 
-app.use('/inventory', inventoryRouter);
-app.use('/users', usersRouter);
 app.use('/auth', authRouter);
+app.use('/inventory', inventoryRouter);
+app.use('/projects', projectRouter);
+app.use('/users', usersRouter);
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerSpec, { explorer: true }));
 
 
