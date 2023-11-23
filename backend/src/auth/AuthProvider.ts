@@ -89,7 +89,7 @@ class AuthProvider {
         };
     }
 
-    handleRedirect(options: any = {}) {
+    handleRedirect() {
         return async (req: any, res: any, next: any) => {
             if (!req.body || !req.body.state) {
                 return next(new Error('Error: response not found'));
@@ -124,7 +124,7 @@ class AuthProvider {
     }
 
     logout(options: any = {}) {
-        return (req: any, res: any, next: any) => {
+        return (req: any, res: any) => {
             let logoutUri = `${this.msalConfig.auth.authority}/oauth2/v2.0/`;
 
             if (options.postLogoutRedirectUri) {
@@ -178,13 +178,14 @@ class AuthProvider {
 
     async getCloudDiscoveryMetadata(authority: string) {
         const endpoint = 'https://login.microsoftonline.com/common/discovery/instance';
-
+        /* eslint-disable no-useless-catch */
         try {
             const response = await fetch(`${endpoint}?api-version=1.1&authorization_endpoint=${authority}/oauth2/v2.0/authorize`);
             return await response.json();
         } catch (error) {
             throw error;
         }
+        /* eslint-enable no-useless-catch */
     }
 
     async getAuthorityMetadata(authority: string) {
