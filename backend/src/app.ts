@@ -1,5 +1,5 @@
 import express , {Request, Response} from 'express';
-import { DataBase } from './config/db.js';
+import { dataBase } from './config/db.js';
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
@@ -28,14 +28,14 @@ dotenv.config({ path: '.env' });
 const app = express();
 const port = 3000;
 
-DataBase
-    .initialize()
-    .then(() => {
-        console.log('Database connected');
-    })
-    .catch((err) => {
-        console.log('Error connecting to database', err);
-    });
+dataBase
+  .initialize()
+  .then(() => {
+    console.log('database connected');
+  })
+  .catch((err) => {
+    console.log("Error connecting to database", err);
+  });
 
 app.use(
     session({
