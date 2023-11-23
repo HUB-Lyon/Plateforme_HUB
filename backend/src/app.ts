@@ -29,13 +29,13 @@ const app: Application = express();
 const port = 3000;
 
 dataBase
-  .initialize()
-  .then(() => {
-    console.log('database connected');
-  })
-  .catch((err) => {
-    console.log("Error connecting to database", err);
-  });
+    .initialize()
+    .then(() => {
+        console.log('database connected');
+    })
+    .catch((err) => {
+        console.log('Error connecting to database', err);
+    });
 
 app.use(
     session({
