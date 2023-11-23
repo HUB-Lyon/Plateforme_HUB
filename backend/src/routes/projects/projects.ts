@@ -9,7 +9,7 @@ projectRouter.get('/', async (req: Request, res: Response) => {
         const result = await dataBase.getRepository(Project).createQueryBuilder('project').getMany();
         res.status(200).json(result);
     } catch (err) {
-        res.status(500).json({ err: `Error during retrieving the projects` });
+        res.status(500).json({ err: 'Error during retrieving the projects' });
     }
 });
 

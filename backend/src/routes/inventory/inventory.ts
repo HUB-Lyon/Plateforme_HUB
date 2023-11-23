@@ -1,6 +1,6 @@
-import { Router, Request, Response } from "express";
-import { dataBase } from "../../config/db.js";
-import { Inventory } from "../../entity/inventory.js";
+import { Router, Request, Response } from 'express';
+import { dataBase } from '../../config/db.js';
+import { Inventory } from '../../entity/inventory.js';
 
 const inventoryRouter = Router();
 
@@ -22,7 +22,7 @@ inventoryRouter.get('/', async (req: Request, res: Response) => {
         const result = await dataBase.getRepository(Inventory).createQueryBuilder('inventory').getMany();
         res.status(200).json(result);
     } catch (err) {
-        res.status(500).json({ err: `Error during retrieving the inventory` });
+        res.status(500).json({ err: 'Error during retrieving the inventory' });
     }
 });
 
