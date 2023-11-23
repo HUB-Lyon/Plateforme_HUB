@@ -7,7 +7,7 @@ dotenv.config();
 
 const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD, PGPORT } = process.env;
 
-export const DataBase: DataSource = new DataSource({
+export const dataBase: DataSource = new DataSource({
     type: 'postgres',
     host: PGHOST!,
     port: parseInt(PGPORT!, 10),
