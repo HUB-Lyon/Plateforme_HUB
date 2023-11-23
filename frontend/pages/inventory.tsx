@@ -1,6 +1,8 @@
+import React from 'react';
+
 function Inventory() {
-  return (
-    <h1>Inventory</h1>
+    return (
+        <h1>Inventory</h1>
     );
 }
 

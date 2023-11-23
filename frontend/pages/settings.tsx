@@ -1,6 +1,8 @@
+import React from 'react';
+
 function Parameter() {
-  return (
-    <h1>Parameter</h1>
+    return (
+        <h1>Parameter</h1>
     );
 }
 
