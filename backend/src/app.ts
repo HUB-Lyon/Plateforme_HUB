@@ -1,4 +1,4 @@
-import express , {Router, Request, Response} from 'express';
+import express , {Request, Response} from 'express';
 import { dataBase } from './config/db.js';
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
@@ -13,14 +13,14 @@ import projectRouter from './routes/projects/projects.js';
 import usersRouter from './routes/users/router_users.js';
 
 const swaggerSpec = swaggerJSDoc({
-  swaggerDefinition : {
-    openapi: '3.0.0',
-    info: {
-      title: 'Plateforme HUB',
-      version: '1.0.0',
+    swaggerDefinition : {
+        openapi: '3.0.0',
+        info: {
+            title: 'Plateforme HUB',
+            version: '1.0.0',
+        },
     },
-  },
-  apis: [`dist/routes/**/*.js`],
+    apis: ['dist/routes/**/*.js'],
 });
 
 dotenv.config({ path: '.env' });
@@ -29,24 +29,24 @@ const app = express();
 const port = 3000;
 
 dataBase
-  .initialize()
-  .then(() => {
-    console.log('database connected');
-  })
-  .catch((err) => {
-    console.log("Error connecting to database", err);
-  });
+    .initialize()
+    .then(() => {
+        console.log('database connected');
+    })
+    .catch((err) => {
+        console.log('Error connecting to database', err);
+    });
 
 app.use(
-  session({
-    secret: process.env.EXPRESS_SESSION_SECRET!,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      httpOnly: true,
-      secure: false,
-    },
-  })
+    session({
+        secret: process.env.EXPRESS_SESSION_SECRET!,
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+            httpOnly: true,
+            secure: false,
+        },
+    })
 );
 
 app.use(logger(process.env.NODE_ENV === 'prod' ? 'common' : 'dev'));
@@ -62,9 +62,9 @@ app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerSpec, { explorer: tr
 
 
 app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World');
+    res.send('Hello World');
 });
 
 app.listen(port, () => {
-  console.log(`Server is listening on ${port}`);
+    console.log(`Server is listening on ${port}`);
 });
