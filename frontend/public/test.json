@@ -1,19 +1,16 @@
 {
-    "ingredients": [
+    "participant": [
       {
         "id": 1,
-        "name": "blé",
-        "category": "Base"
+        "name": "jean"
       },
       {
         "id": 2,
-        "name": "Oeufs",
-        "category": "Base"
+        "name": "baptiste"
       },
       {
         "id": 3,
-        "name": "Sucre",
-        "category": "Édulcorant"
+        "name": "pierre"
       }
     ]
   }
