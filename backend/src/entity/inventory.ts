@@ -1,5 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
+/* eslint-disable indent*/
+
 @Entity('inventory')
 export class Inventory {
     @PrimaryGeneratedColumn({ type: 'bigint' })
