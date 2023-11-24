@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import Link from 'next/link';
-import { PhotoIcon } from '@heroicons/react/24/solid'
+import { PhotoIcon } from '@heroicons/react/24/solid';
 import { useFormik } from 'formik';
 
 interface CreateProjectProps {}
@@ -20,8 +20,8 @@ const CreateProject: React.FC<CreateProjectProps> = () => {
             newMaterial: '',
             error: '',
         },
-        onSubmit: (values) => {
-          // Handle form submission
+        onSubmit: () => {
+            // Handle form submission
         },
     });
 
@@ -62,13 +62,17 @@ const CreateProject: React.FC<CreateProjectProps> = () => {
         }
     };
 
+    interface Participant {
+        name: string;
+    }
+
     useEffect(() => {
         // To be changed with the real path that the backend provides
         fetch('/test.json')
             .then((response) => response.json())
-            .then((data) => {
-              const materialsList = data.participant.map((participant: any) => participant.name);
-              setMaterialsList(materialsList);
+            .then((data: { participant: Participant[] }) => {
+                const materialsList = data.participant.map((participant) => participant.name);
+                setMaterialsList(materialsList);
             })
             .catch((error) => console.error('Error during materials loading:', error));
     }, []);
