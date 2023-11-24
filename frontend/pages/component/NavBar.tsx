@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from '../../node_modules/next/link';
-import { classNames } from './utils';
+import Image from 'next/image';
+import classNames from './classNames';
 import { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import {
@@ -41,7 +42,7 @@ export default function NavBar() {
                                 <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-blue-950 px-6 pb-4">
                                     <div className="flex h-16 shrink-0 items-center mt-5">
                                         <Link href="/">
-                                            <img className="h-60 w-auto" src="image/epitech.png" alt="Hub Platform: Return to home" />
+                                            <Image className="h-60 w-auto" src="image/epitech.png" alt="Hub Platform: Return to home" />
                                         </Link>
                                     </div>
                                     <nav className="flex flex-1 flex-col mt-5">
@@ -77,7 +78,7 @@ export default function NavBar() {
                 <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-blue-950 px-6 pb-4">
                     <div className="flex h-16 shrink-0 items-center mt-5">
                         <Link href="/">
-                            <img className="h-60 w-auto" src="image/epitech.png" alt="Hub Platform: Return to home" />
+                            <Image className="h-60 w-auto" src="image/epitech.png" alt="Hub Platform: Return to home" />
                         </Link>
                     </div>
                     <nav className="flex flex-1 flex-col mt-5">
