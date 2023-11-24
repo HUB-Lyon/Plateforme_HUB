@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from '../../node_modules/next/link';
 import Image from 'next/image';
-import classNames from './utils';
+import { classNames } from './utils';
 import { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import {
