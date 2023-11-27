@@ -15,6 +15,8 @@ const router: Router = express.Router();
  * @swagger
  * /auth/signin:
  *   get:
+ *     tags:
+ *       - Auth
  *     summary: Microsoft connection.
  *     description: Allows you to connect using your Microsoft account and redirects to /auth/token to retrieve the token.
 */
@@ -29,6 +31,8 @@ router.get('/signin', authProvider.login({
  * @swagger
  * /auth/token:
  *   get:
+ *     tags:
+ *       - Auth
  *     summary: Retrieve the token.
  *     description: Retrieve the token and becomes accessible from req.session.accessToken.
 */
@@ -43,6 +47,8 @@ router.get('/token', authProvider.acquireToken({
  * @swagger
  * /auth/redirect:
  *   post:
+ *     tags:
+ *       - Auth
  *     summary: Redirect.
  *     description: Redirect.
 */
@@ -53,6 +59,8 @@ router.post('/redirect', authProvider.handleRedirect());
  * @swagger
  * /auth/signout:
  *   get:
+ *     tags:
+ *       - Auth
  *     summary: Microsoft logout.
  *     description: Logs you out of your Microsoft account.
 */
