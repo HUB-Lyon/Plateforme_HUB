@@ -12,7 +12,7 @@ describe('App', () => {
     expect(res.text).to.equal('Hello World');
   });
 
-  after(() => {
+  afterAll(() => {
     server.close();
   });
 
