@@ -6,7 +6,7 @@ import { useFormik } from 'formik';
 interface CreateProjectProps {}
 
 const CreateProject: React.FC<CreateProjectProps> = () => {
-    const maxCharacterLimit = 20;
+    const maxCharacterLimit = 500;
     const [materialsList, setMaterialsList] = useState<string[]>([]);
 
     const formik = useFormik({
@@ -25,6 +25,16 @@ const CreateProject: React.FC<CreateProjectProps> = () => {
         },
     });
 
+    const handleKeyDown = (
+        e: React.KeyboardEvent<HTMLInputElement>,
+        action: () => void
+    ) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            action();
+        }
+    };
+    
     const handleAboutProjectChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const inputValue = e.target.value;
         if (inputValue.length <= maxCharacterLimit) {
@@ -114,6 +124,7 @@ const CreateProject: React.FC<CreateProjectProps> = () => {
                                     className="mr-2 p-1 block w-full md:w-auto rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 md:text-sm md:leading-6"
                                     value={formik.values.newList}
                                     onChange={formik.handleChange}
+                                    onKeyDown={(e) => handleKeyDown(e, addParticipant)}
                                 />
                                 <button type="button" className="bg-blue-500 text-white text-sm p-1 rounded-md" onClick={addParticipant}>
                                     Add
@@ -141,7 +152,7 @@ const CreateProject: React.FC<CreateProjectProps> = () => {
                                 <textarea
                                     id="about"
                                     name="aboutProject"
-                                    rows={4}
+                                    rows={8}
                                     className="p-1 block w-full md:w-auto rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 md:text-sm md:leading-6"
                                     value={formik.values.aboutProject}
                                     onChange={handleAboutProjectChange}
@@ -162,6 +173,7 @@ const CreateProject: React.FC<CreateProjectProps> = () => {
                                     className="mr-2 p-1 block w-full md:w-auto rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 md:text-sm md:leading-6"
                                     value={formik.values.newMaterial}
                                     onChange={formik.handleChange}
+                                    onKeyDown={(e) => handleKeyDown(e, addMaterial)}
                                 />
                                 <button type="button" className="bg-blue-500 text-white text-sm p-1 rounded-md" onClick={addMaterial}>
                                     Add
