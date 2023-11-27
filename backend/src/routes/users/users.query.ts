@@ -3,7 +3,7 @@
  * Licensed under the MIT License.
  */
 
-async function user_connection(endpoint: string, accessToken: string): Promise<any> {
+async function userConnection(endpoint: string, accessToken: string): Promise<any> {
     const options = {
         headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -20,4 +20,4 @@ async function user_connection(endpoint: string, accessToken: string): Promise<a
     }
 }
 
-export { user_connection };
+export { userConnection };

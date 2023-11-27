@@ -57,38 +57,6 @@ userRouter.get('/:id', async (req: Request, res: Response) => {
 
 /**
  * @swagger
- * /users/:
- *   post:
- *     summary: Create a new user.
- *     description: Endpoint to create a new user.
- *     requestBody:
- *       description: User object to be created.
- *       required: true
- *       content:
- *         application/json:
- *           example:
- *            email: "email@epitech.eu"
- *            token: "token"
- *            projects_id: [1, 2, 3]
- *            role: false
- *     responses:
- *       201:
- *         description: Successful response with the created user.
- *       500:
- *         description: Internal Server Error in case of any issues during the creation.
- */
-
-userRouter.post('/', async (req: Request, res: Response) => {
-    try {
-        const result = await dataBase.getRepository(User).createQueryBuilder('user').insert().values(req.body).execute();
-        res.status(201).json(result);
-    } catch (err) {
-        res.status(500).json({ err: `Error during data insertion of element ${req.body}` });
-    }
-});
-
-/**
- * @swagger
  * /users/:id:
  *   patch:
  *     summary: Update a user by ID.
