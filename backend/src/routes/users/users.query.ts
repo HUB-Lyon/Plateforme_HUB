@@ -3,7 +3,10 @@
  * Licensed under the MIT License.
  */
 
-async function user_connection(endpoint: string, accessToken: string): Promise<any> {
+import { dataBase } from '../../config/db.js';
+import { User } from '../../entity/user.js';
+
+async function userConnection(endpoint: string, accessToken: string): Promise<any> {
     const options = {
         headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -20,4 +23,16 @@ async function user_connection(endpoint: string, accessToken: string): Promise<a
     }
 }
 
-export { user_connection };
+async function createUser(userData: any): Promise<any> {
+    const exist = await dataBase.getRepository(User).createQueryBuilder('user').where('user.email = :email', { email: userData.userPrincipalName }).getOne();
+
+    if (!exist) {
+        const user = new User();
+        user.email = userData.mail;
+        user.token = userData.id;
+        user.admin = false;
+        await dataBase.getRepository(User).save(user);
+    }
+}
+
+export { userConnection, createUser };

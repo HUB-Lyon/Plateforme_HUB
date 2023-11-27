@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import { DataSource } from 'typeorm';
 import { Inventory } from '../entity/inventory.js';
 import { Project } from '../entity/projects.js';
+import { User } from '../entity/user.js';
 
 dotenv.config();
 
@@ -14,7 +15,7 @@ export const dataBase: DataSource = new DataSource({
     username: PGUSER!,
     password: PGPASSWORD!,
     database: PGDATABASE!,
-    entities: [Inventory, Project],
+    entities: [Inventory, Project, User],
     logging: true,
     synchronize: true,
     ssl: true
