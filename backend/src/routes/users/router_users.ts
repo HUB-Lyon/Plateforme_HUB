@@ -37,6 +37,8 @@ router.get('/profile', isAuthenticated, async (req: Request, res: Response, next
  * @swagger
  * /users/:
  *  get:
+ *     tags:
+ *      - Users
  *     summary: Retrieve all users.
  *     description: Endpoint to get a list of all users.
  *     responses:
@@ -59,6 +61,8 @@ router.get('/', async (req: Request, res: Response) => {
  * @swagger
  * /users/:id:
  *   get:
+ *     tags:
+ *      - Users
  *     summary: Retrieve a specific user by ID.
  *     description: Endpoint to get a specific user based on its ID.
  *     parameters:
@@ -88,6 +92,8 @@ router.get('/:id', async (req: Request, res: Response) => {
  * @swagger
  * /users/:id:
  *   patch:
+ *     tags:
+ *      - Users
  *     summary: Update a user by ID.
  *     description: Endpoint to update a user based on its ID.
  *     parameters:
