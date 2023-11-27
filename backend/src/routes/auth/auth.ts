@@ -4,7 +4,7 @@
  */
 
 import express from 'express';
-import { Request, Response, Router } from 'express';
+import { Router } from 'express';
 
 import authProvider from '../../auth/AuthProvider.js';
 import { REDIRECT_URI, POST_LOGOUT_REDIRECT_URI } from '../../config/authConfig.js';

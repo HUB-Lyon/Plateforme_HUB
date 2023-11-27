@@ -24,14 +24,15 @@ async function userConnection(endpoint: string, accessToken: string): Promise<an
 }
 
 async function createUser(userData: any): Promise<any> {
-    let exist = await dataBase.getRepository(User).createQueryBuilder('user').where('user.email = :email', { email: userData.userPrincipalName }).getOne();
+    const exist = await dataBase.getRepository(User).createQueryBuilder('user').where('user.email = :email', { email: userData.userPrincipalName }).getOne();
+
     if (!exist) {
         const user = new User();
         user.email = userData.mail;
         user.token = userData.id;
         user.role = false;
-        const data = await dataBase.getRepository(User).save(user);
+        await dataBase.getRepository(User).save(user);
     }
-};
+}
 
 export { userConnection, createUser };
