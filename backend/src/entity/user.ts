@@ -13,9 +13,6 @@ export class User {
     @Column({ type: 'varchar', length: 255, nullable: false })
     token: string;
 
-    @Column({ type: 'bigint', array: true, default: '{}' })
-    projects_id: number[];
-
     @Column({ type: 'boolean', nullable: false })
-    role: boolean;
+    admin: boolean;
 }

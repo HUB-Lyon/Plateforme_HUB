@@ -30,7 +30,7 @@ async function createUser(userData: any): Promise<any> {
         const user = new User();
         user.email = userData.mail;
         user.token = userData.id;
-        user.role = false;
+        user.admin = false;
         await dataBase.getRepository(User).save(user);
     }
 }

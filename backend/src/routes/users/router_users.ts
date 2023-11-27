@@ -109,7 +109,6 @@ router.get('/:id', async (req: Request, res: Response) => {
  *       content:
  *         application/json:
  *           example:
- *             projects_id: [1, 2, 3, 4]
  *             role: true
  *     responses:
  *       200:
