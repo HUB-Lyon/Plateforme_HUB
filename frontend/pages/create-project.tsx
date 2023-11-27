@@ -1,13 +1,15 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import Link from 'next/link';
-import { PhotoIcon } from '@heroicons/react/24/solid';
+import { CheckCircleIcon, PhotoIcon } from '@heroicons/react/24/solid';
 import { useFormik } from 'formik';
+import Image from 'next/image';
 
-interface CreateProjectProps {}
+interface CreateProjectProps {
+    maxCharacterLimit: number;
+}
 
-const CreateProject: React.FC<CreateProjectProps> = () => {
-    const maxCharacterLimit = 500;
-    const [materialsList, setMaterialsList] = useState<string[]>([]);
+const CreateProject: React.FC<CreateProjectProps> = ({ maxCharacterLimit }) => {
+    maxCharacterLimit = 500;
 
     const formik = useFormik({
         initialValues: {
@@ -18,7 +20,6 @@ const CreateProject: React.FC<CreateProjectProps> = () => {
             newList: '',
             material: [] as string[],
             newMaterial: '',
-            error: '',
         },
         onSubmit: () => {
             // Handle form submission
@@ -34,13 +35,6 @@ const CreateProject: React.FC<CreateProjectProps> = () => {
             action();
         }
     };
-    
-    const handleAboutProjectChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        const inputValue = e.target.value;
-        if (inputValue.length <= maxCharacterLimit) {
-            formik.setFieldValue('aboutProject', inputValue);
-        }
-    };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.currentTarget.files?.[0];
@@ -54,38 +48,17 @@ const CreateProject: React.FC<CreateProjectProps> = () => {
         }
     };
 
-    const removeParticipant = (index: number) => {
-        formik.setFieldValue('listOfParticipant', formik.values.listOfParticipant.filter((_, i) => i !== index));
-    };
-
-    const isMaterialValid = (material: string) => {
-        return materialsList.includes(material);
+    const removeParticipant = (email: string) => {
+        const updatedParticipants = formik.values.listOfParticipant.filter(participant => participant !== email);
+        formik.setFieldValue('listOfParticipant', updatedParticipants);
     };
 
     const addMaterial = () => {
-        if (formik.values.newMaterial.trim() !== '' && isMaterialValid(formik.values.newMaterial)) {
+        if (formik.values.newMaterial.trim() !== '') {
             formik.setFieldValue('material', [...formik.values.material, formik.values.newMaterial]);
             formik.setFieldValue('newMaterial', '');
-            formik.setFieldValue('error', '');
-        } else {
-            formik.setFieldValue('error', 'This material is not available');
         }
     };
-
-    interface Participant {
-        name: string;
-    }
-
-    useEffect(() => {
-        // To be changed with the real path that the backend provides
-        fetch('/test.json')
-            .then((response) => response.json())
-            .then((data: { participant: Participant[] }) => {
-                const materialsList = data.participant.map((participant) => participant.name);
-                setMaterialsList(materialsList);
-            })
-            .catch((error) => console.error('Error during materials loading:', error));
-    }, []);
 
     const removeMaterial = (index: number) => {
         formik.setFieldValue('material', formik.values.material.filter((_, i) => i !== index));
@@ -134,7 +107,7 @@ const CreateProject: React.FC<CreateProjectProps> = () => {
                                 {formik.values.listOfParticipant.map((guest, index) => (
                                     <div key={index} className="text-sm">
                                         {guest}
-                                        <button type="button" className="text-red-500 ml-5" onClick={() => removeParticipant(index)}>
+                                        <button type="button" className="text-red-500 ml-5" onClick={() => removeParticipant(guest)}>
                                             Cancel
                                         </button>
                                     </div>
@@ -152,10 +125,11 @@ const CreateProject: React.FC<CreateProjectProps> = () => {
                                 <textarea
                                     id="about"
                                     name="aboutProject"
-                                    rows={8}
+                                    rows={10}
+                                    maxLength={maxCharacterLimit}
                                     className="p-1 block w-full md:w-auto rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 md:text-sm md:leading-6"
                                     value={formik.values.aboutProject}
-                                    onChange={handleAboutProjectChange}
+                                    onChange={formik.handleChange}
                                 />
                             </div>
                             <p className="text-sm text-gray-500">{`${formik.values.aboutProject.length}/${maxCharacterLimit} characters`}</p>
@@ -163,7 +137,7 @@ const CreateProject: React.FC<CreateProjectProps> = () => {
 
                         <div className="md:col-span-3 md:ml-12 lg:ml-20">
                             <label htmlFor="material" className="block text-sm font-medium leading-6 text-gray-900">
-                                Material
+                                Materials
                             </label>
                             <div className="flex mt-2">
                                 <input
@@ -178,9 +152,6 @@ const CreateProject: React.FC<CreateProjectProps> = () => {
                                 <button type="button" className="bg-blue-500 text-white text-sm p-1 rounded-md" onClick={addMaterial}>
                                     Add
                                 </button>
-                            </div>
-                            <div className="mt-2 text-sm">
-                                <p className="text-red-500">{formik.values.error}</p>
                             </div>
                             <div className="mt-2 break-all">
                                 {formik.values.material.map((material, index) => (
@@ -199,20 +170,41 @@ const CreateProject: React.FC<CreateProjectProps> = () => {
                         <label htmlFor="cover-photo" className="block text-sm font-medium leading-6 text-gray-900">
                             Cover photo
                         </label>
-                        <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
+                        <div className="mt-2 flex flex-col items-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
                             <div className="text-center">
-                                <PhotoIcon className="mx-auto h-12 w-12 text-gray-300" aria-hidden="true" />
-                                <div className="mt-4 flex text-sm leading-6 text-gray-600">
-                                    <label htmlFor="file-upload" className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
-                                        <span>Upload a file</span>
-                                        <input id="file-upload" type="file" className="sr-only" onChange={(e) => handleFileChange(e)} />
-                                    </label>
+                                {formik.values.selectedFile ? (
+                                    <>
+                                        {formik.values.selectedFile && (
+                                            <div className="mt-4">
+                                                <Image src={URL.createObjectURL(formik.values.selectedFile)} alt="Preview" width={150} height={150} className="max-w-full h-auto rounded-lg" />
+                                            </div>
+                                        )}
+                                    </>
+                                ) : (
+                                    <PhotoIcon className="mx-auto h-12 w-12 text-gray-300" aria-hidden="true" />
+                                )}
+                                <div className="mt-4 flex flex-col items-center text-sm leading-6 text-gray-600">
+                                    {formik.values.selectedFile ? (
+                                        <div className="flex items-center mb-2">
+                                            <CheckCircleIcon className="h-5 w-5 text-green-500 mr-2" aria-hidden="true" />
+                                            <label htmlFor="file-upload" className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
+                                                <span>Upload complete</span>
+                                                <input id="file-upload" type="file" className="sr-only" onChange={(e) => handleFileChange(e)} multiple accept="image/*"/>
+                                            </label>
+                                        </div>
+                                    ) : (
+                                        <label htmlFor="file-upload" className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
+                                            <span>Upload a file</span>
+                                            <input id="file-upload" type="file" className="sr-only" onChange={(e) => handleFileChange(e)} multiple accept="image/*"/>
+                                        </label>
+                                    )}
                                     <p className="pl-1">or drag and drop</p>
                                 </div>
                                 <p className="text-xs leading-5 text-gray-600">PNG, JPG, GIF up to 10MB</p>
                             </div>
                         </div>
                     </div>
+
 
                     <div className="mt-24 flex flex-col items-center justify-end gap-y-4 md:flex-row md:items-center md:justify-end md:gap-x-6">
                         <button type="button" className="w-full md:w-auto rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600">
