@@ -8,6 +8,8 @@ const inventoryRouter = Router();
  * @swagger
  * /inventory/:
  *   get:
+ *     tags:
+ *       - Inventory
  *     summary: Retrieve all items from the inventory.
  *     description: Endpoint to get a list of all items in the inventory.
  *     responses:
@@ -30,6 +32,8 @@ inventoryRouter.get('/', async (req: Request, res: Response) => {
  * @swagger
  * /inventory/:id:
  *   get:
+ *     tags:
+ *       - Inventory
  *     summary: Retrieve a specific item from the inventory by ID.
  *     description: Endpoint to get a specific item from the inventory based on its ID.
  *     parameters:
@@ -59,6 +63,8 @@ inventoryRouter.get('/:id', async (req: Request, res: Response) => {
  * @swagger
  * /inventory/category/:id:
  *   get:
+ *     tags:
+ *       - Inventory
  *     summary: Retrieve items from the inventory by category ID.
  *     description: Endpoint to get a list of items from the inventory based on the category ID.
  *     parameters:
@@ -88,6 +94,8 @@ inventoryRouter.get('/category/:id', async (req: Request, res: Response) => {
  * @swagger
  * /inventory/:
  *   post:
+ *     tags:
+ *       - Inventory
  *     summary: Add a new item to the inventory.
  *     description: Endpoint to add a new item to the inventory.
  *     requestBody:
@@ -122,6 +130,8 @@ inventoryRouter.post('/', async (req: Request, res: Response) => {
  * @swagger
  * /inventory/:id:
  *   delete:
+ *     tags:
+ *       - Inventory
  *     summary: Delete an item from the inventory by ID.
  *     description: Endpoint to delete an item from the inventory based on its ID.
  *     parameters:
@@ -151,6 +161,8 @@ inventoryRouter.delete('/:id', async (req: Request, res: Response) => {
  * @swagger
  * /inventory/:id:
  *   patch:
+ *     tags:
+ *       - Inventory
  *     summary: Update an item in the inventory by ID.
  *     description: Endpoint to update an item in the inventory based on its ID.
  *     parameters:

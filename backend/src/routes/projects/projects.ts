@@ -52,6 +52,8 @@ const projectRouter = Router();
  * @swagger
  * /projects/:
  *   get:
+ *     tags:
+ *       - Projects
  *     summary: Retrieve all projects.
  *     description: Endpoint to get a list of all projects.
  *     responses:
@@ -78,6 +80,8 @@ projectRouter.get('/', async (req: Request, res: Response) => {
  * @swagger
  * /projects/:id:
  *   get:
+ *     tags:
+ *       - Projects
  *     summary: Retrieve a specific project by ID.
  *     description: Endpoint to get a specific project based on its ID.
  *     parameters:
@@ -109,6 +113,8 @@ projectRouter.get('/:id', async (req: Request, res: Response) => {
  * @swagger
  * /projects/status/:id:
  *   get:
+ *     tags:
+ *       - Projects
  *     summary: Retrieve projects by status ID.
  *     description: Endpoint to get a list of projects based on their status ID.
  *     parameters:
@@ -142,6 +148,8 @@ projectRouter.get('/status/:id', async (req: Request, res: Response) => {
  * @swagger
  * /projects/:
  *   post:
+ *     tags:
+ *       - Projects
  *     summary: Create a new project.
  *     description: Endpoint to create a new project.
  *     requestBody:
@@ -177,6 +185,8 @@ projectRouter.post('/', async (req: Request, res: Response) => {
  * @swagger
  * /projects/:id:
  *   delete:
+ *     tags:
+ *       - Projects
  *     summary: Delete a project by ID.
  *     description: Endpoint to delete a project based on its ID.
  *     parameters:
@@ -206,6 +216,8 @@ projectRouter.delete('/:id', async (req: Request, res: Response) => {
  * @swagger
  * /projects/:id:
  *   patch:
+ *     tags:
+ *       - Projects
  *     summary: Update a project by ID.
  *     description: Endpoint to update a project based on its ID.
  *     parameters:
