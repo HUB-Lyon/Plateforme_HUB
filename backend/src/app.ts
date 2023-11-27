@@ -6,6 +6,7 @@ import logger from 'morgan';
 import dotenv from 'dotenv';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
+import cors from 'cors';
 
 import authRouter from './routes/auth/auth.js';
 import inventoryRouter from './routes/inventory/inventory.js';
@@ -49,6 +50,7 @@ app.use(
     })
 );
 
+app.use(cors());
 app.use(logger(process.env.NODE_ENV === 'prod' ? 'common' : 'dev'));
 app.use(express.json());
 app.use(cookieParser());
