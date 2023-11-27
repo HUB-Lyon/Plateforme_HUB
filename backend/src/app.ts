@@ -29,14 +29,16 @@ dotenv.config({ path: '.env' });
 const app = express();
 const port = 3000;
 
-dataBase
-    .initialize()
-    .then(() => {
-        console.log('database connected');
-    })
-    .catch((err) => {
-        console.log('Error connecting to database', err);
-    });
+async () => {
+    await dataBase
+        .initialize()
+        .then(() => {
+            console.log('database connected');
+        })
+        .catch((err) => {
+            console.log('Error connecting to database', err);
+        });
+};
 
 app.use(
     session({
@@ -67,6 +69,8 @@ app.get('/', (req: Request, res: Response) => {
     res.send('Hello World');
 });
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
     console.log(`Server is listening on ${port}`);
 });
+
+export {server, app};
