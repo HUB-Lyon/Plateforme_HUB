@@ -1,6 +1,9 @@
 import * as dotenv from 'dotenv';
 import * as msal from '@azure/msal-node';
 
+import { userConnection, createUser } from '../routes/users/users.query.js';
+import { GRAPH_ME_ENDPOINT } from '../config/authConfig.js';
+
 import { msalConfig } from '../config/authConfig.js';
 
 dotenv.config({ path: '.env' });
@@ -73,6 +76,10 @@ class AuthProvider {
                 req.session.accessToken = tokenResponse.accessToken;
                 req.session.idToken = tokenResponse.idToken;
                 req.session.account = tokenResponse.account;
+
+                const userData = await userConnection(GRAPH_ME_ENDPOINT, req.session.accessToken);
+                
+                await createUser(userData);
 
                 res.redirect(options.successRedirect);
             } catch (error) {

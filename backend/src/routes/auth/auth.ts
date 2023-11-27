@@ -9,9 +9,6 @@ import { Request, Response, Router } from 'express';
 import authProvider from '../../auth/AuthProvider.js';
 import { REDIRECT_URI, POST_LOGOUT_REDIRECT_URI } from '../../config/authConfig.js';
 
-import { User } from '../../entity/user.js';
-import { dataBase } from '../../config/db.js';
-
 const router: Router = express.Router();
 
 /**
@@ -36,31 +33,10 @@ router.get('/signin', authProvider.login({
  *     description: Retrieve the token and becomes accessible from req.session.accessToken.
 */
 
-async function createUser(userData: any): Promise<any> {
-    let exist = dataBase.getRepository(User).createQueryBuilder('user').where('user.email = :email', { email: userData.userPrincipalName }).getOne();
-
-    if (!exist) {
-        const user = new User();
-        user.email = userData.mail;
-        user.token = userData.accessToken;
-        user.role = false;
-        const data = await dataBase.getRepository(User).save(user);
-        console.log(data);
-    }
-};
-
 router.get('/token', authProvider.acquireToken({
     scopes: ['User.Read'],
     redirectUri: REDIRECT_URI,
-    successRedirect: '/',
-    successCallback: (req: Request, res: Response) => {
-        try {
-            createUser(req.session.user);
-            res.redirect('/');
-        } catch (err) {
-            res.status(500).json({ err: 'Error during retrieving the token' });
-        }
-    }
+    successRedirect: '/'
 }));
 
 /**
