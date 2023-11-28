@@ -23,13 +23,12 @@ async function userConnection(endpoint: string, accessToken: string): Promise<an
     }
 }
 
-async function createUser(userData: any, accessToken: string): Promise<any> {
+async function createUser(userData: any): Promise<any> {
     const exist = await dataBase.getRepository(User).createQueryBuilder('user').where('user.email = :email', { email: userData.userPrincipalName }).getOne();
 
     if (!exist) {
         const user = new User();
         user.email = userData.mail;
-        user.token = accessToken;
         user.admin = false;
         await dataBase.getRepository(User).save(user);
     }
