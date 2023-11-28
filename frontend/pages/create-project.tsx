@@ -19,10 +19,9 @@ const CreateProject: React.FC = () => {
         },
         onSubmit: () => {
             // Handle form submissio
-            console.log('Selected File:', formik.values.selectedFile);
         },
     });
-    
+
     const handleKeyDown = (
         e: React.KeyboardEvent<HTMLInputElement>,
         action: () => void
