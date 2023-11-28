@@ -29,7 +29,6 @@ async function createUser(userData: any): Promise<any> {
     if (!exist) {
         const user = new User();
         user.email = userData.mail;
-        user.token = userData.id;
         user.admin = false;
         await dataBase.getRepository(User).save(user);
     }
