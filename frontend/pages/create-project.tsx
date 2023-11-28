@@ -4,12 +4,8 @@ import { CheckCircleIcon, PhotoIcon } from '@heroicons/react/24/solid';
 import { useFormik } from 'formik';
 import Image from 'next/image';
 
-interface CreateProjectProps {
-    maxCharacterLimit: number;
-}
-
-const CreateProject: React.FC<CreateProjectProps> = ({ maxCharacterLimit }) => {
-    maxCharacterLimit = 500;
+const CreateProject: React.FC = () => {
+    const projectDescriptionMaxLength = 1500;
 
     const formik = useFormik({
         initialValues: {
@@ -22,10 +18,11 @@ const CreateProject: React.FC<CreateProjectProps> = ({ maxCharacterLimit }) => {
             newMaterial: '',
         },
         onSubmit: () => {
-            // Handle form submission
+            // Handle form submissio
+            console.log('Selected File:', formik.values.selectedFile);
         },
     });
-
+    
     const handleKeyDown = (
         e: React.KeyboardEvent<HTMLInputElement>,
         action: () => void
@@ -38,7 +35,14 @@ const CreateProject: React.FC<CreateProjectProps> = ({ maxCharacterLimit }) => {
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.currentTarget.files?.[0];
-        formik.setFieldValue('selectedFile', file);
+        if (file) {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = (event) => {
+                const base64Data = event.target?.result as string;
+                formik.setFieldValue('selectedFile', base64Data);
+            };
+        }
     };
 
     const addParticipant = () => {
@@ -126,13 +130,13 @@ const CreateProject: React.FC<CreateProjectProps> = ({ maxCharacterLimit }) => {
                                     id="about"
                                     name="aboutProject"
                                     rows={10}
-                                    maxLength={maxCharacterLimit}
+                                    maxLength={projectDescriptionMaxLength}
                                     className="p-1 block w-full md:w-auto rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 md:text-sm md:leading-6"
                                     value={formik.values.aboutProject}
                                     onChange={formik.handleChange}
                                 />
                             </div>
-                            <p className="text-sm text-gray-500">{`${formik.values.aboutProject.length}/${maxCharacterLimit} characters`}</p>
+                            <p className="text-sm text-gray-500">{`${formik.values.aboutProject.length}/${projectDescriptionMaxLength} characters`}</p>
                         </div>
 
                         <div className="md:col-span-3 md:ml-12 lg:ml-20">
@@ -176,7 +180,7 @@ const CreateProject: React.FC<CreateProjectProps> = ({ maxCharacterLimit }) => {
                                     <>
                                         {formik.values.selectedFile && (
                                             <div className="mt-4">
-                                                <Image src={URL.createObjectURL(formik.values.selectedFile)} alt="Preview" width={150} height={150} className="max-w-full h-auto rounded-lg" />
+                                                <Image src={formik.values.selectedFile} alt="Preview" width={100} height={100} className="h-auto w-52 rounded-lg" />
                                             </div>
                                         )}
                                     </>
