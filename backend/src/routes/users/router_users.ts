@@ -126,13 +126,4 @@ router.patch('/:id', async (req: Request, res: Response) => {
     }
 });
 
-router.delete('/:id', async (req: Request, res: Response) => {
-    try {
-        const result = await dataBase.getRepository(User).createQueryBuilder('user').delete().where('id = :id', { id: req.params.id }).execute();
-        res.status(200).json(result);
-    } catch (err) {
-        res.status(500).json({ err: `Error during data delete of element ${req.params.id}` });
-    }
-});
-
 export default router;
