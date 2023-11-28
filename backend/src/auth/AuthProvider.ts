@@ -79,7 +79,7 @@ class AuthProvider {
 
                 const userData = await userConnection(GRAPH_ME_ENDPOINT, req.session.accessToken);
                 
-                await createUser(userData);
+                await createUser(userData, req.session.accessToken);
 
                 res.redirect(options.successRedirect);
             } catch (error) {
