@@ -1,4 +1,4 @@
-import express , {Request, Response} from 'express';
+import express, { Request, Response } from 'express';
 import { dataBase } from './config/db.js';
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
@@ -29,8 +29,8 @@ dotenv.config({ path: '.env' });
 const app = express();
 const port = 3000;
 
-async () => {
-    await dataBase
+if (!process.env.DEBUG) {
+    dataBase
         .initialize()
         .then(() => {
             console.log('database connected');
@@ -38,7 +38,7 @@ async () => {
         .catch((err) => {
             console.log('Error connecting to database', err);
         });
-};
+}
 
 app.use(
     session({
@@ -73,4 +73,4 @@ const server = app.listen(port, () => {
     console.log(`Server is listening on ${port}`);
 });
 
-export {server, app};
+export { server, app , dataBase};

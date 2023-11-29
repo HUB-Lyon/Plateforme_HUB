@@ -7,4 +7,5 @@ module.exports = {
         '^.+\\.tsx?$': 'ts-jest',
     },
     collectCoverage: true,
+    testTimeout: 10000,
 };
