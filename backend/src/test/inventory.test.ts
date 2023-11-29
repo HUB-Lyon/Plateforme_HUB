@@ -14,9 +14,6 @@ describe('Inventory', () => {
     beforeAll(async () => {
         await dataBase
             .initialize()
-            .then(() => {
-                console.log('database connected');
-            })
             .catch((err) => {
                 console.log('Error connecting to database', err);
             });

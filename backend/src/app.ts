@@ -14,7 +14,7 @@ import projectRouter from './routes/projects/projects.js';
 import usersRouter from './routes/users/router_users.js';
 
 const swaggerSpec = swaggerJSDoc({
-    swaggerDefinition : {
+    swaggerDefinition: {
         openapi: '3.0.0',
         info: {
             title: 'Plateforme HUB',
@@ -52,8 +52,10 @@ app.use(
     })
 );
 
+if (!process.env.DEBUG)
+    app.use(logger(process.env.NODE_ENV === 'prod' ? 'common' : 'dev'));
+
 app.use(cors());
-app.use(logger(process.env.NODE_ENV === 'prod' ? 'common' : 'dev'));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
@@ -73,4 +75,4 @@ const server = app.listen(port, () => {
     console.log(`Server is listening on ${port}`);
 });
 
-export { server, app , dataBase};
+export { server, app, dataBase };
