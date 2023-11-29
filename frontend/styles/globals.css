@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .flex-box {
-  @apply h-auto bg-white rounded-lg shadow-lg flex mt-20;
+  @apply h-auto bg-white rounded-lg shadow-lg flex;
 }
 
 body {
