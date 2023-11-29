@@ -8,7 +8,7 @@ const Home: React.FC = () => {
             <div className="flex-box w-4/5">
                 <Link href="/inventory" className='lg:text-3xl md:text-2xl text-md p-4 font-bold'>INVENTORY</Link>
             </div>
-            <div className="flex-box w-4/5 gap-y-20">
+            <div className="flex-box w-4/5">
                 <Link href="/project" className='lg:text-3xl md:text-2xl text-md p-4 font-bold'>PROJECTS</Link>
             </div>
         </div>
