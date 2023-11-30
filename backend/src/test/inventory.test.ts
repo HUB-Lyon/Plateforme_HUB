@@ -34,6 +34,15 @@ describe('Inventory', () => {
             description: 'description',
         };
         await repository.save(data);
+        const data2 = {
+            name: 'name',
+            image: 'image',
+            category: 'category',
+            quantity: 2,
+            available: true,
+            description: 'description',
+        };
+        await repository.save(data2);
 
         const res = await chai.request(app).get('/inventory');
         expect(res).to.have.status(200);
@@ -47,6 +56,13 @@ describe('Inventory', () => {
         expect(res.body[0].quantity).to.equal(data.quantity);
         expect(res.body[0].available).to.equal(data.available);
         expect(res.body[0].description).to.equal(data.description);
+        expect(res.body[1].id).to.equal(2);
+        expect(res.body[1].name).to.equal(data2.name);
+        expect(res.body[1].image).to.equal(data2.image);
+        expect(res.body[1].category).to.equal(data2.category);
+        expect(res.body[1].quantity).to.equal(data2.quantity);
+        expect(res.body[1].available).to.equal(data2.available);
+        expect(res.body[1].description).to.equal(data2.description);
     });
 
     it('should return a specific item from the inventory by ID on /inventory/:id GET', async () => {
@@ -60,12 +76,12 @@ describe('Inventory', () => {
         };
         await repository.save(data);
 
-        const res = await chai.request(app).get('/inventory/2');
+        const res = await chai.request(app).get('/inventory/3');
         expect(res).to.have.status(200);
         expect(res.body).to.not.be.undefined;
         expect(res.body).to.be.an('object');
 
-        expect(res.body.id).to.equal(2);
+        expect(res.body.id).to.equal(3);
         expect(res.body.name).to.equal(data.name);
         expect(res.body.image).to.equal(data.image);
         expect(res.body.category).to.equal(data.category);
@@ -90,7 +106,7 @@ describe('Inventory', () => {
         expect(res.body).to.not.be.undefined;
         expect(res.body).to.be.an('array').that.is.not.empty;
 
-        expect(res.body[0].id).to.equal(3);
+        expect(res.body[0].id).to.equal(4);
         expect(res.body[0].name).to.equal(data.name);
         expect(res.body[0].image).to.equal(data.image);
         expect(res.body[0].category).to.equal(data.category);
@@ -111,10 +127,10 @@ describe('Inventory', () => {
 
         const res = await chai.request(app).post('/inventory').send(new_item);
         expect(res).to.have.status(201);
-        const res2 = await chai.request(app).get('/inventory/4');
+        const res2 = await chai.request(app).get('/inventory/5');
         expect(res2).to.have.status(200);
 
-        expect(res2.body.id).to.equal(4);
+        expect(res2.body.id).to.equal(5);
         expect(res2.body.name).to.equal(new_item.name);
         expect(res2.body.image).to.equal(new_item.image);
         expect(res2.body.category).to.equal(new_item.category);
@@ -134,9 +150,9 @@ describe('Inventory', () => {
         };
         await repository.save(data);
 
-        const res = await chai.request(app).delete('/inventory/5');
+        const res = await chai.request(app).delete('/inventory/6');
         expect(res).to.have.status(202);
-        const res2 = await chai.request(app).get('/inventory/5');
+        const res2 = await chai.request(app).get('/inventory/6');
         expect(res2).to.have.status(200);
         expect(res2.body).to.equal(null);
     });
@@ -160,12 +176,12 @@ describe('Inventory', () => {
             description: 'description',
         };
 
-        const res = await chai.request(app).patch('/inventory/6').send(new_item);
+        const res = await chai.request(app).patch('/inventory/7').send(new_item);
         expect(res).to.have.status(200);
-        const res2 = await chai.request(app).get('/inventory/6');
+        const res2 = await chai.request(app).get('/inventory/7');
         expect(res2).to.have.status(200);
 
-        expect(res2.body.id).to.equal(6);
+        expect(res2.body.id).to.equal(7);
         expect(res2.body.name).to.equal(new_item.name);
         expect(res2.body.image).to.equal(new_item.image);
         expect(res2.body.category).to.equal(new_item.category);
