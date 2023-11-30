@@ -17,8 +17,24 @@ const CreateProject: React.FC = () => {
             material: [] as string[],
             newMaterial: '',
         },
-        onSubmit: () => {
-            // Handle form submissio
+        onSubmit: async (values) => {
+            try {
+                await fetch('http://localhost:3000/create-project', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        projectName: values.projectName,
+                        aboutProject: values.aboutProject,
+                        selectedFile: values.selectedFile,
+                        listOfParticipant: values.listOfParticipant,
+                        material: values.material,
+                    }),
+                });
+            } catch (error) {
+                console.log(error);
+            }
         },
     });
 
