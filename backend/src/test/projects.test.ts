@@ -26,7 +26,6 @@ describe('Project', () => {
 
     it('should return all Projects on /projects GET', async () => {
         const data = {
-            id: 1,
             name: 'name',
             description: 'description',
             image: 'image',
@@ -41,7 +40,7 @@ describe('Project', () => {
         expect(res).to.have.status(200);
         expect(res.body).to.be.an('array').that.is.not.empty;
 
-        expect(res.body[0].id).to.equal(Number(data.id));
+        expect(res.body[0].id).to.equal(1);
         expect(res.body[0].name).to.equal(data.name);
         expect(res.body[0].description).to.equal(data.description);
         expect(res.body[0].image).to.equal(data.image);
@@ -53,7 +52,6 @@ describe('Project', () => {
 
     it('should return a specific project by ID on /projects/:id GET', async () => {
         const data = {
-            id: 2,
             name: 'name',
             description: 'description',
             image: 'image',
@@ -69,7 +67,7 @@ describe('Project', () => {
         expect(res.body).to.not.be.undefined;
         expect(res.body).to.be.an('object');
 
-        expect(res.body.id).to.equal(Number(data.id));
+        expect(res.body.id).to.equal(2);
         expect(res.body.name).to.equal(data.name);
         expect(res.body.description).to.equal(data.description);
         expect(res.body.image).to.equal(data.image);
@@ -81,7 +79,6 @@ describe('Project', () => {
 
     it('should return projects by status ID on /projects/status/:id GET', async () => {
         const data = {
-            id: 3,
             name: 'name',
             description: 'description',
             image: 'image',
@@ -97,7 +94,7 @@ describe('Project', () => {
         expect(res.body).to.not.be.undefined;
         expect(res.body).to.be.an('array').that.is.not.empty;
 
-        expect(res.body[0].id).to.equal(Number(data.id));
+        expect(res.body[0].id).to.equal(3);
         expect(res.body[0].name).to.equal(data.name);
         expect(res.body[0].description).to.equal(data.description);
         expect(res.body[0].image).to.equal(data.image);
@@ -109,7 +106,6 @@ describe('Project', () => {
 
     it('should Create a new project on /projects POST', async () => {
         const new_project = {
-            id: 4,
             name: 'name',
             description: 'description',
             image: 'image',
@@ -125,7 +121,7 @@ describe('Project', () => {
         const res2 = await chai.request(app).get('/projects/4');
         expect(res2).to.have.status(200);
 
-        expect(res2.body.id).to.equal(new_project.id);
+        expect(res2.body.id).to.equal(4);
         expect(res2.body.name).to.equal(new_project.name);
         expect(res2.body.description).to.equal(new_project.description);
         expect(res2.body.image).to.equal(new_project.image);
@@ -137,7 +133,6 @@ describe('Project', () => {
 
     it('should Delete a project by ID on /projects/:id DELETE', async () => {
         const data = {
-            id: 5,
             name: 'name',
             description: 'description',
             image: 'image',
@@ -158,7 +153,6 @@ describe('Project', () => {
 
     it('should Update a project by ID on /projects/:id PATCH', async () => {
         const data = {
-            id: 6,
             name: 'name',
             description: 'description',
             image: 'image',
@@ -170,7 +164,6 @@ describe('Project', () => {
         await repository.save(data);
 
         const new_project = {
-            id: 6,
             name: 'new name',
             description: 'new description',
             image: 'image',
@@ -186,7 +179,7 @@ describe('Project', () => {
         const res2 = await chai.request(app).get('/projects/6');
         expect(res2).to.have.status(200);
 
-        expect(res2.body.id).to.equal(new_project.id);
+        expect(res2.body.id).to.equal(6);
         expect(res2.body.name).to.equal(new_project.name);
         expect(res2.body.description).to.equal(new_project.description);
         expect(res2.body.image).to.equal(new_project.image);

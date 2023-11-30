@@ -26,7 +26,6 @@ describe('Inventory', () => {
 
     it('should return all items from the inventory on /inventory GET', async () => {
         const data = {
-            id: 1,
             name: 'name',
             image: 'image',
             category: 'category',
@@ -41,7 +40,7 @@ describe('Inventory', () => {
         expect(res.body).to.not.be.undefined;
         expect(res.body).to.be.an('array').that.is.not.empty;
 
-        expect(res.body[0].id).to.equal(Number(data.id));
+        expect(res.body[0].id).to.equal(1);
         expect(res.body[0].name).to.equal(data.name);
         expect(res.body[0].image).to.equal(data.image);
         expect(res.body[0].category).to.equal(data.category);
@@ -52,7 +51,6 @@ describe('Inventory', () => {
 
     it('should return a specific item from the inventory by ID on /inventory/:id GET', async () => {
         const data = {
-            id: 2,
             name: 'name',
             image: 'image',
             category: 'category',
@@ -67,7 +65,7 @@ describe('Inventory', () => {
         expect(res.body).to.not.be.undefined;
         expect(res.body).to.be.an('object');
 
-        expect(res.body.id).to.equal(Number(data.id));
+        expect(res.body.id).to.equal(2);
         expect(res.body.name).to.equal(data.name);
         expect(res.body.image).to.equal(data.image);
         expect(res.body.category).to.equal(data.category);
@@ -78,7 +76,6 @@ describe('Inventory', () => {
 
     it('should return items from the inventory by category ID on /inventory/category/:id GET', async () => {
         const data = {
-            id: 3,
             name: 'name',
             image: 'image',
             category: 'boite',
@@ -93,7 +90,7 @@ describe('Inventory', () => {
         expect(res.body).to.not.be.undefined;
         expect(res.body).to.be.an('array').that.is.not.empty;
 
-        expect(res.body[0].id).to.equal(Number(data.id));
+        expect(res.body[0].id).to.equal(3);
         expect(res.body[0].name).to.equal(data.name);
         expect(res.body[0].image).to.equal(data.image);
         expect(res.body[0].category).to.equal(data.category);
@@ -104,7 +101,6 @@ describe('Inventory', () => {
 
     it('should Add a new item to the inventory. on /inventory POST', async () => {
         const new_item = {
-            id: 4,
             name: 'name',
             image: 'image',
             category: 'category',
@@ -118,7 +114,7 @@ describe('Inventory', () => {
         const res2 = await chai.request(app).get('/inventory/4');
         expect(res2).to.have.status(200);
 
-        expect(res2.body.id).to.equal(Number(new_item.id));
+        expect(res2.body.id).to.equal(4);
         expect(res2.body.name).to.equal(new_item.name);
         expect(res2.body.image).to.equal(new_item.image);
         expect(res2.body.category).to.equal(new_item.category);
@@ -129,7 +125,6 @@ describe('Inventory', () => {
 
     it('should Delete an item from the inventory by ID on /inventory/:id DELETE', async () => {
         const data = {
-            id: 5,
             name: 'name',
             image: 'image',
             category: 'category',
@@ -148,7 +143,6 @@ describe('Inventory', () => {
 
     it('should Update an item in the inventory by ID on /inventory/:id PATCH', async () => {
         const data = {
-            id: 6,
             name: 'name',
             image: 'image',
             category: 'category',
@@ -158,7 +152,6 @@ describe('Inventory', () => {
         };
         await repository.save(data);
         const new_item = {
-            id: 6,
             name: 'New name',
             image: 'New image',
             category: 'category',
@@ -172,7 +165,7 @@ describe('Inventory', () => {
         const res2 = await chai.request(app).get('/inventory/6');
         expect(res2).to.have.status(200);
 
-        expect(res2.body.id).to.equal(Number(new_item.id));
+        expect(res2.body.id).to.equal(6);
         expect(res2.body.name).to.equal(new_item.name);
         expect(res2.body.image).to.equal(new_item.image);
         expect(res2.body.category).to.equal(new_item.category);
