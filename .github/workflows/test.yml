@@ -35,6 +35,8 @@ jobs:
 
   backend:
     runs-on: ubuntu-latest
+    env:
+      EXPRESS_SESSION_SECRET: "SuperSecret"
 
     steps:
     - name: Checkout Repository
