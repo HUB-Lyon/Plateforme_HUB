@@ -1,4 +1,3 @@
-import React from 'react';
 import Link from 'next/link';
 import { CheckCircleIcon, PhotoIcon } from '@heroicons/react/24/solid';
 import { useFormik } from 'formik';
@@ -6,6 +5,58 @@ import Image from 'next/image';
 
 const CreateProject: React.FC = () => {
     const projectDescriptionMaxLength = 1500;
+
+    const handleKeyDown = (
+        e: React.KeyboardEvent<HTMLInputElement>,
+        action: () => void
+    ) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            action();
+        }
+    };
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.currentTarget.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = (event) => {
+                const base64Data = event.target?.result as string;
+                const byteCharacters = atob(base64Data.split(',')[1]);
+                const byteArrays = [];
+                for (let i = 0; i < byteCharacters.length; i++) {
+                    byteArrays.push(byteCharacters.charCodeAt(i));
+                }
+                const blob = new Blob([new Uint8Array(byteArrays)], { type: 'image/jpeg' });
+                const url = URL.createObjectURL(blob);
+                formik.setFieldValue('selectedFile', url);
+            };
+        }
+    };
+
+    const addParticipant = () => {
+        if (formik.values.newList.trim() !== '') {
+            formik.setFieldValue('listOfParticipant', [...formik.values.listOfParticipant, formik.values.newList]);
+            formik.setFieldValue('newList', '');
+        }
+    };
+
+    const removeParticipant = (email: string) => {
+        const updatedParticipants = formik.values.listOfParticipant.filter(participant => participant !== email);
+        formik.setFieldValue('listOfParticipant', updatedParticipants);
+    };
+
+    const addMaterial = () => {
+        if (formik.values.newMaterial.trim() !== '') {
+            formik.setFieldValue('material', [...formik.values.material, formik.values.newMaterial]);
+            formik.setFieldValue('newMaterial', '');
+        }
+    };
+
+    const removeMaterial = (index: number) => {
+        formik.setFieldValue('material', formik.values.material.filter((_, i) => i !== index));
+    };
 
     const formik = useFormik({
         initialValues: {
@@ -39,51 +90,6 @@ const CreateProject: React.FC = () => {
             }
         },
     });
-
-    const handleKeyDown = (
-        e: React.KeyboardEvent<HTMLInputElement>,
-        action: () => void
-    ) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            action();
-        }
-    };
-
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.currentTarget.files?.[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = (event) => {
-                const base64Data = event.target?.result as string;
-                formik.setFieldValue('selectedFile', base64Data);
-            };
-        }
-    };
-
-    const addParticipant = () => {
-        if (formik.values.newList.trim() !== '') {
-            formik.setFieldValue('listOfParticipant', [...formik.values.listOfParticipant, formik.values.newList]);
-            formik.setFieldValue('newList', '');
-        }
-    };
-
-    const removeParticipant = (email: string) => {
-        const updatedParticipants = formik.values.listOfParticipant.filter(participant => participant !== email);
-        formik.setFieldValue('listOfParticipant', updatedParticipants);
-    };
-
-    const addMaterial = () => {
-        if (formik.values.newMaterial.trim() !== '') {
-            formik.setFieldValue('material', [...formik.values.material, formik.values.newMaterial]);
-            formik.setFieldValue('newMaterial', '');
-        }
-    };
-
-    const removeMaterial = (index: number) => {
-        formik.setFieldValue('material', formik.values.material.filter((_, i) => i !== index));
-    };
 
     return (
         <div className="flex flex-col items-center mt-24 mb-24">
@@ -225,7 +231,6 @@ const CreateProject: React.FC = () => {
                             </div>
                         </div>
                     </div>
-
 
                     <div className="mt-24 flex flex-col items-center justify-end gap-y-4 md:flex-row md:items-center md:justify-end md:gap-x-6">
                         <button type="button" className="w-full md:w-auto rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600">
