@@ -18,6 +18,7 @@ const CreateProject: React.FC = () => {
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.currentTarget.files?.[0];
+
         if (file) {
             const reader = new FileReader();
             reader.readAsDataURL(file);
@@ -69,7 +70,6 @@ const CreateProject: React.FC = () => {
             newMaterial: '',
         },
         onSubmit: async (values) => {
-            console.log(values.selectedFile);
             try {
                 await fetch('http://localhost:3000/projects', {
                     method: 'POST',
@@ -82,7 +82,7 @@ const CreateProject: React.FC = () => {
                         image: values.selectedFile,
                         member_id: values.listOfParticipant,
                         leader_id: '321',
-                        status: 'azezd',
+                        status: 'create',
                     }),
                 });
             } catch (error) {
