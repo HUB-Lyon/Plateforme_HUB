@@ -1,6 +1,8 @@
 import { Router, Request, Response } from 'express';
 import { dataBase } from '../../config/db.js';
 import { Project } from '../../entity/projects.js';
+import path from 'path';
+import fs from 'fs';
 
 const projectRouter = Router();
 
@@ -174,6 +176,14 @@ projectRouter.get('/status/:id', async (req: Request, res: Response) => {
 
 projectRouter.post('/', async (req: Request, res: Response) => {
     try {
+        const blobUrl = req.body.image;
+        const response = await fetch(blobUrl);
+        const arrayBuffer = await response.arrayBuffer();
+        const imageBuffer = Buffer.from(arrayBuffer);
+        const imageName = `project_image_${Date.now()}.png`;
+        const imagePath = path.join('src', 'images', imageName);
+        fs.writeFileSync(imagePath, imageBuffer);
+        req.body.image = `/images/${imageName}`;
         const result = await dataBase.getRepository(Project).createQueryBuilder('project').insert().values(req.body).execute();
         res.status(201).json(result);
     } catch (err) {
