@@ -10,7 +10,6 @@ const expect = chai.expect;
 describe('Inventory', () => {
 
     let repository: Repository<Inventory>;
-    let id = 1;
 
     beforeAll(async () => {
         await dataBase
@@ -34,7 +33,7 @@ describe('Inventory', () => {
             available: true,
             description: 'description',
         };
-        await repository.save(data);
+        const value = await repository.save(data);
         const data2 = {
             name: 'name',
             image: 'image',
@@ -43,23 +42,21 @@ describe('Inventory', () => {
             available: true,
             description: 'description',
         };
-        await repository.save(data2);
+        const value2 = await repository.save(data2);
 
         const res = await chai.request(app).get('/inventory');
         expect(res).to.have.status(200);
         expect(res.body).to.not.be.undefined;
         expect(res.body).to.be.an('array').that.is.not.empty;
 
-        expect(res.body[0].id).to.equal(id);
-        id++;
+        expect(res.body[0].id).to.equal(Number(value.id));
         expect(res.body[0].name).to.equal(data.name);
         expect(res.body[0].image).to.equal(data.image);
         expect(res.body[0].category).to.equal(data.category);
         expect(res.body[0].quantity).to.equal(data.quantity);
         expect(res.body[0].available).to.equal(data.available);
         expect(res.body[0].description).to.equal(data.description);
-        expect(res.body[1].id).to.equal(id);
-        id++;
+        expect(res.body[1].id).to.equal(Number(value2.id));
         expect(res.body[1].name).to.equal(data2.name);
         expect(res.body[1].image).to.equal(data2.image);
         expect(res.body[1].category).to.equal(data2.category);
@@ -77,15 +74,14 @@ describe('Inventory', () => {
             available: true,
             description: 'description',
         };
-        await repository.save(data);
+        const value = await repository.save(data);
 
-        const res = await chai.request(app).get(`/inventory/${id}`);
+        const res = await chai.request(app).get(`/inventory/${value.id}`);
         expect(res).to.have.status(200);
         expect(res.body).to.not.be.undefined;
         expect(res.body).to.be.an('object');
 
-        expect(res.body.id).to.equal(id);
-        id++;
+        expect(res.body.id).to.equal(Number(value.id));
         expect(res.body.name).to.equal(data.name);
         expect(res.body.image).to.equal(data.image);
         expect(res.body.category).to.equal(data.category);
@@ -103,15 +99,14 @@ describe('Inventory', () => {
             available: true,
             description: 'description',
         };
-        await repository.save(data);
+        const value = await repository.save(data);
 
         const res = await chai.request(app).get('/inventory/category/boite');
         expect(res).to.have.status(200);
         expect(res.body).to.not.be.undefined;
         expect(res.body).to.be.an('array').that.is.not.empty;
 
-        expect(res.body[0].id).to.equal(id);
-        id++;
+        expect(res.body[0].id).to.equal(Number(value.id));
         expect(res.body[0].name).to.equal(data.name);
         expect(res.body[0].image).to.equal(data.image);
         expect(res.body[0].category).to.equal(data.category);
@@ -132,11 +127,10 @@ describe('Inventory', () => {
 
         const res = await chai.request(app).post('/inventory').send(new_item);
         expect(res).to.have.status(201);
-        const res2 = await chai.request(app).get(`/inventory/${id}`);
+        const res2 = await chai.request(app).get(`/inventory/${res.body.identifiers[0].id}`);
         expect(res2).to.have.status(200);
 
-        expect(res2.body.id).to.equal(id);
-        id++;
+        expect(res2.body.id).to.equal(Number(res.body.identifiers[0].id));
         expect(res2.body.name).to.equal(new_item.name);
         expect(res2.body.image).to.equal(new_item.image);
         expect(res2.body.category).to.equal(new_item.category);
@@ -154,12 +148,11 @@ describe('Inventory', () => {
             available: true,
             description: 'description',
         };
-        await repository.save(data);
+        const value = await repository.save(data);
 
-        const res = await chai.request(app).delete(`/inventory/${id}`);
+        const res = await chai.request(app).delete(`/inventory/${value.id}`);
         expect(res).to.have.status(202);
-        const res2 = await chai.request(app).get(`/inventory/${id}`);
-        id++;
+        const res2 = await chai.request(app).get(`/inventory/${value.id}`);
         expect(res2).to.have.status(200);
         expect(res2.body).to.equal(null);
     });
@@ -173,7 +166,7 @@ describe('Inventory', () => {
             available: true,
             description: 'description',
         };
-        await repository.save(data);
+        const value = await repository.save(data);
         const new_item = {
             name: 'New name',
             image: 'New image',
@@ -183,13 +176,12 @@ describe('Inventory', () => {
             description: 'description',
         };
 
-        const res = await chai.request(app).patch(`/inventory/${id}`).send(new_item);
+        const res = await chai.request(app).patch(`/inventory/${value.id}`).send(new_item);
         expect(res).to.have.status(200);
-        const res2 = await chai.request(app).get(`/inventory/${id}`);
+        const res2 = await chai.request(app).get(`/inventory/${value.id}`);
         expect(res2).to.have.status(200);
 
-        expect(res2.body.id).to.equal(id);
-        id++;
+        expect(res2.body.id).to.equal(Number(value.id));
         expect(res2.body.name).to.equal(new_item.name);
         expect(res2.body.image).to.equal(new_item.image);
         expect(res2.body.category).to.equal(new_item.category);
