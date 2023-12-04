@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.flex-box {
+  @apply h-auto bg-white dark:bg-slate-800 dark:text-white rounded-lg shadow-lg flex mt-20;
+}
+
+body {
+  @apply bg-gray-200 m-0 p-0 text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl;
+}
+
+.theme-switch:checked {
+  @apply transition-transform transform translate-x-7 duration-500;
+}
+
+.theme-switch:checked + .theme-switch-label {
+  @apply bg-blue-300;
+}
