@@ -30,7 +30,7 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
                 <link rel="icon" type="image/vnd.icon" href="/image/favicon.ico" />
             </Head>
             <NavBar />
-            <div className={"lg:ml-72 mt-16 ".concat(isDarkTheme() ? 'dark' : '')}>
+            <div className={'lg:ml-72 mt-16 '.concat(isDarkTheme() ? 'dark' : '')}>
                 {children}
             </div>
         </>
