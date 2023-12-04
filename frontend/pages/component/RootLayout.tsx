@@ -2,14 +2,14 @@ import React from 'react';
 import NavBar from './NavBar';
 import Head from 'next/head';
 
-export const toggleTheme = () => {
+export const toggleTheme = (): boolean => {
     if (typeof window !== 'undefined') {
         const newTheme = isDarkTheme() ? 'light' : 'dark';
         localStorage.setItem('theme', newTheme);
         document.documentElement.classList.toggle('dark', newTheme === 'dark');
         return newTheme === 'dark';
     }
-    return;
+    return false;
 };
 
 export function isDarkTheme() {
@@ -18,6 +18,7 @@ export function isDarkTheme() {
         if (savedTheme === 'dark') {
             return true;
         }
+        return false;
     }
     return false;
 }
