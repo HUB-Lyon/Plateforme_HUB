@@ -10,7 +10,11 @@ import {
     FolderIcon,
     XMarkIcon,
     ArrowLeftOnRectangleIcon,
+    MoonIcon,
+    SunIcon,
 } from '@heroicons/react/24/outline';
+import { toggleTheme } from './RootLayout';
+import { isDarkTheme } from './RootLayout';
 
 const navigation = [
     { name: 'Projects', href: '/project', icon: FolderIcon, current: false },
@@ -19,7 +23,11 @@ const navigation = [
 
 export default function NavBar() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
-
+    const [darkTheme, setDarkTheme] = useState(isDarkTheme());
+    const mainToggleTheme = () => {
+        const newTheme = toggleTheme();
+        setDarkTheme(newTheme);
+    };
     return (
         <>
             <Transition.Root show={sidebarOpen} as={Fragment}>
@@ -59,6 +67,21 @@ export default function NavBar() {
                                                     ))}
                                                 </ul>
                                             </li>
+                                            <li className="mt-auto -mx-2">
+                                                <button onClick={mainToggleTheme}>
+                                                    {darkTheme ? (
+                                                        <div className="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-indigo-200 hover:bg-indigo-700 hover:text-white">
+                                                            <MoonIcon className="h-6 w-6 shrink-0 text-indigo-200 group-hover:text-white" aria-hidden="true" />
+                                                            Dark Mode
+                                                        </div>
+                                                    ) : (
+                                                        <div className="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-indigo-200 hover:bg-indigo-700 hover:text-white">
+                                                            <SunIcon className="h-6 w-6 shrink-0 text-indigo-200 group-hover:text-white" aria-hidden="true" />
+                                                            Light mode
+                                                        </div>
+                                                    )}
+                                                </button>
+                                            </li> 
                                             <li className="mt-auto">
                                                 <div className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-indigo-200 hover:bg-indigo-700 hover:text-white" >
                                                     <ArrowLeftOnRectangleIcon className="h-6 w-6 shrink-0 text-indigo-200 group-hover:text-white" aria-hidden="true" />
@@ -94,6 +117,21 @@ export default function NavBar() {
                                         </li>
                                     ))}
                                 </ul>
+                            </li>
+                            <li className="mt-auto -mx-2">
+                                <button onClick={mainToggleTheme}>
+                                    {darkTheme ? (
+                                        <div className="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-indigo-200 hover:bg-indigo-700 hover:text-white">
+                                            <MoonIcon className="h-6 w-6 shrink-0 text-indigo-200 group-hover:text-white" aria-hidden="true" />
+                                            Dark Mode
+                                        </div>
+                                    ) : (
+                                        <div className="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-indigo-200 hover:bg-indigo-700 hover:text-white">
+                                            <SunIcon className="h-6 w-6 shrink-0 text-indigo-200 group-hover:text-white" aria-hidden="true" />
+                                            Light mode
+                                        </div>
+                                    )}
+                                </button>
                             </li>
                             <li className="mt-auto">
                                 <div className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-indigo-200 hover:bg-indigo-700 hover:text-white" >
