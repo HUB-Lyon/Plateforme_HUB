@@ -2,9 +2,11 @@ import Link from 'next/link';
 import { CheckCircleIcon, PhotoIcon } from '@heroicons/react/24/solid';
 import { useFormik } from 'formik';
 import Image from 'next/image';
+import React, { useState } from 'react';
 
 const CreateProject: React.FC = () => {
     const projectDescriptionMaxLength = 1500;
+    const [errorMessage, setErrorMessage] = useState<string>('');
 
     const handleKeyDown = (
         e: React.KeyboardEvent<HTMLInputElement>,
@@ -70,6 +72,14 @@ const CreateProject: React.FC = () => {
             newMaterial: '',
         },
         onSubmit: async (values) => {
+            if (!formik.isValid || !formik.values.projectName.trim() || !formik.values.aboutProject.trim()) {
+                if (!formik.values.projectName.trim()) {
+                    setErrorMessage('The Project Name field is necessary !');
+                } else if (!formik.values.aboutProject.trim()) {
+                    setErrorMessage('The About Project field is necessary !');
+                }
+                return;
+            }
             try {
                 await fetch('http://localhost:3000/projects', {
                     method: 'POST',
@@ -86,6 +96,8 @@ const CreateProject: React.FC = () => {
                     }),
                 });
                 formik.resetForm();
+                setErrorMessage('');
+                alert('Your project has been created !');
             } catch (error) {
                 console.log(error);
             }
@@ -95,6 +107,9 @@ const CreateProject: React.FC = () => {
     return (
         <div className="flex flex-col items-center mt-24 mb-24">
             <div className="w-4/5 bg-white rounded-lg shadow-lg h-auto p-10">
+                {errorMessage && (
+                    <p className="text-red-500 mt-2 mb-2 md:text-sm">{errorMessage}</p>
+                )}
                 <form onSubmit={formik.handleSubmit}>
                     <div className="flex flex-col md:flex-row items-start">
                         <div className="md:col-span-3 mb-4 md:mb-0">
@@ -237,7 +252,6 @@ const CreateProject: React.FC = () => {
                             </div>
                         </div>
                     </div>
-
                     <div className="mt-24 flex flex-col items-center justify-end gap-y-4 md:flex-row md:items-center md:justify-end md:gap-x-6">
                         <button type="button" className="w-full md:w-auto rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600">
                             <Link href="/project">
