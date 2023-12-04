@@ -1,8 +1,18 @@
 import React from 'react';
 import { GetServerSideProps } from 'next';
+import Image from 'next/image';
+
 import Link from 'next/link';
 
-const Project: React.FC<{ projects: string[] }> = ({ projects }) => {
+interface Project {
+    'name': string;
+    'creator': string;
+    'teammates': string[];
+    'description': string;
+    'image': string;
+}
+
+const Project: React.FC<{ projects: Project[] }> = ({ projects }) => {
     return (
         <div className="bg-white dark:bg-slate-800 rounded-lg h-auto p-2 m-4 max-w-screen break-words">
             <div className="p-2 flex items-center justify-between flex-wrap">
@@ -21,9 +31,9 @@ const Project: React.FC<{ projects: string[] }> = ({ projects }) => {
             </div>
             <div>
                 <ul data-te-infinite-scroll-init className="overflow-y-scroll max-w-screen md:grid md:grid-cols-2 lg:grid-cols-3">
-                    {projects?.map((project: any, idx: number) => (
+                    {projects?.map((project: Project, idx: number) => (
                         <li key={idx} className="m-4 list-none rounded-lg bg-gray-300 dark:bg-gray-900 text-black dark:text-gray-300 p-4 shadow-lg">
-                            <img src={project.image} alt={project.name} className="object-cover rounded-lg aspect-square mx-auto w-40 md:w-full"></img>
+                            <Image src={project.image} alt={project.name} className="object-cover rounded-lg aspect-square mx-auto w-40 md:w-full"/>
                             <p className="mt-4 text-lg break-words text-center">Creator: {project.creator}</p>
                             <div className="m-2 break-words">
                                 <h1 className="text-4xl break-words">{project.name}</h1>
@@ -43,8 +53,8 @@ const Project: React.FC<{ projects: string[] }> = ({ projects }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
-    const res = await fetch('https://raw.githubusercontent.com/LaolouRavon-Laforest/exemple_html_base_json/main/exemple_base_json.json')
-    const projects = (await res.json()).project
+    const res = await fetch('https://raw.githubusercontent.com/LaolouRavon-Laforest/exemple_html_base_json/main/exemple_base_json.json');
+    const projects = (await res.json()).project;
     return {
         props: { projects: projects || [] }
     };
