@@ -81,10 +81,11 @@ const CreateProject: React.FC = () => {
                         description: values.aboutProject,
                         image: values.selectedFile,
                         member_id: values.listOfParticipant,
-                        leader_id: '321',
-                        status: 'create',
+                        leader_id: '111',
+                        status: 'pending',
                     }),
                 });
+                formik.resetForm();
             } catch (error) {
                 console.log(error);
             }
@@ -108,6 +109,11 @@ const CreateProject: React.FC = () => {
                                     className="p-1 block w-full md:w-auto rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 md:text-sm md:leading-6"
                                     value={formik.values.projectName}
                                     onChange={formik.handleChange}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter') {
+                                            e.preventDefault();
+                                        }
+                                    }}
                                 />
                             </div>
                         </div>
