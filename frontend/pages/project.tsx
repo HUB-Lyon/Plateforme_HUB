@@ -1,5 +1,6 @@
 import React from 'react';
 import { GetServerSideProps } from 'next';
+
 import Link from 'next/link';
 
 const Project: React.FC<{ projects: string[] }> = ({ projects }) => {

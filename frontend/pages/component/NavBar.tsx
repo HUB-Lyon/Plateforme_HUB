@@ -9,6 +9,7 @@ import {
     DocumentDuplicateIcon,
     FolderIcon,
     XMarkIcon,
+    ArrowLeftOnRectangleIcon,
     MoonIcon,
     SunIcon,
 } from '@heroicons/react/24/outline';
@@ -49,7 +50,7 @@ export default function NavBar() {
                                 <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-blue-950 px-6 pb-4">
                                     <div className="flex h-16 shrink-0 items-center mt-5">
                                         <Link href="/">
-                                            <Image className="h-60 w-auto" src="/image/epitech.png" alt="Hub Platform: Return to home" width={100} height={50}/>
+                                            <Image src="/image/epitech.png" alt="Hub Platform: Return to home" width={250} height={250}/>
                                         </Link>
                                     </div>
                                     <nav className="flex flex-1 flex-col mt-5">
@@ -80,6 +81,12 @@ export default function NavBar() {
                                                         </div>
                                                     )}
                                                 </button>
+                                            </li> 
+                                            <li className="mt-auto">
+                                                <div className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-indigo-200 hover:bg-indigo-700 hover:text-white" >
+                                                    <ArrowLeftOnRectangleIcon className="h-6 w-6 shrink-0 text-indigo-200 group-hover:text-white" aria-hidden="true" />
+                                                        Logout
+                                                </div>
                                             </li>
                                         </ul>
                                     </nav>
@@ -94,7 +101,7 @@ export default function NavBar() {
                 <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-blue-950 px-6 pb-4">
                     <div className="flex h-16 shrink-0 items-center mt-5">
                         <Link href="/">
-                            <Image className="h-60 w-auto" src="/image/epitech.png" alt="Hub Platform: Return to home" width={100} height={50}/>
+                            <Image src="/image/epitech.png" alt="Hub Platform: Return to home" width={250} height={250}/>
                         </Link>
                     </div>
                     <nav className="flex flex-1 flex-col mt-5">
@@ -125,6 +132,12 @@ export default function NavBar() {
                                         </div>
                                     )}
                                 </button>
+                            </li>
+                            <li className="mt-auto">
+                                <div className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-indigo-200 hover:bg-indigo-700 hover:text-white" >
+                                    <ArrowLeftOnRectangleIcon className="h-6 w-6 shrink-0 text-indigo-200 group-hover:text-white" aria-hidden="true" />
+                                        Logout
+                                </div>
                             </li>
                         </ul>
                     </nav>

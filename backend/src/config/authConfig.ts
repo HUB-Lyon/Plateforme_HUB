@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv';
 
-dotenv.config({ path: '.env.dev' });
+dotenv.config({ path: '.env' });
 
 /**
  * Configuration object to be passed to MSAL instance on creation.
@@ -30,7 +30,7 @@ const msalConfig: MsalConfig = {
     },
     system: {
         loggerOptions: {
-            loggerCallback(loglevel, message, containsPii) {
+            loggerCallback(loglevel, message) {
                 console.log(message);
             },
             piiLoggingEnabled: false,
