@@ -1,6 +1,5 @@
 import React from 'react';
 import { GetServerSideProps } from 'next';
-import Image from 'next/image';
 
 import Link from 'next/link';
 
@@ -33,7 +32,7 @@ const Project: React.FC<{ projects: Project[] }> = ({ projects }) => {
                 <ul data-te-infinite-scroll-init className="overflow-y-scroll max-w-screen md:grid md:grid-cols-2 lg:grid-cols-3">
                     {projects?.map((project: Project, idx: number) => (
                         <li key={idx} className="m-4 list-none rounded-lg bg-gray-300 dark:bg-gray-900 text-black dark:text-gray-300 p-4 shadow-lg">
-                            <Image src={project.image} alt={project.name} className="object-cover rounded-lg aspect-square mx-auto w-40 md:w-full"/>
+                            <img src={project.image} alt={project.name} className="object-cover rounded-lg aspect-square mx-auto w-40 md:w-full"></img>
                             <p className="mt-4 text-lg break-words text-center">Creator: {project.creator}</p>
                             <div className="m-2 break-words">
                                 <h1 className="text-4xl break-words">{project.name}</h1>
