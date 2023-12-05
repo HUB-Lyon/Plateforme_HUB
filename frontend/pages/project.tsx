@@ -1,47 +1,28 @@
 import React from 'react';
 import { GetServerSideProps } from 'next';
-
 import Link from 'next/link';
+import { fill_project } from '../model';
+// import Image from 'next/image';
 
-interface Project {
-    'name': string;
-    'creator': string;
-    'teammates': string[];
-    'description': string;
-    'image': string;
-}
-
-const Project: React.FC<{ projects: Project[] }> = ({ projects }) => {
+const Project: React.FC<{ projects: fill_project[] }> = ({ projects }) => {
     return (
-        <div className="bg-white dark:bg-slate-800 rounded-lg h-auto p-2 m-4 max-w-screen break-words">
+        <div className="bg-white rounded-lg h-auto p-2 m-4 max-w-screen break-words">
             <div className="p-2 flex items-center justify-between flex-wrap">
-                <h1 className="text-5xl text-slate-900 dark:text-white">Projets</h1>
-                <Link href="/create-project" title="Créer un projet" className="text-xl text-slate-900 dark:text-white hover:text-2xl focus:font-semibold font-bold justify-content: space-between">CREER PROJETS</Link>
-            </div>
-            <div>
-                <button className="btn w-16 py-2 px-2 m-2 rounded-3xl bg-red-500 dark:bg-red-600 hover:bg-red-600 ring-opacity-75 ring-red-400 text-white text-lg focus:font-bold dark:hover:bg-red-700">
-                    {/* attribut -> onClick={helloworld} */}
-                    All
-                </button>
-                <button className="btn w-18 py-2 px-2 m-2 rounded-3xl text-lg border-solid border-2 bg-slate-50 hover:bg-slate-200 border-slate-300 hover:border-indigo-300 text-slate-900 dark:text-white dark:bg-slate-400 focus:font-bold">
-                    {/* attribut -> onClick={helloworld} */}
-                    Done
-                </button>
+                <h1 className="text-5xl text-slate-900">Projets</h1>
+                <Link href="/create-project" title="Créer un projet" className="text-xl text-slate-900 hover:text-2xl focus:font-semibold font-bold justify-content: space-between">CREER PROJETS</Link>
             </div>
             <div>
                 <ul data-te-infinite-scroll-init className="overflow-y-scroll max-w-screen md:grid md:grid-cols-2 lg:grid-cols-3">
-                    {projects?.map((project: Project, idx: number) => (
-                        <li key={idx} className="m-4 list-none rounded-lg bg-gray-300 dark:bg-gray-900 text-black dark:text-gray-300 p-4 shadow-lg">
-                            <img src={project.image} alt={project.name} className="object-cover rounded-lg aspect-square mx-auto w-40 md:w-full"></img>
-                            <p className="mt-4 text-lg break-words text-center">Creator: {project.creator}</p>
+                    {projects?.map((project: fill_project, idx: number) => (
+                        <li key={idx} className="m-4 list-none rounded-lg bg-gray-300 text-black p-4 shadow-lg">
+                            <img src={project?.image} alt={project.name} className="object-cover rounded-lg aspect-square mx-auto w-40 md:w-full"></img>
                             <div className="m-2 break-words">
-                                <h1 className="text-4xl break-words">{project.name}</h1>
-                                <p className="mt-2 text-lg break-words">{project.description}</p>
-                                <ul className="p-1 lg:p-4 h-auto grid lg:grid-cols-2 lg:gap-4 break-words">
-                                    {project.teammates?.map((member: string, index: number) => (
-                                        <li key={index} className="text-lg break-words">{member}</li>
-                                    ))}
-                                </ul>
+                                <h1 className="text-4xl break-words">name: {project.name}</h1>
+                                <p className="mt-2 text-lg break-words">description: {project.description}</p>
+                                <p className="mt-2 text-lg break-words">id: {project.id}</p>
+                                <p className="mt-2 text-lg break-words">date: {project.created_at}</p>
+                                <p className="mt-2 text-lg break-words">leader: {project.leader_id}</p>
+                                <p className="mt-2 text-lg break-words">status: {project.status}</p>
                             </div>
                         </li>
                     ))}
@@ -52,11 +33,19 @@ const Project: React.FC<{ projects: Project[] }> = ({ projects }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
-    const res = await fetch('https://raw.githubusercontent.com/LaolouRavon-Laforest/exemple_html_base_json/main/exemple_base_json.json');
-    const projects = (await res.json()).project;
-    return {
-        props: { projects: projects || [] }
-    };
+    try {
+        const res = await fetch('http://localhost:3000/projects/', { method: 'GET' });
+        if (!res.ok) throw new Error('Failed to fetch projects');
+        const projects: fill_project[] = await res.json();
+        return {
+            props: { projects: projects || [] }
+        };
+    } catch (error) {
+        console.error('Error fetching projects:', error);
+        return {
+            props: { projects: [] }
+        };
+    }
 };
 
 export default Project;
