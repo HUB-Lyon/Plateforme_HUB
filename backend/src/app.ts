@@ -56,9 +56,10 @@ if (!process.env.DEBUG)
     app.use(logger(process.env.NODE_ENV === 'prod' ? 'common' : 'dev'));
 
 app.use(cors());
-app.use(express.json());
+app.use(logger(process.env.NODE_ENV === 'prod' ? 'common' : 'dev'));
 app.use(cookieParser());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ limit: '10mb', extended: false }));
 
 app.use('/auth', authRouter);
 app.use('/inventory', inventoryRouter);

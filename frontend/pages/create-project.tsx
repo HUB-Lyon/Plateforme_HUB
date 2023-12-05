@@ -1,13 +1,22 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Link from 'next/link';
 import { CheckCircleIcon, PhotoIcon } from '@heroicons/react/24/solid';
 import { useFormik } from 'formik';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import config from './../config';
+import * as Yup from 'yup';
 
 const CreateProject: React.FC = () => {
     const projectDescriptionMaxLength = 1500;
-    const [errorMessage, setErrorMessage] = useState<string>('');
 
+    const validationSchema = Yup.object({
+        projectName: Yup.string().required('The project name field is necessary!'),
+        description: Yup.string().required('The description field is necessary!'),
+    });
+    
     const handleKeyDown = (
         e: React.KeyboardEvent<HTMLInputElement>,
         action: () => void
@@ -26,28 +35,21 @@ const CreateProject: React.FC = () => {
             reader.readAsDataURL(file);
             reader.onload = (event) => {
                 const base64Data = event.target?.result as string;
-                const byteCharacters = atob(base64Data.split(',')[1]);
-                const byteArrays = [];
-                for (let i = 0; i < byteCharacters.length; i++) {
-                    byteArrays.push(byteCharacters.charCodeAt(i));
-                }
-                const blob = new Blob([new Uint8Array(byteArrays)], { type: 'image/jpeg' });
-                const url = URL.createObjectURL(blob);
-                formik.setFieldValue('selectedFile', url);
+                formik.setFieldValue('selectedFile', base64Data);
             };
         }
     };
 
-    const addParticipant = () => {
-        if (formik.values.newList.trim() !== '') {
-            formik.setFieldValue('listOfParticipant', [...formik.values.listOfParticipant, formik.values.newList]);
-            formik.setFieldValue('newList', '');
+    const addMembers = () => {
+        if (formik.values.newMembers.trim() !== '') {
+            formik.setFieldValue('members', [...formik.values.members, formik.values.newMembers]);
+            formik.setFieldValue('newMembers', '');
         }
     };
 
-    const removeParticipant = (email: string) => {
-        const updatedParticipants = formik.values.listOfParticipant.filter(participant => participant !== email);
-        formik.setFieldValue('listOfParticipant', updatedParticipants);
+    const removeMembers = (email: string) => {
+        const updatedMembers = formik.values.members.filter(members => members !== email);
+        formik.setFieldValue('members', updatedMembers);
     };
 
     const addMaterial = () => {
@@ -64,42 +66,48 @@ const CreateProject: React.FC = () => {
     const formik = useFormik({
         initialValues: {
             projectName: '',
-            aboutProject: '',
-            selectedFile: null,
-            listOfParticipant: [] as string[],
-            newList: '',
+            description: '',
+            selectedFile: '',
+            members: [] as string[],
+            newMembers: '',
             material: [] as string[],
             newMaterial: '',
         },
+        validationSchema: validationSchema,
         onSubmit: async (values) => {
-            if (!formik.isValid || !formik.values.projectName.trim() || !formik.values.aboutProject.trim()) {
-                if (!formik.values.projectName.trim()) {
-                    setErrorMessage('The Project Name field is necessary !');
-                } else if (!formik.values.aboutProject.trim()) {
-                    setErrorMessage('The About Project field is necessary !');
-                }
-                return;
-            }
             try {
-                await fetch('http://localhost:3000/projects', {
+                const response = await fetch(`${config.apiUrl}/projects`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
                         name: values.projectName,
-                        description: values.aboutProject,
+                        description: values.description,
                         image: values.selectedFile,
-                        member_id: values.listOfParticipant,
-                        leader_id: '111',
-                        status: 'pending',
+                        member_id: values.members,
                     }),
                 });
+                if (!response.ok)
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                toast.success('Your project has been created!', {
+                    position: 'top-right',
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                });
                 formik.resetForm();
-                setErrorMessage('');
-                alert('Your project has been created !');
-            } catch (error) {
-                console.log(error);
+            } catch (error: any) {
+                toast.error(`An error occurred: ${error.message}`, {
+                    position: 'top-right',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                });
             }
         },
     });
@@ -107,9 +115,6 @@ const CreateProject: React.FC = () => {
     return (
         <div className="flex flex-col items-center mt-24 mb-24">
             <div className="w-4/5 bg-white rounded-lg shadow-lg h-auto p-10">
-                {errorMessage && (
-                    <p className="text-red-500 mt-2 mb-2 md:text-sm">{errorMessage}</p>
-                )}
                 <form onSubmit={formik.handleSubmit}>
                     <div className="flex flex-col md:flex-row items-start">
                         <div className="md:col-span-3 mb-4 md:mb-0">
@@ -130,32 +135,35 @@ const CreateProject: React.FC = () => {
                                         }
                                     }}
                                 />
+                                {formik.touched.projectName && formik.errors.projectName ? (
+                                    <p className="text-red-500 mt-2 md:text-sm">{formik.errors.projectName}</p>
+                                ) : null}
                             </div>
                         </div>
 
                         <div className="md:col-span-3 md:ml-12 lg:ml-20">
-                            <label htmlFor="listOfParticipant" className="block text-sm font-medium leading-6 text-gray-900">
-                                List of participants
+                            <label htmlFor="members" className="block text-sm font-medium leading-6 text-gray-900">
+                                Members
                             </label>
                             <div className="flex mt-2 ">
                                 <input
                                     type="text"
-                                    id="listOfParticipant"
-                                    name="newList"
+                                    id="members"
+                                    name="newMembers"
                                     className="mr-2 p-1 block w-full md:w-auto rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 md:text-sm md:leading-6"
-                                    value={formik.values.newList}
+                                    value={formik.values.newMembers}
                                     onChange={formik.handleChange}
-                                    onKeyDown={(e) => handleKeyDown(e, addParticipant)}
+                                    onKeyDown={(e) => handleKeyDown(e, addMembers)}
                                 />
-                                <button type="button" className="bg-blue-500 text-white text-sm p-1 rounded-md" onClick={addParticipant}>
+                                <button type="button" className="bg-blue-500 text-white text-sm p-1 rounded-md" onClick={addMembers}>
                                     Add
                                 </button>
                             </div>
                             <div className="mt-2 break-all">
-                                {formik.values.listOfParticipant.map((guest, index) => (
+                                {formik.values.members.map((guest, index) => (
                                     <div key={index} className="text-sm">
                                         {guest}
-                                        <button type="button" className="text-red-500 ml-5" onClick={() => removeParticipant(guest)}>
+                                        <button type="button" className="text-red-500 ml-5" onClick={() => removeMembers(guest)}>
                                             Cancel
                                         </button>
                                     </div>
@@ -166,21 +174,24 @@ const CreateProject: React.FC = () => {
 
                     <div className="flex flex-col md:flex-row items-start mt-10">
                         <div className="col-span-full mb-4 md:mb-0">
-                            <label htmlFor="about" className="block text-sm font-medium leading-6 text-gray-900">
-                                About the project
+                            <label htmlFor="description" className="block text-sm font-medium leading-6 text-gray-900">
+                                Description
                             </label>
                             <div className="mt-2">
                                 <textarea
-                                    id="about"
-                                    name="aboutProject"
+                                    id="description"
+                                    name="description"
                                     rows={10}
                                     maxLength={projectDescriptionMaxLength}
                                     className="p-1 block w-full md:w-auto rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 md:text-sm md:leading-6"
-                                    value={formik.values.aboutProject}
+                                    value={formik.values.description}
                                     onChange={formik.handleChange}
                                 />
                             </div>
-                            <p className="text-sm text-gray-500">{`${formik.values.aboutProject.length}/${projectDescriptionMaxLength} characters`}</p>
+                            <p className="text-sm text-gray-500">{`${formik.values.description.length}/${projectDescriptionMaxLength} characters`}</p>
+                            {formik.touched.description && formik.errors.description ? (
+                                <p className="text-red-500 mt-2 md:text-sm">{formik.errors.description}</p>
+                            ) : null}
                         </div>
 
                         <div className="md:col-span-3 md:ml-12 lg:ml-20">
@@ -264,6 +275,7 @@ const CreateProject: React.FC = () => {
                     </div>
                 </form>
             </div>
+            <ToastContainer />
         </div>
     );
 };
