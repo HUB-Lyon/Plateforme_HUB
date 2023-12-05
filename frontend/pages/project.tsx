@@ -12,9 +12,9 @@ const Project: React.FC<{ projects: fill_project[] }> = ({ projects }) => {
                 <Link href="/create-project" title="Créer un projet" className="text-xl text-slate-900 hover:text-2xl focus:font-semibold font-bold justify-content: space-between">CREER PROJETS</Link>
             </div>
             <div>
-                <ul data-te-infinite-scroll-init className="overflow-y-scroll max-w-screen md:grid md:grid-cols-2 lg:grid-cols-3">
+                <ul data-te-infinite-scroll-init className="overflow-y-scroll max-w-screen md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     {projects?.map((project: fill_project, idx: number) => (
-                        <li key={idx} className="m-4 list-none rounded-lg bg-gray-300 text-black p-4 shadow-lg">
+                        <li key={idx} className="m-4 list-none rounded-xl bg-gray-300 text-black p-4 shadow-xl transition ease-in-out delay-100 hover:scale-105 duration-250">
                             <img src={project?.image} alt={project.name} className="object-cover rounded-lg aspect-square mx-auto w-40 md:w-full"></img>
                             <div className="m-2 break-words">
                                 <h1 className="text-4xl break-words">name: {project.name}</h1>
