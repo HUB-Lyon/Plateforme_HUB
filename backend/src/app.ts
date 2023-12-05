@@ -1,4 +1,4 @@
-import express , {Request, Response} from 'express';
+import express, { Request, Response } from 'express';
 import { dataBase } from './config/db.js';
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
@@ -14,7 +14,7 @@ import projectRouter from './routes/projects/projects.js';
 import usersRouter from './routes/users/router_users.js';
 
 const swaggerSpec = swaggerJSDoc({
-    swaggerDefinition : {
+    swaggerDefinition: {
         openapi: '3.0.0',
         info: {
             title: 'Plateforme HUB',
@@ -29,14 +29,16 @@ dotenv.config({ path: '.env' });
 const app = express();
 const port = 3000;
 
-dataBase
-    .initialize()
-    .then(() => {
-        console.log('database connected');
-    })
-    .catch((err) => {
-        console.log('Error connecting to database', err);
-    });
+if (!process.env.DEBUG) {
+    dataBase
+        .initialize()
+        .then(() => {
+            console.log('database connected');
+        })
+        .catch((err) => {
+            console.log('Error connecting to database', err);
+        });
+}
 
 app.use(
     session({
@@ -50,8 +52,10 @@ app.use(
     })
 );
 
+if (!process.env.DEBUG)
+    app.use(logger(process.env.NODE_ENV === 'prod' ? 'common' : 'dev'));
+
 app.use(cors());
-app.use(logger(process.env.NODE_ENV === 'prod' ? 'common' : 'dev'));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
@@ -67,6 +71,8 @@ app.get('/', (req: Request, res: Response) => {
     res.send('Hello World');
 });
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
     console.log(`Server is listening on ${port}`);
 });
+
+export { server, app, dataBase };
