@@ -20,12 +20,11 @@ const navigation = [
 ];
 
 export default function NavBar() {
-    const [sidebarOpen, setSidebarOpen] = useState(false);
-
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     return (
         <>
-            <Transition.Root show={sidebarOpen} as={Fragment}>
-                <Dialog as="div" className="relative z-50 lg:hidden" onClose={setSidebarOpen}>
+            <Transition.Root show={isSidebarOpen} as={Fragment}>
+                <Dialog as="div" className="relative z-50 lg:hidden" onClose={setIsSidebarOpen}>
                     <Transition.Child as={Fragment} enter="transition-opacity ease-linear duration-300" enterFrom="opacity-0" enterTo="opacity-100" leave="transition-opacity ease-linear duration-300" leaveFrom="opacity-100" leaveTo="opacity-0" >
                         <div className="fixed inset-0 bg-gray-900/80" />
                     </Transition.Child>
@@ -35,7 +34,7 @@ export default function NavBar() {
                             <Dialog.Panel className="relative mr-16 flex w-full max-w-xs flex-1">
                                 <Transition.Child as={Fragment} enter="ease-in-out duration-300" enterFrom="opacity-0" enterTo="opacity-100" leave="ease-in-out duration-300" leaveFrom="opacity-100" leaveTo="opacity-0" >
                                     <div className="absolute left-full top-0 flex w-16 justify-center pt-5">
-                                        <button type="button" className="-m-2.5 p-2.5" onClick={() => setSidebarOpen(false)}>
+                                        <button type="button" className="-m-2.5 p-2.5" onClick={() => setIsSidebarOpen(false)}>
                                             <span className="sr-only">Close sidebar</span>
                                             <XMarkIcon className="h-6 w-6 text-white" aria-hidden="true" />
                                         </button>
@@ -108,7 +107,7 @@ export default function NavBar() {
                 </div>
             </div>
 
-            <button type="button" className="-m-2.5 p-2.5 text-gray-700 lg:hidden" onClick={() => setSidebarOpen(true)}>
+            <button type="button" className="-m-2.5 p-2.5 text-gray-700 lg:hidden" onClick={() => setIsSidebarOpen(true)}>
                 <span className="sr-only">Open sidebar</span>
                 <Bars3Icon className="fixed top-0 h-6 w-6" aria-hidden="true" />
             </button>
