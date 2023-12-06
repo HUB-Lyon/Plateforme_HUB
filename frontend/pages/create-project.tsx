@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import Link from 'next/link';
 import { CheckCircleIcon, PhotoIcon } from '@heroicons/react/24/solid';
 import { useFormik } from 'formik';
@@ -13,7 +12,7 @@ const CreateProject: React.FC = () => {
     const projectDescriptionMaxLength = 1500;
 
     const validationSchema = Yup.object({
-        projectName: Yup.string().required('The project name field is necessary!'),
+        name: Yup.string().required('The project name field is necessary!'),
         description: Yup.string().required('The description field is necessary!'),
     });
     
@@ -53,9 +52,9 @@ const CreateProject: React.FC = () => {
     };
 
     const addMaterial = () => {
-        if (formik.values.newMaterial.trim() !== '') {
-            formik.setFieldValue('material', [...formik.values.material, formik.values.newMaterial]);
-            formik.setFieldValue('newMaterial', '');
+        if (formik.values.newMaterials.trim() !== '') {
+            formik.setFieldValue('material', [...formik.values.material, formik.values.newMaterials]);
+            formik.setFieldValue('newMaterials', '');
         }
     };
 
@@ -65,13 +64,13 @@ const CreateProject: React.FC = () => {
 
     const formik = useFormik({
         initialValues: {
-            projectName: '',
+            name: '',
             description: '',
             selectedFile: '',
             members: [] as string[],
             newMembers: '',
             material: [] as string[],
-            newMaterial: '',
+            newMaterials: '',
         },
         validationSchema: validationSchema,
         onSubmit: async (values) => {
@@ -82,7 +81,7 @@ const CreateProject: React.FC = () => {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        name: values.projectName,
+                        name: values.name,
                         description: values.description,
                         image: values.selectedFile,
                         member_id: values.members,
@@ -99,15 +98,26 @@ const CreateProject: React.FC = () => {
                     draggable: true,
                 });
                 formik.resetForm();
-            } catch (error: any) {
-                toast.error(`An error occurred: ${error.message}`, {
-                    position: 'top-right',
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                });
+            } catch (error: unknown) {
+                if (error instanceof Error) {
+                    toast.error(`An error occurred: ${error.message}`, {
+                        position: 'top-right',
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                    });
+                } else {
+                    toast.error('An unknown error occurred', {
+                        position: 'top-right',
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                    });
+                }
             }
         },
     });
@@ -118,16 +128,16 @@ const CreateProject: React.FC = () => {
                 <form onSubmit={formik.handleSubmit}>
                     <div className="flex flex-col md:flex-row items-start">
                         <div className="md:col-span-3 mb-4 md:mb-0">
-                            <label htmlFor="project-name" className="block text-sm font-medium leading-6 text-gray-900">
+                            <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
                                 Project name
                             </label>
                             <div className="mt-2">
                                 <input
                                     type="text"
-                                    id="project-name"
-                                    name="projectName"
+                                    id="name"
+                                    name="name"
                                     className="p-1 block w-full md:w-auto rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 md:text-sm md:leading-6"
-                                    value={formik.values.projectName}
+                                    value={formik.values.name}
                                     onChange={formik.handleChange}
                                     onKeyDown={(e) => {
                                         if (e.key === 'Enter') {
@@ -135,8 +145,8 @@ const CreateProject: React.FC = () => {
                                         }
                                     }}
                                 />
-                                {formik.touched.projectName && formik.errors.projectName ? (
-                                    <p className="text-red-500 mt-2 md:text-sm">{formik.errors.projectName}</p>
+                                {formik.touched.name && formik.errors.name ? (
+                                    <p className="text-red-500 mt-2 md:text-sm">{formik.errors.name}</p>
                                 ) : null}
                             </div>
                         </div>
@@ -202,9 +212,9 @@ const CreateProject: React.FC = () => {
                                 <input
                                     type="text"
                                     id="material"
-                                    name="newMaterial"
+                                    name="newMaterials"
                                     className="mr-2 p-1 block w-full md:w-auto rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 md:text-sm md:leading-6"
-                                    value={formik.values.newMaterial}
+                                    value={formik.values.newMaterials}
                                     onChange={formik.handleChange}
                                     onKeyDown={(e) => handleKeyDown(e, addMaterial)}
                                 />
