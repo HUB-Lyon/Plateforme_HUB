@@ -10,7 +10,7 @@
     "test": "npm run build && DEBUG=true node --experimental-vm-modules node_modules/jest/bin/jest.js -i",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
-    "seed" : "tsc ./src/seeder/seed.ts"
+    "seed" : "tsc && node dist/seeder/seed.js"
   },
   "author": "",
   "license": "ISC",

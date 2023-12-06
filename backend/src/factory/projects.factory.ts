@@ -9,6 +9,6 @@ export const ProjectsFactory = setSeederFactory (Project, (faker: Faker) => {
     project.image = faker.image.url();
     project.created_at = faker.date.anytime();
     project.leader_id = faker.number.int();
-    project.description = faker.string.sample();
+    project.status = faker.string.sample();
     return project;
 });
