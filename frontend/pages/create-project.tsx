@@ -75,16 +75,20 @@ const CreateProject: React.FC = () => {
         validationSchema: validationSchema,
         onSubmit: async (values) => {
             try {
+                const filteredValues = {
+                    name: values.name,
+                    description: values.description,
+                    selectedFile: values.selectedFile,
+                    members: values.members,
+                    material: values.material,
+                };
                 const response = await fetch(`${config.apiUrl}/projects`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        name: values.name,
-                        description: values.description,
-                        image: values.selectedFile,
-                        member_id: values.members,
+                        json: filteredValues,
                     }),
                 });
                 if (!response.ok)
@@ -95,7 +99,7 @@ const CreateProject: React.FC = () => {
                     hideProgressBar: false,
                     closeOnClick: true,
                     pauseOnHover: true,
-                    draggable: true,
+                    draggable: false,
                 });
                 formik.resetForm();
             } catch (error: unknown) {
@@ -106,7 +110,7 @@ const CreateProject: React.FC = () => {
                         hideProgressBar: false,
                         closeOnClick: true,
                         pauseOnHover: true,
-                        draggable: true,
+                        draggable: false,
                     });
                 } else {
                     toast.error('An unknown error occurred', {
@@ -115,7 +119,7 @@ const CreateProject: React.FC = () => {
                         hideProgressBar: false,
                         closeOnClick: true,
                         pauseOnHover: true,
-                        draggable: true,
+                        draggable: false,
                     });
                 }
             }
