@@ -9,10 +9,12 @@ import {
     FolderIcon,
     XMarkIcon,
     ArrowLeftOnRectangleIcon,
+    HomeIcon,
 } from '@heroicons/react/24/outline';
 import classNames from './ClassNames';
 
 const navigation = [
+    { name: 'Articles', href: '/article', icon: HomeIcon, current: false },
     { name: 'Projects', href: '/project', icon: FolderIcon, current: false },
     { name: 'Inventory', href: '/inventory', icon: DocumentDuplicateIcon, current: false },
 ];

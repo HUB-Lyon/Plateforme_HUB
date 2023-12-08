@@ -16,10 +16,12 @@
     "autoprefixer": "10.4.15",
     "dotenv": "^16.3.1",
     "formik": "^2.4.5",
+    "gray-matter": "^4.0.3",
     "next": "14.0.2",
     "react-router-dom": "^6.21.0",
     "react-toastify": "^9.1.3",
-    "yup": "^1.3.2"
+    "yup": "^1.3.2",
+    "react-showdown": "^2.3.1"
   },
   "devDependencies": {
     "@types/jest": "^29.5.10",
