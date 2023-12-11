@@ -1,21 +1,23 @@
 import Link from 'next/link';
+import Image from 'next/image';
+import * as Yup from 'yup';
+import React, {useState} from 'react';
+import {API_URL} from './../config';
 import { CheckCircleIcon, PhotoIcon } from '@heroicons/react/24/solid';
 import { useFormik } from 'formik';
-import Image from 'next/image';
-import React from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import config from './../config';
-import * as Yup from 'yup';
 
 const CreateProject: React.FC = () => {
     const projectDescriptionMaxLength = 1500;
+    const [newMembers, setNewMember] = useState('');
+    const [newMaterials, setNewMaterials] = useState('');
 
     const validationSchema = Yup.object({
         name: Yup.string().required('The project name field is necessary!'),
         description: Yup.string().required('The description field is necessary!'),
     });
-    
+
     const handleKeyDown = (
         e: React.KeyboardEvent<HTMLInputElement>,
         action: () => void
@@ -40,10 +42,14 @@ const CreateProject: React.FC = () => {
     };
 
     const addMembers = () => {
-        if (formik.values.newMembers.trim() !== '') {
-            formik.setFieldValue('members', [...formik.values.members, formik.values.newMembers]);
-            formik.setFieldValue('newMembers', '');
+        if (newMembers.trim() !== '') {
+            formik.setFieldValue('members', [...formik.values.members, newMembers]);
+            setNewMember('');
         }
+    };
+
+    const handleMemberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setNewMember(e.currentTarget.value);
     };
 
     const removeMembers = (email: string) => {
@@ -52,10 +58,14 @@ const CreateProject: React.FC = () => {
     };
 
     const addMaterial = () => {
-        if (formik.values.newMaterials.trim() !== '') {
-            formik.setFieldValue('material', [...formik.values.material, formik.values.newMaterials]);
-            formik.setFieldValue('newMaterials', '');
+        if (newMaterials.trim() !== '') {
+            formik.setFieldValue('material', [...formik.values.material, newMaterials]);
+            setNewMaterials('');
         }
+    };
+
+    const handleMaterialChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setNewMaterials(e.currentTarget.value);
     };
 
     const removeMaterial = (index: number) => {
@@ -68,27 +78,18 @@ const CreateProject: React.FC = () => {
             description: '',
             selectedFile: '',
             members: [] as string[],
-            newMembers: '',
             material: [] as string[],
-            newMaterials: '',
         },
         validationSchema: validationSchema,
         onSubmit: async (values) => {
             try {
-                const filteredValues = {
-                    name: values.name,
-                    description: values.description,
-                    selectedFile: values.selectedFile,
-                    members: values.members,
-                    material: values.material,
-                };
-                const response = await fetch(`${config.apiUrl}/projects`, {
+                const response = await fetch(`${API_URL}/projects`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        json: filteredValues,
+                        json: values,
                     }),
                 });
                 if (!response.ok)
@@ -165,8 +166,8 @@ const CreateProject: React.FC = () => {
                                     id="members"
                                     name="newMembers"
                                     className="mr-2 p-1 block w-full md:w-auto rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 md:text-sm md:leading-6"
-                                    value={formik.values.newMembers}
-                                    onChange={formik.handleChange}
+                                    value={newMembers}
+                                    onChange={handleMemberChange}
                                     onKeyDown={(e) => handleKeyDown(e, addMembers)}
                                 />
                                 <button type="button" className="bg-blue-500 text-white text-sm p-1 rounded-md" onClick={addMembers}>
@@ -218,8 +219,8 @@ const CreateProject: React.FC = () => {
                                     id="material"
                                     name="newMaterials"
                                     className="mr-2 p-1 block w-full md:w-auto rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 md:text-sm md:leading-6"
-                                    value={formik.values.newMaterials}
-                                    onChange={formik.handleChange}
+                                    value={newMaterials}
+                                    onChange={handleMaterialChange}
                                     onKeyDown={(e) => handleKeyDown(e, addMaterial)}
                                 />
                                 <button type="button" className="bg-blue-500 text-white text-sm p-1 rounded-md" onClick={addMaterial}>
