@@ -2,16 +2,34 @@ import Link from 'next/link';
 import Image from 'next/image';
 import * as Yup from 'yup';
 import React, {useState} from 'react';
-import {API_URL} from './../config';
-import { CheckCircleIcon, PhotoIcon } from '@heroicons/react/24/solid';
 import { useFormik } from 'formik';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast, ToastPosition } from 'react-toastify';
+import { CheckCircleIcon, PhotoIcon } from '@heroicons/react/24/solid';
+import {API_URL} from './../config';
 import 'react-toastify/dist/ReactToastify.css';
 
 const CreateProject: React.FC = () => {
     const projectDescriptionMaxLength = 1500;
     const [newMembers, setNewMember] = useState('');
     const [newMaterials, setNewMaterials] = useState('');
+
+    interface CustomToastOptions {
+        position: ToastPosition;
+        autoClose: number;
+        hideProgressBar: boolean;
+        closeOnClick: boolean;
+        pauseOnHover: boolean;
+        draggable: boolean;
+    }
+
+    const toastConfig: CustomToastOptions = {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+    };
 
     const validationSchema = Yup.object({
         name: Yup.string().required('The project name field is necessary!'),
@@ -104,25 +122,7 @@ const CreateProject: React.FC = () => {
                 });
                 formik.resetForm();
             } catch (error: unknown) {
-                if (error instanceof Error) {
-                    toast.error(`An error occurred: ${error.message}`, {
-                        position: 'top-right',
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: false,
-                    });
-                } else {
-                    toast.error('An unknown error occurred', {
-                        position: 'top-right',
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: false,
-                    });
-                }
+                toast.error(`An error occurred: ${error}`, toastConfig);
             }
         },
     });
@@ -290,7 +290,6 @@ const CreateProject: React.FC = () => {
                     </div>
                 </form>
             </div>
-            <ToastContainer />
         </div>
     );
 };
