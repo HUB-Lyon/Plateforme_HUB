@@ -29,9 +29,9 @@ describe('Project', () => {
             name: 'name',
             description: 'description',
             image: 'image',
-            created_at: '2023-11-29T13:45:27.130Z',
-            leader_id: 2,
-            members_id: [2, 3],
+            createdAt: '2023-11-29T13:45:27.130Z',
+            leaderId: 2,
+            membersIds: [2, 3],
             status: 'test',
         };
         const value = await repository.save(data);
@@ -39,9 +39,9 @@ describe('Project', () => {
             name: 'name',
             description: 'description',
             image: 'image',
-            created_at: '2023-11-29T13:45:27.130Z',
-            leader_id: 2,
-            members_id: [2, 3],
+            createdAt: '2023-11-29T13:45:27.130Z',
+            leaderId: 2,
+            membersIds: [2, 3],
             status: 'test',
         };
         const value2 = await repository.save(data2);
@@ -54,17 +54,17 @@ describe('Project', () => {
         expect(res.body[0].name).to.equal(data.name);
         expect(res.body[0].description).to.equal(data.description);
         expect(res.body[0].image).to.equal(data.image);
-        expect(res.body[0].created_at).to.equal('2023-11-29T13:45:27.130Z');
-        expect(res.body[0].leader_id).to.equal(data.leader_id);
-        expect(res.body[0].members_id).to.deep.equal(data.members_id);
+        expect(res.body[0].createdAt).to.equal('2023-11-29T13:45:27.130Z');
+        expect(res.body[0].leaderId).to.equal(data.leaderId);
+        expect(res.body[0].membersIds).to.deep.equal(data.membersIds);
         expect(res.body[0].status).to.equal(data.status);
         expect(res.body[1].id).to.equal(Number(value2.id));
         expect(res.body[1].name).to.equal(data.name);
         expect(res.body[1].description).to.equal(data.description);
         expect(res.body[1].image).to.equal(data.image);
-        expect(res.body[1].created_at).to.equal('2023-11-29T13:45:27.130Z');
-        expect(res.body[1].leader_id).to.equal(data.leader_id);
-        expect(res.body[1].members_id).to.deep.equal(data.members_id);
+        expect(res.body[1].createdAt).to.equal('2023-11-29T13:45:27.130Z');
+        expect(res.body[1].leaderId).to.equal(data.leaderId);
+        expect(res.body[1].membersIds).to.deep.equal(data.membersIds);
         expect(res.body[1].status).to.equal(data.status);
     });
 
@@ -73,9 +73,9 @@ describe('Project', () => {
             name: 'name',
             description: 'description',
             image: 'image',
-            created_at: '2023-11-29T13:45:27.130Z',
-            leader_id: 2,
-            members_id: [2, 3],
+            createdAt: '2023-11-29T13:45:27.130Z',
+            leaderId: 2,
+            membersIds: [2, 3],
             status: 'test',
         };
         const value = await repository.save(data);
@@ -89,9 +89,9 @@ describe('Project', () => {
         expect(res.body.name).to.equal(data.name);
         expect(res.body.description).to.equal(data.description);
         expect(res.body.image).to.equal(data.image);
-        expect(res.body.created_at).to.equal('2023-11-29T13:45:27.130Z');
-        expect(res.body.leader_id).to.equal(data.leader_id);
-        expect(res.body.members_id).to.deep.equal(data.members_id);
+        expect(res.body.createdAt).to.equal('2023-11-29T13:45:27.130Z');
+        expect(res.body.leaderId).to.equal(data.leaderId);
+        expect(res.body.membersIds).to.deep.equal(data.membersIds);
         expect(res.body.status).to.equal(data.status);
     });
 
@@ -100,9 +100,9 @@ describe('Project', () => {
             name: 'name',
             description: 'description',
             image: 'image',
-            created_at: '2023-11-29T13:45:27.130Z',
-            leader_id: 2,
-            members_id: [2, 3],
+            createdAt: '2023-11-29T13:45:27.130Z',
+            leaderId: 2,
+            membersIds: [2, 3],
             status: 'test',
         };
         const value = await repository.save(data);
@@ -116,37 +116,37 @@ describe('Project', () => {
         expect(res.body[0].name).to.equal(data.name);
         expect(res.body[0].description).to.equal(data.description);
         expect(res.body[0].image).to.equal(data.image);
-        expect(res.body[0].created_at).to.equal('2023-11-29T13:45:27.130Z');
-        expect(res.body[0].leader_id).to.equal(data.leader_id);
-        expect(res.body[0].members_id).to.deep.equal(data.members_id);
+        expect(res.body[0].createdAt).to.equal('2023-11-29T13:45:27.130Z');
+        expect(res.body[0].leaderId).to.equal(data.leaderId);
+        expect(res.body[0].membersIds).to.deep.equal(data.membersIds);
         expect(res.body[0].status).to.equal(data.status);
     });
 
     it('should Create a new project on /projects POST', async () => {
-        const new_project = {
+        const newProject = {
             name: 'name',
             description: 'description',
             image: 'image',
-            created_at: '2023-11-29T13:45:27.130Z',
-            leader_id: 2,
-            members_id: [2, 3],
+            createdAt: '2023-11-29T13:45:27.130Z',
+            leaderId: 2,
+            membersIds: [2, 3],
             status: 'test',
         };
 
-        const res = await chai.request(app).post('/projects').send(new_project);
+        const res = await chai.request(app).post('/projects').send(newProject);
         expect(res).to.have.status(201);
 
         const res2 = await chai.request(app).get(`/projects/${res.body.identifiers[0].id}`);
         expect(res2).to.have.status(200);
 
         expect(res2.body.id).to.equal(Number(res.body.identifiers[0].id));
-        expect(res2.body.name).to.equal(new_project.name);
-        expect(res2.body.description).to.equal(new_project.description);
-        expect(res2.body.image).to.equal(new_project.image);
-        expect(res2.body.created_at).to.equal(new_project.created_at);
-        expect(res2.body.leader_id).to.equal(new_project.leader_id);
-        expect(res2.body.members_id).to.deep.equal(new_project.members_id);
-        expect(res2.body.status).to.equal(new_project.status);
+        expect(res2.body.name).to.equal(newProject.name);
+        expect(res2.body.description).to.equal(newProject.description);
+        expect(res2.body.image).to.equal(newProject.image);
+        expect(res2.body.createdAt).to.equal(newProject.createdAt);
+        expect(res2.body.leaderId).to.equal(newProject.leaderId);
+        expect(res2.body.membersIds).to.deep.equal(newProject.membersIds);
+        expect(res2.body.status).to.equal(newProject.status);
     });
 
     it('should Delete a project by ID on /projects/:id DELETE', async () => {
@@ -154,9 +154,9 @@ describe('Project', () => {
             name: 'name',
             description: 'description',
             image: 'image',
-            created_at: '2023-11-29T13:45:27.130Z',
-            leader_id: 2,
-            members_id: [2, 3],
+            createdAt: '2023-11-29T13:45:27.130Z',
+            leaderId: 2,
+            membersIds: [2, 3],
             status: 'test',
         };
         const value = await repository.save(data);
@@ -174,37 +174,37 @@ describe('Project', () => {
             name: 'name',
             description: 'description',
             image: 'image',
-            created_at: '2023-11-29T13:45:27.130Z',
-            leader_id: 2,
-            members_id: [2, 3],
+            createdAt: '2023-11-29T13:45:27.130Z',
+            leaderId: 2,
+            membersIds: [2, 3],
             status: 'test',
         };
         const value = await repository.save(data);
 
-        const new_project = {
+        const newProject = {
             name: 'new name',
             description: 'new description',
             image: 'image',
-            created_at: '2023-11-29T13:45:27.130Z',
-            leader_id: 2,
-            members_id: [2, 3],
+            createdAt: '2023-11-29T13:45:27.130Z',
+            leaderId: 2,
+            membersIds: [2, 3],
             status: 'test',
         };
 
-        const res = await chai.request(app).patch(`/projects/${value.id}`).send(new_project);
+        const res = await chai.request(app).patch(`/projects/${value.id}`).send(newProject);
         expect(res).to.have.status(200);
 
         const res2 = await chai.request(app).get(`/projects/${value.id}`);
         expect(res2).to.have.status(200);
 
         expect(res2.body.id).to.equal(Number(value.id));
-        expect(res2.body.name).to.equal(new_project.name);
-        expect(res2.body.description).to.equal(new_project.description);
-        expect(res2.body.image).to.equal(new_project.image);
-        expect(res2.body.created_at).to.equal(new_project.created_at);
-        expect(res2.body.leader_id).to.equal(new_project.leader_id);
-        expect(res2.body.members_id).to.deep.equal(new_project.members_id);
-        expect(res2.body.status).to.equal(new_project.status);
+        expect(res2.body.name).to.equal(newProject.name);
+        expect(res2.body.description).to.equal(newProject.description);
+        expect(res2.body.image).to.equal(newProject.image);
+        expect(res2.body.createdAt).to.equal(newProject.createdAt);
+        expect(res2.body.leaderId).to.equal(newProject.leaderId);
+        expect(res2.body.membersIds).to.deep.equal(newProject.membersIds);
+        expect(res2.body.status).to.equal(newProject.status);
     });
 
     afterAll(() => {

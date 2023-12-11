@@ -7,7 +7,7 @@ export const ProjectsFactory = setSeederFactory (Project, (faker: Faker) => {
     project.name = faker.string.sample();
     project.description = faker.string.sample();
     project.image = faker.image.url();
-    project.leader_id = faker.number.int();
+    project.leaderId = faker.number.int();
     project.status = faker.string.sample();
     return project;
 });

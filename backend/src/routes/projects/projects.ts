@@ -27,16 +27,16 @@ const projectRouter = Router();
  *           type: string
  *           description: The image URL for the project.
  *           example: https://example.com/project-image.jpg
- *         created_at:
+ *         createdAt:
  *           type: string
  *           format: date-time
  *           description: The timestamp when the project was created.
  *           example: '2023-11-24T12:34:56Z'
- *         leader_id:
+ *         leaderId:
  *           type: integer
  *           description: The ID of the project leader.
  *           example: 123
- *         member_id:
+ *         membersIds:
  *           type: array
  *           items:
  *             type: integer

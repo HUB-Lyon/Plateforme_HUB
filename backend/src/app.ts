@@ -11,7 +11,7 @@ import cors from 'cors';
 import authRouter from './routes/auth/auth.js';
 import inventoryRouter from './routes/inventory/inventory.js';
 import projectRouter from './routes/projects/projects.js';
-import usersRouter from './routes/users/router_users.js';
+import usersRouter from './routes/users/router.users.js';
 
 const swaggerSpec = swaggerJSDoc({
     swaggerDefinition: {

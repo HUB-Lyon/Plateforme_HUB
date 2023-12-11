@@ -116,7 +116,7 @@ describe('Inventory', () => {
     });
 
     it('should Add a new item to the inventory. on /inventory POST', async () => {
-        const new_item = {
+        const newItem = {
             name: 'name',
             image: 'image',
             category: 'category',
@@ -125,18 +125,18 @@ describe('Inventory', () => {
             description: 'description',
         };
 
-        const res = await chai.request(app).post('/inventory').send(new_item);
+        const res = await chai.request(app).post('/inventory').send(newItem);
         expect(res).to.have.status(201);
         const res2 = await chai.request(app).get(`/inventory/${res.body.identifiers[0].id}`);
         expect(res2).to.have.status(200);
 
         expect(res2.body.id).to.equal(Number(res.body.identifiers[0].id));
-        expect(res2.body.name).to.equal(new_item.name);
-        expect(res2.body.image).to.equal(new_item.image);
-        expect(res2.body.category).to.equal(new_item.category);
-        expect(res2.body.quantity).to.equal(new_item.quantity);
-        expect(res2.body.available).to.equal(new_item.available);
-        expect(res2.body.description).to.equal(new_item.description);
+        expect(res2.body.name).to.equal(newItem.name);
+        expect(res2.body.image).to.equal(newItem.image);
+        expect(res2.body.category).to.equal(newItem.category);
+        expect(res2.body.quantity).to.equal(newItem.quantity);
+        expect(res2.body.available).to.equal(newItem.available);
+        expect(res2.body.description).to.equal(newItem.description);
     });
 
     it('should Delete an item from the inventory by ID on /inventory/:id DELETE', async () => {
@@ -167,7 +167,7 @@ describe('Inventory', () => {
             description: 'description',
         };
         const value = await repository.save(data);
-        const new_item = {
+        const newItem = {
             name: 'New name',
             image: 'New image',
             category: 'category',
@@ -176,18 +176,18 @@ describe('Inventory', () => {
             description: 'description',
         };
 
-        const res = await chai.request(app).patch(`/inventory/${value.id}`).send(new_item);
+        const res = await chai.request(app).patch(`/inventory/${value.id}`).send(newItem);
         expect(res).to.have.status(200);
         const res2 = await chai.request(app).get(`/inventory/${value.id}`);
         expect(res2).to.have.status(200);
 
         expect(res2.body.id).to.equal(Number(value.id));
-        expect(res2.body.name).to.equal(new_item.name);
-        expect(res2.body.image).to.equal(new_item.image);
-        expect(res2.body.category).to.equal(new_item.category);
-        expect(res2.body.quantity).to.equal(new_item.quantity);
-        expect(res2.body.available).to.equal(new_item.available);
-        expect(res2.body.description).to.equal(new_item.description);
+        expect(res2.body.name).to.equal(newItem.name);
+        expect(res2.body.image).to.equal(newItem.image);
+        expect(res2.body.category).to.equal(newItem.category);
+        expect(res2.body.quantity).to.equal(newItem.quantity);
+        expect(res2.body.available).to.equal(newItem.available);
+        expect(res2.body.description).to.equal(newItem.description);
     });
 
     afterAll(() => {
