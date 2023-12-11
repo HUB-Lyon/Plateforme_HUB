@@ -3,13 +3,27 @@ import { newDb, DataType } from 'pg-mem';
 import { Inventory } from '../entity/inventory.js';
 import { Project } from '../entity/projects.js';
 import { User } from '../entity/user.js';
-import { DataSource } from 'typeorm';
+import { DataSource, DataSourceOptions } from 'typeorm';
+import { SeederOptions } from 'typeorm-extension';
 
 dotenv.config();
 
 const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD, PGPORT, DEBUG } = process.env;
 
 let dataBase: DataSource;
+
+const options: DataSourceOptions & SeederOptions = {
+    type: 'postgres',
+    host: PGHOST!,
+    port: parseInt(PGPORT!, 10),
+    username: PGUSER!,
+    password: PGPASSWORD!,
+    database: PGDATABASE!,
+    entities: [Inventory, Project, User],
+    logging: true,
+    synchronize: true,
+    ssl: true,
+};
 
 if (DEBUG) {
     const db = newDb();
@@ -33,18 +47,7 @@ if (DEBUG) {
         synchronize: true,
     });
 } else {
-    dataBase = new DataSource({
-        type: 'postgres',
-        host: PGHOST!,
-        port: parseInt(PGPORT!, 10),
-        username: PGUSER!,
-        password: PGPASSWORD!,
-        database: PGDATABASE!,
-        entities: [Inventory, Project, User],
-        logging: true,
-        synchronize: true,
-        ssl: true,
-    });
+    dataBase = new DataSource(options);
 }
 
-export { dataBase };
+export { dataBase, options };
