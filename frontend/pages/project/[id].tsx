@@ -1,12 +1,11 @@
 import React from 'react';
-import { GetServerSideProps } from 'next';
-import { fill_project, fill_user } from '../../model';
-import { format } from 'date-fns';
 import Image from 'next/image';
-import {getTitleStatus, getStatus} from '../project';
+import { GetServerSideProps } from 'next';
+import { format } from 'date-fns';
+import { getTitleStatus, getStatus } from '../project';
+import { Project, User } from '../../model';
 
-
-const ProjectDetails: React.FC<{ project: fill_project; users: fill_user[] | undefined }> = ({ project, users }) => {
+const ProjectDetails: React.FC<{ project: Project; users: User[] | undefined }> = ({ project, users }) => {
     const getEmail = (member: number): string => {
         const member_user = users?.find(user => user.id === member);
         return member_user ? member_user.email : 'Member not found';
@@ -50,8 +49,8 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
             throw new Error('Failed to fetch project or users');
         }
 
-        const project: fill_project = await projectRes.json();
-        const users: fill_user[] = await usersRes.json();
+        const project: Project = await projectRes.json();
+        const users: User[] = await usersRes.json();
         return {
             props: { project, users },
         };

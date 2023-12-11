@@ -21,6 +21,7 @@ const navigation = [
 
 export default function NavBar() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
     return (
         <>
             <Transition.Root show={isSidebarOpen} as={Fragment}>

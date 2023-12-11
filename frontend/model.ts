@@ -22,6 +22,8 @@ interface RenderPageNumbersProps {
     handlePageClick: (page: number) => void;
 }
 
+
+
 export type {
     InventoryLayoutProps,
     InventoryItem,
