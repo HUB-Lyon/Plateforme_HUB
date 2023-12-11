@@ -1,11 +1,15 @@
 import React from 'react';
-import fs from 'fs';
-import path from 'path';
 import matter from 'gray-matter';
 import MarkdownView from 'react-showdown';
 
 interface ArticleProps {
   articlesData: Array<{ content: string; frontmatter: { title: string; date: string } }>;
+}
+
+interface ArticleData {
+    id: number;
+    name: string;
+    content: string;
 }
 
 const Article: React.FC<ArticleProps> = ({ articlesData }) => {
@@ -17,7 +21,7 @@ const Article: React.FC<ArticleProps> = ({ articlesData }) => {
                     <div key={index} className="markdown">
                         <h1>{frontmatter.title}</h1>
                         <p>{frontmatter.date}</p>
-                        <div className="flex-box w-full pl-8 pt-8   ">
+                        <div className="flex-box w-full md:px-8 px-4 md:py-8 py-4">
                             <MarkdownView
                                 markdown={content}
                                 options={{ tables: true, emoji: true }}
@@ -32,13 +36,17 @@ const Article: React.FC<ArticleProps> = ({ articlesData }) => {
 };
 
 export async function getStaticProps() {
-    const articlesDir = path.join(process.cwd(), 'articles');
-    const filenames = fs.readdirSync(articlesDir);
+    const options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    };
+    const result = await fetch('http://localhost:3000/article/', options);
+    const articles = await result.json();
 
-    const articlesData = filenames.map((filename) => {
-        const markdownPath = path.join(articlesDir, filename);
-        const fileContents = fs.readFileSync(markdownPath, 'utf-8');
-        const { content, data } = matter(fileContents);
+    const articlesData = articles.map((article: ArticleData) => {
+        const { content, data } = matter(article);
         return {
             content,
             frontmatter: data,

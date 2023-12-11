@@ -5,6 +5,7 @@ import { Project } from '../entity/projects.js';
 import { User } from '../entity/user.js';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { SeederOptions } from 'typeorm-extension';
+import { Article } from '../entity/article.js';
 
 dotenv.config();
 
@@ -19,7 +20,7 @@ const options: DataSourceOptions & SeederOptions = {
     username: PGUSER!,
     password: PGPASSWORD!,
     database: PGDATABASE!,
-    entities: [Inventory, Project, User],
+    entities: [Inventory, Project, User, Article],
     logging: true,
     synchronize: true,
     ssl: false,
@@ -43,7 +44,7 @@ if (DEBUG) {
 
     dataBase = db.adapters.createTypeormDataSource({
         type: 'postgres',
-        entities: [Inventory, Project, User],
+        entities: [Inventory, Project, User, Article],
         synchronize: true,
     });
 } else {
