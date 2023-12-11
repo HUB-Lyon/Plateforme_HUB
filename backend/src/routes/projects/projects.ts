@@ -36,7 +36,7 @@ const projectRouter = Router();
  *           type: integer
  *           description: The ID of the project leader.
  *           example: 123
- *         membersId:
+ *         membersIds:
  *           type: array
  *           items:
  *             type: integer

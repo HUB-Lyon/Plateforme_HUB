@@ -31,7 +31,7 @@ describe('Project', () => {
             image: 'image',
             createdAt: '2023-11-29T13:45:27.130Z',
             leaderId: 2,
-            membersId: [2, 3],
+            membersIds: [2, 3],
             status: 'test',
         };
         const value = await repository.save(data);
@@ -41,7 +41,7 @@ describe('Project', () => {
             image: 'image',
             createdAt: '2023-11-29T13:45:27.130Z',
             leaderId: 2,
-            membersId: [2, 3],
+            membersIds: [2, 3],
             status: 'test',
         };
         const value2 = await repository.save(data2);
@@ -56,7 +56,7 @@ describe('Project', () => {
         expect(res.body[0].image).to.equal(data.image);
         expect(res.body[0].createdAt).to.equal('2023-11-29T13:45:27.130Z');
         expect(res.body[0].leaderId).to.equal(data.leaderId);
-        expect(res.body[0].membersId).to.deep.equal(data.membersId);
+        expect(res.body[0].membersIds).to.deep.equal(data.membersIds);
         expect(res.body[0].status).to.equal(data.status);
         expect(res.body[1].id).to.equal(Number(value2.id));
         expect(res.body[1].name).to.equal(data.name);
@@ -64,7 +64,7 @@ describe('Project', () => {
         expect(res.body[1].image).to.equal(data.image);
         expect(res.body[1].createdAt).to.equal('2023-11-29T13:45:27.130Z');
         expect(res.body[1].leaderId).to.equal(data.leaderId);
-        expect(res.body[1].membersId).to.deep.equal(data.membersId);
+        expect(res.body[1].membersIds).to.deep.equal(data.membersIds);
         expect(res.body[1].status).to.equal(data.status);
     });
 
@@ -75,7 +75,7 @@ describe('Project', () => {
             image: 'image',
             createdAt: '2023-11-29T13:45:27.130Z',
             leaderId: 2,
-            membersId: [2, 3],
+            membersIds: [2, 3],
             status: 'test',
         };
         const value = await repository.save(data);
@@ -91,7 +91,7 @@ describe('Project', () => {
         expect(res.body.image).to.equal(data.image);
         expect(res.body.createdAt).to.equal('2023-11-29T13:45:27.130Z');
         expect(res.body.leaderId).to.equal(data.leaderId);
-        expect(res.body.membersId).to.deep.equal(data.membersId);
+        expect(res.body.membersIds).to.deep.equal(data.membersIds);
         expect(res.body.status).to.equal(data.status);
     });
 
@@ -102,7 +102,7 @@ describe('Project', () => {
             image: 'image',
             createdAt: '2023-11-29T13:45:27.130Z',
             leaderId: 2,
-            membersId: [2, 3],
+            membersIds: [2, 3],
             status: 'test',
         };
         const value = await repository.save(data);
@@ -118,7 +118,7 @@ describe('Project', () => {
         expect(res.body[0].image).to.equal(data.image);
         expect(res.body[0].createdAt).to.equal('2023-11-29T13:45:27.130Z');
         expect(res.body[0].leaderId).to.equal(data.leaderId);
-        expect(res.body[0].membersId).to.deep.equal(data.membersId);
+        expect(res.body[0].membersIds).to.deep.equal(data.membersIds);
         expect(res.body[0].status).to.equal(data.status);
     });
 
@@ -129,7 +129,7 @@ describe('Project', () => {
             image: 'image',
             createdAt: '2023-11-29T13:45:27.130Z',
             leaderId: 2,
-            membersId: [2, 3],
+            membersIds: [2, 3],
             status: 'test',
         };
 
@@ -145,7 +145,7 @@ describe('Project', () => {
         expect(res2.body.image).to.equal(newProject.image);
         expect(res2.body.createdAt).to.equal(newProject.createdAt);
         expect(res2.body.leaderId).to.equal(newProject.leaderId);
-        expect(res2.body.membersId).to.deep.equal(newProject.membersId);
+        expect(res2.body.membersIds).to.deep.equal(newProject.membersIds);
         expect(res2.body.status).to.equal(newProject.status);
     });
 
@@ -156,7 +156,7 @@ describe('Project', () => {
             image: 'image',
             createdAt: '2023-11-29T13:45:27.130Z',
             leaderId: 2,
-            membersId: [2, 3],
+            membersIds: [2, 3],
             status: 'test',
         };
         const value = await repository.save(data);
@@ -176,7 +176,7 @@ describe('Project', () => {
             image: 'image',
             createdAt: '2023-11-29T13:45:27.130Z',
             leaderId: 2,
-            membersId: [2, 3],
+            membersIds: [2, 3],
             status: 'test',
         };
         const value = await repository.save(data);
@@ -187,7 +187,7 @@ describe('Project', () => {
             image: 'image',
             createdAt: '2023-11-29T13:45:27.130Z',
             leaderId: 2,
-            membersId: [2, 3],
+            membersIds: [2, 3],
             status: 'test',
         };
 
@@ -203,7 +203,7 @@ describe('Project', () => {
         expect(res2.body.image).to.equal(newProject.image);
         expect(res2.body.createdAt).to.equal(newProject.createdAt);
         expect(res2.body.leaderId).to.equal(newProject.leaderId);
-        expect(res2.body.membersId).to.deep.equal(newProject.membersId);
+        expect(res2.body.membersIds).to.deep.equal(newProject.membersIds);
         expect(res2.body.status).to.equal(newProject.status);
     });
 

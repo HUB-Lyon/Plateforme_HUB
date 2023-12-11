@@ -23,7 +23,7 @@ export class Project {
     leaderId: number;
 
     @Column({ type: 'bigint', array: true, default: '{}' })
-    membersId: number[];
+    membersIds: number[];
 
     @Column({ type: 'varchar', length: 255, nullable: false })
     status: string;
