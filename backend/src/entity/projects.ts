@@ -17,13 +17,13 @@ export class Project {
     image: string;
 
     @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
-    created_at: Date;
+    createdAt: Date;
 
-    @Column({ type: 'bigint', nullable: false })
-    leader_id: number;
+    @Column({ type: 'bigint', nullable: false, default: 0 })
+    leaderId: number;
 
     @Column({ type: 'bigint', array: true, default: '{}' })
-    members_id: number[];
+    membersId: number[];
 
     @Column({ type: 'varchar', length: 255, nullable: false })
     status: string;
