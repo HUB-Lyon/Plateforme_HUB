@@ -19,7 +19,7 @@ const ProjectDetails: React.FC<{ project: Project; users: User[] | undefined }> 
             <div className="h-auto p-2 m-4 max-w-screen break-words gap-6 max-w-screen md:grid md:grid-cols-2">
                 <div>
                     <h1 className="text-5xl m-8 text-slate-900">{project.name}</h1>
-                    <h1 className="text-2xl text-slate-900">{formatDate(project.created_at)}</h1>
+                    <h1 className="text-2xl text-slate-900">{formatDate(project.createdAt)}</h1>
                 </div>
                 <Image src={project.image} alt={project.name} width={300} height={300} className="object-cover rounded-lg mr-4"></Image>
             </div>
@@ -27,7 +27,7 @@ const ProjectDetails: React.FC<{ project: Project; users: User[] | undefined }> 
             <div className="h-auto p-2 m-4 max-w-screen break-words gap-6 max-w-screen md:grid md:grid-cols-2">
                 <ul className="list-disc">
                     <h3 className="ml-4">Members:</h3>
-                    {project.members_id.map((member: number, idx: number) => (
+                    {project.membersIds.map((member: number, idx: number) => (
                         <li key={idx} className="ml-8">
                             <p className="italic font-light text-lg break-words">{getEmail(member)}</p>
                         </li>

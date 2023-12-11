@@ -49,7 +49,7 @@ const Project: React.FC<{ projects: Project[], users: User[] }> = ({ projects, u
             <div>
                 <ul data-te-infinite-scroll-init className="overflow-y-scroll gap-8 max-w-screen md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     {projects.map((project: Project) => {
-                        const leaderUser = getUserInfo(project.leader_id);
+                        const leaderUser = getUserInfo(project.leaderId);
                         return (
                             <li key={project.id} className="m-4 flex flex-col justify-between relative rounded-xl bg-white text-black shadow-xl transition ease-in-out delay-100 hover:scale-105 duration-250">
                                 <Link href={`/project/${project.id}`} title={project.name}>
