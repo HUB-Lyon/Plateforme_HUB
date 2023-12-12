@@ -6,8 +6,8 @@ import { useFormik } from 'formik';
 import { toast } from 'react-toastify';
 import { CheckCircleIcon, PhotoIcon } from '@heroicons/react/24/solid';
 
-import MemberInput from './component/memberInput';
-import toastConfig from './component/toastConfig';
+import MemberInput from './../components/memberInput';
+import { toastConfig } from './../components/toastConfig';
 import {API_URL} from './../config';
 
 import 'react-toastify/dist/ReactToastify.css';
