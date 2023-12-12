@@ -14,6 +14,7 @@ const ProjectDetails: React.FC<{ project: Project; users: User[] | undefined }> 
         const date = new Date(inputDate);
         return format(date, 'dd MM yyyy');
     };
+
     return (
         <div className="bg-white m-8 p-4">
             <div className="h-auto p-2 m-4 max-w-screen break-words gap-6 max-w-screen md:grid md:grid-cols-2">

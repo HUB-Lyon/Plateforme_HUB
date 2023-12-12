@@ -53,7 +53,7 @@ const Project: React.FC<{ projects: Project[], users: User[] }> = ({ projects, u
                         return (
                             <li key={project.id} className="m-4 flex flex-col justify-between relative rounded-xl bg-white text-black shadow-xl transition ease-in-out delay-100 hover:scale-105 duration-250">
                                 <Link href={`/project/${project.id}`} title={project.name}>
-                                    <Image src={project.image} alt={project.name} width={300} height={300} className="object-cover rounded-t-lg mx-auto w-full"/>
+                                    <Image src={project.image} alt="" width={300} height={300} className="object-cover rounded-t-lg mx-auto w-full"/>
                                     <div className="m-2 break-words">
                                         <h1 className="text-center text-4xl break-words">{project.name}</h1>
                                         <p className="line-clamp-5 mt-2 text-lg break-words">{project.description}</p>
