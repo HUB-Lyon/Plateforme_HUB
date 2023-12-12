@@ -3,7 +3,7 @@ import Image from 'next/image';
 import * as Yup from 'yup';
 import React, {useState} from 'react';
 import { useFormik } from 'formik';
-import { toast, ToastPosition } from 'react-toastify';
+import { toast, ToastOptions } from 'react-toastify';
 import { CheckCircleIcon, PhotoIcon } from '@heroicons/react/24/solid';
 import {API_URL} from './../config';
 import 'react-toastify/dist/ReactToastify.css';
@@ -13,16 +13,7 @@ const CreateProject: React.FC = () => {
     const [newMembers, setNewMember] = useState('');
     const [newMaterials, setNewMaterials] = useState('');
 
-    interface CustomToastOptions {
-        position: ToastPosition;
-        autoClose: number;
-        hideProgressBar: boolean;
-        closeOnClick: boolean;
-        pauseOnHover: boolean;
-        draggable: boolean;
-    }
-
-    const toastConfig: CustomToastOptions = {
+    const toastConfig: ToastOptions = {
         position: 'top-right',
         autoClose: 5000,
         hideProgressBar: false,
@@ -106,20 +97,11 @@ const CreateProject: React.FC = () => {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({
-                        json: values,
-                    }),
+                    body: JSON.stringify(values),
                 });
                 if (!response.ok)
                     throw new Error(`HTTP error! Status: ${response.status}`);
-                toast.success('Your project has been created!', {
-                    position: 'top-right',
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: false,
-                });
+                toast.success('Your project has been created!', toastConfig);
                 formik.resetForm();
             } catch (error: unknown) {
                 toast.error(`An error occurred: ${error}`, toastConfig);
@@ -141,7 +123,7 @@ const CreateProject: React.FC = () => {
                                     type="text"
                                     id="name"
                                     name="name"
-                                    className="p-1 block w-full md:w-auto rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 md:text-sm md:leading-6"
+                                    className="form-box"
                                     value={formik.values.name}
                                     onChange={formik.handleChange}
                                     onKeyDown={(e) => {
@@ -165,7 +147,7 @@ const CreateProject: React.FC = () => {
                                     type="text"
                                     id="members"
                                     name="newMembers"
-                                    className="mr-2 p-1 block w-full md:w-auto rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 md:text-sm md:leading-6"
+                                    className="mr-2 form-box"
                                     value={newMembers}
                                     onChange={handleMemberChange}
                                     onKeyDown={(e) => handleKeyDown(e, addMembers)}
@@ -198,7 +180,7 @@ const CreateProject: React.FC = () => {
                                     name="description"
                                     rows={10}
                                     maxLength={projectDescriptionMaxLength}
-                                    className="p-1 block w-full md:w-auto rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 md:text-sm md:leading-6"
+                                    className="form-box"
                                     value={formik.values.description}
                                     onChange={formik.handleChange}
                                 />
@@ -218,7 +200,7 @@ const CreateProject: React.FC = () => {
                                     type="text"
                                     id="material"
                                     name="newMaterials"
-                                    className="mr-2 p-1 block w-full md:w-auto rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 md:text-sm md:leading-6"
+                                    className="mr-2 form-box"
                                     value={newMaterials}
                                     onChange={handleMaterialChange}
                                     onKeyDown={(e) => handleKeyDown(e, addMaterial)}
@@ -261,13 +243,13 @@ const CreateProject: React.FC = () => {
                                     {formik.values.selectedFile ? (
                                         <div className="flex items-center mb-2">
                                             <CheckCircleIcon className="h-5 w-5 text-green-500 mr-2" aria-hidden="true" />
-                                            <label htmlFor="file-upload" className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
+                                            <label htmlFor="file-upload" className="file-upload">
                                                 <span>Upload complete</span>
                                                 <input id="file-upload" type="file" className="sr-only" onChange={(e) => handleFileChange(e)} multiple accept="image/*"/>
                                             </label>
                                         </div>
                                     ) : (
-                                        <label htmlFor="file-upload" className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
+                                        <label htmlFor="file-upload" className="file-upload">
                                             <span>Upload a file</span>
                                             <input id="file-upload" type="file" className="sr-only" onChange={(e) => handleFileChange(e)} multiple accept="image/*"/>
                                         </label>
@@ -279,12 +261,12 @@ const CreateProject: React.FC = () => {
                         </div>
                     </div>
                     <div className="mt-24 flex flex-col items-center justify-end gap-y-4 md:flex-row md:items-center md:justify-end md:gap-x-6">
-                        <button type="button" className="w-full md:w-auto rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600">
+                        <button type="button" className="bg-red-600 hover:bg-red-500 focus-visible:outline-red-600 button-box">
                             <Link href="/project">
                                 Cancel
                             </Link>
                         </button>
-                        <button type="submit" className="w-full md:w-auto rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                        <button type="submit" className="bg-indigo-600 hover:bg-indigo-500 focus-visible:outline-indigo-600 button-box">
                             Create Project
                         </button>
                     </div>
