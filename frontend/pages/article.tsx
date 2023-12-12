@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import matter from 'gray-matter';
 import MarkdownView from 'react-showdown';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import dynamic from 'next/dynamic';
 import 'react-quill/dist/quill.snow.css';
@@ -16,7 +15,7 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    width: 800,
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
@@ -43,6 +42,21 @@ function deleteArticle(id: number) {
     fetch(`http://localhost:3000/article/${id}`, options);
 }
 
+function addArticle(name: string, content: string) {
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body:
+            JSON.stringify({
+                name: name,
+                content: content,
+            }),
+    };
+    fetch('http://localhost:3000/article/', options);
+}
+
 const Article: React.FC<ArticleProps> = ({ articlesData }) => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
@@ -60,7 +74,7 @@ const Article: React.FC<ArticleProps> = ({ articlesData }) => {
     return (
         <div>
             <h1 id="openModal" className="text-7xl text-center mb-6 font-bold">Articles</h1>
-            <Button onClick={handleOpen} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-8" >Add Article</Button>
+            <button onClick={handleOpen} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-8" >Add Article</button>
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -74,6 +88,13 @@ const Article: React.FC<ArticleProps> = ({ articlesData }) => {
                         onChange={update}
                         className="h-full text-black"
                     />
+                    <button
+                        onClick={() => {
+                            addArticle('test', value);
+                            setOpen(false);
+                            update('');
+                        }}
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-8" >Add Article</button>
                 </Box>
             </Modal>
             <div className="markdown flex flex-col items-center gap-y-10 mb-10">
