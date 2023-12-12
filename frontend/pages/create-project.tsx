@@ -3,24 +3,19 @@ import Image from 'next/image';
 import * as Yup from 'yup';
 import React, {useState} from 'react';
 import { useFormik } from 'formik';
-import { toast, ToastOptions } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { CheckCircleIcon, PhotoIcon } from '@heroicons/react/24/solid';
+
+import MemberInput from './component/memberInput';
+import toastConfig from './component/toastConfig';
 import {API_URL} from './../config';
+
 import 'react-toastify/dist/ReactToastify.css';
 
 const CreateProject: React.FC = () => {
     const projectDescriptionMaxLength = 1500;
     const [newMembers, setNewMember] = useState('');
     const [newMaterials, setNewMaterials] = useState('');
-
-    const toastConfig: ToastOptions = {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-    };
 
     const validationSchema = Yup.object({
         name: Yup.string().required('The project name field is necessary!'),
@@ -37,6 +32,13 @@ const CreateProject: React.FC = () => {
         }
     };
 
+    const handleEnterKey = (e: React.KeyboardEvent<HTMLInputElement>, action: () => void) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            action();
+        }
+    };
+
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.currentTarget.files?.[0];
 
@@ -47,6 +49,19 @@ const CreateProject: React.FC = () => {
                 const base64Data = event.target?.result as string;
                 formik.setFieldValue('selectedFile', base64Data);
             };
+        }
+    };
+
+    const renderFileUploadLabel = () => {
+        if (formik.values.selectedFile) {
+            return (
+                <>
+                    <CheckCircleIcon className="h-5 w-5 text-green-500 mr-2" aria-hidden="true" />
+                    <span>Upload complete</span>
+                </>
+            );
+        } else {
+            return <span>Upload a file</span>;
         }
     };
 
@@ -92,15 +107,22 @@ const CreateProject: React.FC = () => {
         validationSchema: validationSchema,
         onSubmit: async (values) => {
             try {
+                const formData = new FormData();
+                formData.append('name', values.name);
+                formData.append('description', values.description);
+                formData.append('selectedFile', values.selectedFile);
+                values.members.forEach((member, index) => {
+                    formData.append(`members[${index}]`, member);
+                });
+                values.material.forEach((material, index) => {
+                    formData.append(`material[${index}]`, material);
+                });
                 const response = await fetch(`${API_URL}/projects`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(values),
+                    body: formData,
                 });
                 if (!response.ok)
-                    throw new Error(`HTTP error! Status: ${response.status}`);
+                    toast.error(`HTTP error! Status: ${response.status}`, toastConfig);
                 toast.success('Your project has been created!', toastConfig);
                 formik.resetForm();
             } catch (error: unknown) {
@@ -126,15 +148,11 @@ const CreateProject: React.FC = () => {
                                     className="form-box"
                                     value={formik.values.name}
                                     onChange={formik.handleChange}
-                                    onKeyDown={(e) => {
-                                        if (e.key === 'Enter') {
-                                            e.preventDefault();
-                                        }
-                                    }}
+                                    onKeyDown={(e) => handleEnterKey(e, () => {})}
                                 />
-                                {formik.touched.name && formik.errors.name ? (
+                                {formik.touched.name && formik.errors.name && (
                                     <p className="text-red-500 mt-2 md:text-sm">{formik.errors.name}</p>
-                                ) : null}
+                                )}
                             </div>
                         </div>
 
@@ -142,20 +160,12 @@ const CreateProject: React.FC = () => {
                             <label htmlFor="members" className="block text-sm font-medium leading-6 text-gray-900">
                                 Members
                             </label>
-                            <div className="flex mt-2 ">
-                                <input
-                                    type="text"
-                                    id="members"
-                                    name="newMembers"
-                                    className="mr-2 form-box"
-                                    value={newMembers}
-                                    onChange={handleMemberChange}
-                                    onKeyDown={(e) => handleKeyDown(e, addMembers)}
-                                />
-                                <button type="button" className="bg-blue-500 text-white text-sm p-1 rounded-md" onClick={addMembers}>
-                                    Add
-                                </button>
-                            </div>
+                            <MemberInput
+                                value={newMembers}
+                                onChange={handleMemberChange}
+                                onKeyDown={(e) => handleKeyDown(e, addMembers)}
+                                onAdd={addMembers}
+                            />
                             <div className="mt-2 break-all">
                                 {formik.values.members.map((guest, index) => (
                                     <div key={index} className="text-sm">
@@ -186,9 +196,9 @@ const CreateProject: React.FC = () => {
                                 />
                             </div>
                             <p className="text-sm text-gray-500">{`${formik.values.description.length}/${projectDescriptionMaxLength} characters`}</p>
-                            {formik.touched.description && formik.errors.description ? (
+                            {formik.touched.description && formik.errors.description && (
                                 <p className="text-red-500 mt-2 md:text-sm">{formik.errors.description}</p>
-                            ) : null}
+                            )}
                         </div>
 
                         <div className="md:col-span-3 md:ml-12 lg:ml-20">
@@ -240,20 +250,10 @@ const CreateProject: React.FC = () => {
                                     <PhotoIcon className="mx-auto h-12 w-12 text-gray-300" aria-hidden="true" />
                                 )}
                                 <div className="mt-4 flex flex-col items-center text-sm leading-6 text-gray-600">
-                                    {formik.values.selectedFile ? (
-                                        <div className="flex items-center mb-2">
-                                            <CheckCircleIcon className="h-5 w-5 text-green-500 mr-2" aria-hidden="true" />
-                                            <label htmlFor="file-upload" className="file-upload">
-                                                <span>Upload complete</span>
-                                                <input id="file-upload" type="file" className="sr-only" onChange={(e) => handleFileChange(e)} multiple accept="image/*"/>
-                                            </label>
-                                        </div>
-                                    ) : (
-                                        <label htmlFor="file-upload" className="file-upload">
-                                            <span>Upload a file</span>
-                                            <input id="file-upload" type="file" className="sr-only" onChange={(e) => handleFileChange(e)} multiple accept="image/*"/>
-                                        </label>
-                                    )}
+                                    <label htmlFor="file-upload" className="file-uploader flex items-center">
+                                        {renderFileUploadLabel()}
+                                        <input id="file-upload" type="file" className="sr-only" onChange={(e) => handleFileChange(e)} multiple accept="image/*" />
+                                    </label>
                                     <p className="pl-1">or drag and drop</p>
                                 </div>
                                 <p className="text-xs leading-5 text-gray-600">PNG, JPG, GIF up to 10MB</p>
@@ -261,11 +261,11 @@ const CreateProject: React.FC = () => {
                         </div>
                     </div>
                     <div className="mt-24 flex flex-col items-center justify-end gap-y-4 md:flex-row md:items-center md:justify-end md:gap-x-6">
-                        <button type="button" className="bg-red-600 hover:bg-red-500 focus-visible:outline-red-600 button-box">
-                            <Link href="/project">
+                        <Link href="/project">
+                            <button type="button" className="bg-red-600 hover:bg-red-500 focus-visible:outline-red-600 button-box">
                                 Cancel
-                            </Link>
-                        </button>
+                            </button>
+                        </Link>
                         <button type="submit" className="bg-indigo-600 hover:bg-indigo-500 focus-visible:outline-indigo-600 button-box">
                             Create Project
                         </button>
