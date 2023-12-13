@@ -23,18 +23,18 @@ const ProjectDetails: React.FC<{ project: Project; users: User[] | undefined }> 
             <div className="h-auto m-2 max-w-screen break-words max-w-screen md:grid md:grid-cols-3">
                 <Image src={project.image} alt={project.name} width={500} height={500} className="object-cover rounded-lg mr-4"></Image>
                 <div className="col-span-2">
-                    <h1 className="text-5xl m-4 text-slate-900">{project.name}</h1>
-                    <h1 className="text-2xl m-2 text-slate-900">{formatDate(project.createdAt)}</h1>
+                    <h1 className="text-xl md:text-5xl m-4 text-slate-900">{project.name}</h1>
+                    <h1 className="text-lg md:text-2xl m-2 text-slate-900">{formatDate(project.createdAt)}</h1>
                 </div>
             </div>
-            <div className="h-auto m-2 max-w-screen break-words max-w-screen md:grid md:grid-cols-3">
-                <div className="col-span-2 border-r-2 broder-black">
-                    <p className="text-2xl break-words m-2">{project.description}</p>
+            <div className="h-auto m-2 max-w-screen break-words max-w-screen lg:grid lg:grid-cols-3">
+                <div className="col-span-2 lg:border-r-2 lg:broder-black">
+                    <p className="text-lg md:text-2xl break-words m-2">{project.description}</p>
                 </div>
                 <ul className={`list-inside ${manyMembers() ? 'list-short-dash' : 'list-none'}`}>
-                    <h3 className="ml-4">{manyMembers() ? 'Members:' : 'Member:'}</h3>
+                    <h3 className="ml-4 italic font-light text-lg md:text-xl">{manyMembers() ? 'Members:' : 'Member:'}</h3>
                     {project.membersIds.map((member: number, idx: number) => (
-                        <li key={idx} className="ml-2 italic font-light text-lg break-words">
+                        <li key={idx} className="ml-2 italic font-light text-lg md:text-xl break-words">
                             {getEmail(member)}
                         </li>
                     ))}

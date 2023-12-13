@@ -58,8 +58,8 @@ const Project: React.FC<{ projects: Project[], users: User[] }> = ({ projects, u
                     {projects.map((project: Project) => {
                         const leaderUser = getUserInfo(project.leaderId);
                         return (
-                            <li key={project.id} title={getTitleStatus(project.status)} className={`m-2 flex flex-col justify-between relative rounded-xl bg-white text-black shadow-xl transition ease-in-out delay-100 hover:scale-105 duration-250 border-b-8 ${getStatus(project.status)}`}>
-                                <Link href={`/project/${project.id}`} title={project.name}>
+                            <li key={project.id} className={`m-2 flex flex-col justify-between relative rounded-xl bg-white text-black shadow-xl transition ease-in-out delay-100 hover:scale-105 duration-250 border-b-8 ${getStatus(project.status)}`}>
+                                <Link href={`/project/${project.id}`} title={`${getTitleStatus(project.status)}\n${project.name}`}>
                                     <Image src={project.image} alt="" width={300} height={300} className="object-cover rounded-t-lg mx-auto w-full"/>
                                     <div className="m-2 break-words">
                                         <h1 className="text-center text-2xl break-words">{project.name}</h1>
