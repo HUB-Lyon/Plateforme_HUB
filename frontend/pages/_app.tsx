@@ -1,23 +1,24 @@
 import React from 'react';
 import { AppProps } from 'next/app';
-import { ToastContainer } from 'react-toastify';
-import RootLayout from './../components/RootLayout';
-import 'react-toastify/dist/ReactToastify.css';
+import { MsalProvider } from '@azure/msal-react';
+import { PublicClientApplication } from '@azure/msal-browser';
+import LoginPage from './component/login';
+import RootLayout from './component/RootLayout';
+import { msalConfig } from './component/msalConfig';
 import '../styles/globals.css';
 
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {
+    const msalInstance = new PublicClientApplication(msalConfig);
+
     return (
-        <RootLayout>
-            <Component {...pageProps} />
-            <ToastContainer 
-                position= 'top-right'
-                autoClose= {5000}
-                hideProgressBar= {false}
-                closeOnClick= {true}
-                pauseOnHover= {true}
-                draggable= {false}
-            />
-        </RootLayout>
+        <>
+            <MsalProvider instance={msalInstance}>
+                <LoginPage/>
+            </MsalProvider>
+            <RootLayout>
+                <Component {...pageProps} />
+            </RootLayout>
+        </>
     );
 };
 
