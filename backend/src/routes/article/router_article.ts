@@ -46,7 +46,9 @@ articleRouter.get('/', async (req: Request, res: Response) => {
 articleRouter.post('/', async (req: Request, res: Response) => {
     try {
         const result = await dataBase.getRepository(Article).createQueryBuilder('article').insert().values(req.body).execute();
-        res.status(201).json(result);
+        const insertedArticleId = result.raw[0].id;
+        const newlyCreatedArticle = await dataBase.getRepository(Article).createQueryBuilder('article').where('article.id = :id', { id: insertedArticleId }).getOne();
+        res.status(201).json(newlyCreatedArticle);
     } catch (err) {
         res.status(500).json({ err: `Error during data insertion of element ${req.body}` });
     }
@@ -93,8 +95,9 @@ articleRouter.delete('/:id', async (req: Request, res: Response) => {
 
 articleRouter.patch('/:id', async (req: Request, res: Response) => {
     try {
-        const result = await dataBase.getRepository(Article).createQueryBuilder('article').update().set(req.body).where('article.id = :id', { id: req.params.id }).execute();
-        res.status(200).json(result);
+        await dataBase.getRepository(Article).createQueryBuilder('article').update().set(req.body).where('article.id = :id', { id: req.params.id }).execute();
+        const newlyEditedArticle = await dataBase.getRepository(Article).createQueryBuilder('article').where('article.id = :id', { id: req.params.id }).getOne();
+        res.status(200).json(newlyEditedArticle);
     } catch (err) {
         res.status(500).json({ err: `Error during data update of element ${req.params.id}` });
     }

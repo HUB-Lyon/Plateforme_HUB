@@ -29,7 +29,7 @@ const style = {
 };
 
 interface ArticleProps {
-  articlesData: Array<{ content: string; frontmatter: { title: string; date: string }; name: string; id: number }>;
+  articlesData: Array<{ content: string; name: string; id: number }>;
 }
 
 interface ArticleData {
@@ -48,7 +48,7 @@ function deleteArticle(id: number) {
     fetch(`http://localhost:3000/article/${id}`, options);
 }
 
-function addArticle(name: string, content: string) {
+async function addArticle(name: string, content: string){
     const options = {
         method: 'POST',
         headers: {
@@ -60,7 +60,7 @@ function addArticle(name: string, content: string) {
                 content: content,
             }),
     };
-    fetch('http://localhost:3000/article/', options);
+    return fetch('http://localhost:3000/article/', options);
 }
 
 function patchArticle(id: number, name: string, content: string) {
@@ -75,10 +75,10 @@ function patchArticle(id: number, name: string, content: string) {
                 content: content,
             }),
     };
-    fetch(`http://localhost:3000/article/${id}`, options);
+    return fetch(`http://localhost:3000/article/${id}`, options);
 }
 
-const Article: React.FC<ArticleProps> = ({ articlesData }) => {
+const Article: React.FC<ArticleProps> = ({ articlesData: initialArticlesData }) => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -108,6 +108,8 @@ const Article: React.FC<ArticleProps> = ({ articlesData }) => {
         setValue2(newValue);
     };
 
+    const [articlesData, setArticlesData] = useState(initialArticlesData);
+
     return (
         <div>
             <h1 id="openModal" className="text-4xl text-center font-bold">Articles</h1>
@@ -127,8 +129,10 @@ const Article: React.FC<ArticleProps> = ({ articlesData }) => {
                         className="h-full text-black"
                     />
                     <button
-                        onClick={() => {
-                            addArticle(`Article_${new Date().toISOString()}`, value);
+                        onClick={async () => {
+                            const response = await addArticle(`Article_${new Date().toISOString()}`, value);
+                            const newarticle = await response.json();
+                            setArticlesData(old => [...old, newarticle]);
                             setOpen(false);
                             update('');
                         }}
@@ -136,10 +140,8 @@ const Article: React.FC<ArticleProps> = ({ articlesData }) => {
                 </Box>
             </Modal>
             <div className="markdown flex flex-col items-center gap-y-10 mb-10">
-                {articlesData.map(({ content, frontmatter, id, name}, index) => (
+                {articlesData.map(({ content, id, name}, index) => (
                     <div key={index} className="group markdown">
-                        <h1>{frontmatter.title}</h1>
-                        <p>{frontmatter.date}</p>
                         <div className="flex-box w-full md:px-8 px-4 md:py-8 py-4 relative">
                             <MarkdownView
                                 markdown={content}
@@ -149,6 +151,7 @@ const Article: React.FC<ArticleProps> = ({ articlesData }) => {
                             <button
                                 onClick={() => {
                                     deleteArticle(id);
+                                    setArticlesData(old => old.filter(article => article.id !== id));
                                 }}
                                 className="py-2 px-4 rounded absolute right-0 top-0">
                                 <TrashIcon className="group-hover:text-red-500 lg:text-white xl:text-white text-red-500 lg:w-9 lg:h-9 md:w-7 md:h-7 sm:w-5 sm:h-5 w-5 h-5"/>
@@ -172,8 +175,10 @@ const Article: React.FC<ArticleProps> = ({ articlesData }) => {
                                         className="h-full text-black"
                                     />
                                     <button
-                                        onClick={() => {
-                                            patchArticle(id, name, value2);
+                                        onClick={async () => {
+                                            const response = await patchArticle(id, name, value2);
+                                            const updatedarticle = await response.json();
+                                            setArticlesData(old => old.map(article => (article.id === id ? updatedarticle : article)));
                                             setOpen2(false);
                                             update2('');
                                         }}
@@ -199,12 +204,11 @@ export async function getStaticProps() {
     const articles = await result.json();
 
     const articlesData = articles.map((article: ArticleData) => {
-        const { content, data } = matter(article);
+        const { content } = matter(article);
         const name = article.name;
         const id = article.id;
         return {
             content,
-            frontmatter: data,
             name,
             id,
         };
