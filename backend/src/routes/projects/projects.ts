@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { dataBase } from '../../config/db.js';
 import { Project } from '../../entity/projects.js';
+import { Inventory } from '../../entity/inventory.js';
 
 const projectRouter = Router();
 
@@ -178,6 +179,11 @@ projectRouter.get('/status/:id', async (req: Request, res: Response) => {
 
 projectRouter.post('/', async (req: Request, res: Response) => {
     try {
+        for (let i: number = 0; i < req.body.elementsIds.length; i++) {
+            const result: any = await dataBase.getRepository(Inventory).createQueryBuilder('inventory').where('inventory.id = :id', { id: req.body.elementsIds[i] }).setParameter('id', String(req.body.elementsIds[i])).getOne();
+            result.quantity = result.quantity - 1;
+            await dataBase.getRepository(Inventory).createQueryBuilder('inventory').update().set({ quantity: result.quantity }).where('inventory.id = :id', { id: req.body.elementsIds[i] }).execute();
+        }
         const result = await dataBase.getRepository(Project).createQueryBuilder('project').insert().values(req.body).execute();
         res.status(201).json(result);
     } catch (err) {
