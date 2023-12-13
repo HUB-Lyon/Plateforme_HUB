@@ -8,7 +8,7 @@ export const InventoryFactory = setSeederFactory (Inventory, (faker: Faker) => {
     inventory.image = faker.image.url();
     inventory.category = faker.string.sample();
     inventory.quantity = faker.number.int();
-    inventory.available = faker.datatype.boolean();
+    inventory.available = faker.number.int();
     inventory.description = faker.string.sample();
     return inventory;
 });
