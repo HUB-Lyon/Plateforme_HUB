@@ -7,21 +7,28 @@ import { Project, User } from '../model';
 
 export const getStatus = (status: string): string => {
     const statusMap: Record<string, string> = {
-        'PENDING': 'bg-gray-500',
-        'IN_PROGRESS': 'bg-yellow-500',
-        'DONE': 'bg-green-800',
-        'ARCHIVED': 'bg-green-300',
-        'REFUSED': 'bg-red-500',
-        'REQ_FINISH': 'bg-purple-500',
-        'default': 'bg-slate-100',
+        'PENDING': 'border-gray-500',
+        'IN_PROGRESS': 'border-yellow-500',
+        'DONE': 'border-green-800',
+        'ARCHIVED': 'border-green-300',
+        'REFUSED': 'border-red-500',
+        'REQ_FINISH': 'border-purple-500',
+        'default': 'border-slate-100',
     };
     return statusMap[status] || statusMap['default'];
 };
 
 export const getTitleStatus = (status: string): string => {
-    if (status === 'PENDING' || status === 'IN_PROGRESS' || status === 'DONE' || status === 'ARCHIVED' || status ==='REFUSED' || status === 'REQ FINISH')
-        return status;
-    return 'unknown';
+    const statusMap: Record<string, string> = {
+        'PENDING': 'Pending',
+        'IN_PROGRESS': 'in progress',
+        'DONE': 'done',
+        'ARCHIVED': 'archived',
+        'REFUSED': 'refused',
+        'REQ_FINISH': 'req finish',
+        'default': 'unknown',
+    };
+    return statusMap[status] || statusMap['default'];
 };
 
 const Project: React.FC<{ projects: Project[], users: User[] }> = ({ projects, users }) => {
@@ -41,27 +48,26 @@ const Project: React.FC<{ projects: Project[], users: User[] }> = ({ projects, u
     }
 
     return (
-        <div className="h-auto p-2 m-4 max-w-screen break-words">
-            <div className="p-2 flex items-center justify-between flex-wrap">
+        <div className="h-auto p-2 m-4 mb-6 max-w-screen break-words">
+            <div className="p-2 mb-4 flex items-center justify-between flex-wrap">
                 <h1 className="text-5xl text-slate-900">Projects</h1>
                 <Link href="/create-project" title="Create project" className="text-xl text-slate-900 hover:text-2xl focus:font-semibold font-bold justify-content: space-between">Create Project</Link>
             </div>
             <div>
-                <ul data-te-infinite-scroll-init className="overflow-y-scroll gap-8 max-w-screen md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                <ul className="gap-8 max-w-screen md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     {projects.map((project: Project) => {
                         const leaderUser = getUserInfo(project.leaderId);
                         return (
-                            <li key={project.id} className="m-4 flex flex-col justify-between relative rounded-xl bg-white text-black shadow-xl transition ease-in-out delay-100 hover:scale-105 duration-250">
+                            <li key={project.id} title={getTitleStatus(project.status)} className={`m-2 flex flex-col justify-between relative rounded-xl bg-white text-black shadow-xl transition ease-in-out delay-100 hover:scale-105 duration-250 border-b-8 ${getStatus(project.status)}`}>
                                 <Link href={`/project/${project.id}`} title={project.name}>
                                     <Image src={project.image} alt="" width={300} height={300} className="object-cover rounded-t-lg mx-auto w-full"/>
                                     <div className="m-2 break-words">
-                                        <h1 className="text-center text-4xl break-words">{project.name}</h1>
+                                        <h1 className="text-center text-2xl break-words">{project.name}</h1>
                                         <p className="line-clamp-5 mt-2 text-lg break-words">{project.description}</p>
                                         <p className="italic font-light mt-8 p-2 text-sm">
                                             {leaderUser ? (leaderUser.email) : ('unknown')}
                                         </p>
                                     </div>
-                                    <div title={getTitleStatus(project.status)} className={`rounded-b-lg ${getStatus(project.status)} w-auto h-10 md:h-12 lg:h-16 mb-0`}></div>
                                 </Link>
                             </li>
                         );
