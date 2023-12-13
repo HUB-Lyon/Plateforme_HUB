@@ -8,11 +8,13 @@ import 'react-quill/dist/quill.snow.css';
 import {
     TrashIcon,
     PlusIcon,
+    PencilIcon,
 } from '@heroicons/react/24/outline';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
-const STORAGE_KEY = 'ARTICLE';
+const STORAGE_KEY = 'ARTICLE_POST';
+const STORAGE_KEY2 = 'ARTICLE_PATCH';
 
 const style = {
     position: 'absolute' as const,
@@ -61,10 +63,32 @@ function addArticle(name: string, content: string) {
     fetch('http://localhost:3000/article/', options);
 }
 
+function patchArticle(id: number, name: string, content: string) {
+    const options = {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body:
+            JSON.stringify({
+                name: name,
+                content: content,
+            }),
+    };
+    fetch(`http://localhost:3000/article/${id}`, options);
+}
+
 const Article: React.FC<ArticleProps> = ({ articlesData }) => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    const [open2, setOpen2] = useState(false);
+    const handleOpen2 = (content: string) => {
+        setValue2(content);
+        setOpen2(true);
+    };
+    const handleClose2 = () => setOpen2(false);
 
     const [value, setValue] = useState('');
     useEffect(() => {
@@ -75,10 +99,19 @@ const Article: React.FC<ArticleProps> = ({ articlesData }) => {
         setValue(newValue);
     };
 
+    const [value2, setValue2] = useState('');
+    useEffect(() => {
+        setValue2(localStorage.getItem(STORAGE_KEY2) || '');
+    }, []);
+    const update2 = (newValue: string) => {
+        localStorage.setItem(STORAGE_KEY2, newValue);
+        setValue2(newValue);
+    };
+
     return (
         <div>
-            <h1 id="openModal" className="text-7xl text-center mb-6 font-bold">Articles</h1>
-            <button onClick={handleOpen} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded ml-8" ><PlusIcon className="lg:w-9 lg:h-9 md:w-7 md:h-7 sm:w-5 sm:h-5 w-5 h-5 inline-block"/> Add
+            <h1 id="openModal" className="text-4xl text-center font-bold">Articles</h1>
+            <button onClick={handleOpen} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded ml-8 flex items-center" ><PlusIcon className="lg:w-9 lg:h-9 md:w-7 md:h-7 sm:w-5 sm:h-5 w-5 h-5 inline-block"/> Add
             </button>
             <Modal
                 open={open}
@@ -95,7 +128,7 @@ const Article: React.FC<ArticleProps> = ({ articlesData }) => {
                     />
                     <button
                         onClick={() => {
-                            addArticle('test', value);
+                            addArticle(`Article_${new Date().toISOString()}`, value);
                             setOpen(false);
                             update('');
                         }}
@@ -103,7 +136,7 @@ const Article: React.FC<ArticleProps> = ({ articlesData }) => {
                 </Box>
             </Modal>
             <div className="markdown flex flex-col items-center gap-y-10 mb-10">
-                {articlesData.map(({ content, frontmatter, id}, index) => (
+                {articlesData.map(({ content, frontmatter, id, name}, index) => (
                     <div key={index} className="group markdown">
                         <h1>{frontmatter.title}</h1>
                         <p>{frontmatter.date}</p>
@@ -120,6 +153,33 @@ const Article: React.FC<ArticleProps> = ({ articlesData }) => {
                                 className="py-2 px-4 rounded absolute right-0 top-0">
                                 <TrashIcon className="group-hover:text-red-500 lg:text-white xl:text-white text-red-500 lg:w-9 lg:h-9 md:w-7 md:h-7 sm:w-5 sm:h-5 w-5 h-5"/>
                             </button>
+                            <button
+                                onClick={() => handleOpen2(content)}
+                                className="py-2 px-4 rounded absolute right-0 bottom-0">
+                                <PencilIcon className="group-hover:text-orange-500 lg:text-white xl:text-white text-orange-500 lg:w-9 lg:h-9 md:w-7 md:h-7 sm:w-5 sm:h-5 w-5 h-5"/>
+                            </button>
+                            <Modal
+                                open={open2}
+                                onClose={handleClose2}
+                                aria-labelledby="modal-modal-title"
+                                aria-describedby="modal-modal-description"
+                            >
+                                <Box sx={style} >
+                                    <ReactQuill
+                                        theme="snow"
+                                        value={value2}
+                                        onChange={update2}
+                                        className="h-full text-black"
+                                    />
+                                    <button
+                                        onClick={() => {
+                                            patchArticle(id, name, value2);
+                                            setOpen2(false);
+                                            update2('');
+                                        }}
+                                        className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded mt-6" >Edit Article</button>
+                                </Box>
+                            </Modal>
                         </div>
                     </div>
                 ))}
