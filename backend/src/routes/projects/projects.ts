@@ -23,6 +23,10 @@ const projectRouter = Router();
  *           type: string
  *           description: The project description.
  *           example: This is a sample project.
+ *         elementsIds:
+ *           type: array
+ *           description: An array of element IDs.
+ *           example: [1, 2, 3]
  *         image:
  *           type: string
  *           description: The image URL for the project.

@@ -16,6 +16,9 @@ export class Project {
     @Column({ type: 'varchar' })
     image: string;
 
+    @Column({ type: 'bigint', array: true, default: '{}' })
+    elementsIds: number[];
+
     @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
     createdAt: Date;
 

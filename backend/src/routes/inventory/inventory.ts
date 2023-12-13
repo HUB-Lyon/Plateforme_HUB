@@ -108,7 +108,7 @@ inventoryRouter.get('/category/:id', async (req: Request, res: Response) => {
  *             image: "URL to Image"
  *             category: "Item Category"
  *             quantity: 10
- *             available: true
+ *             available: 10
  *             description: "Item Description"
  *     responses:
  *       201:
@@ -182,7 +182,7 @@ inventoryRouter.delete('/:id', async (req: Request, res: Response) => {
  *             image: "Updated URL to Image"
  *             category: "Updated Item Category"
  *             quantity: 15
- *             available: false
+ *             available: 15
  *             description: "Updated Item Description"
  *     responses:
  *       200:
