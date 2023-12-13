@@ -193,7 +193,7 @@ const Article: React.FC<ArticleProps> = ({ articlesData: initialArticlesData }) 
     );
 };
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
     const options = {
         method: 'GET',
         headers: {
