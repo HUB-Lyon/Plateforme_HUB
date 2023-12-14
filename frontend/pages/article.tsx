@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import dynamic from 'next/dynamic';
 import 'react-quill/dist/quill.snow.css';
+import { API_URL } from '../config.js';
 import {
     TrashIcon,
     PlusIcon,
@@ -45,7 +46,7 @@ function deleteArticle(id: number) {
             'Content-Type': 'application/json',
         },
     };
-    fetch(`http://localhost:3000/article/${id}`, options);
+    fetch(`${API_URL}/article/${id}`, options);
 }
 
 async function addArticle(name: string, content: string){
@@ -60,7 +61,7 @@ async function addArticle(name: string, content: string){
                 content: content,
             }),
     };
-    return fetch('http://localhost:3000/article/', options);
+    return fetch(`${API_URL}/article/`, options);
 }
 
 function patchArticle(id: number, name: string, content: string) {
@@ -75,7 +76,7 @@ function patchArticle(id: number, name: string, content: string) {
                 content: content,
             }),
     };
-    return fetch(`http://localhost:3000/article/${id}`, options);
+    return fetch(`${API_URL}/article/${id}`, options);
 }
 
 const Article: React.FC<ArticleProps> = ({ articlesData: initialArticlesData }) => {
@@ -200,7 +201,7 @@ export async function getServerSideProps() {
             'Content-Type': 'application/json',
         },
     };
-    const result = await fetch('http://localhost:3000/article/', options);
+    const result = await fetch(`${API_URL}/article/`, options);
     const articles = await result.json();
 
     const articlesData = articles.map((article: ArticleData) => {
