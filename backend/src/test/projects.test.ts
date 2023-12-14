@@ -3,6 +3,7 @@ import chaiHttp from 'chai-http';
 import { app, server, dataBase } from '../app.js';
 import { Repository } from 'typeorm';
 import { Project } from '../entity/projects.js';
+import { Inventory } from '../entity/inventory.js';
 
 chai.use(chaiHttp);
 const expect = chai.expect;
@@ -10,6 +11,7 @@ const expect = chai.expect;
 describe('Project', () => {
 
     let repository: Repository<Project>;
+    let repository2: Repository<Inventory>;
 
     beforeAll(async () => {
         await dataBase
@@ -18,6 +20,7 @@ describe('Project', () => {
                 console.log('Error connecting to database', err);
             });
         repository = dataBase.getRepository(Project);
+        repository2 = dataBase.getRepository(Inventory);
     });
 
     afterEach(async () => {
@@ -127,12 +130,40 @@ describe('Project', () => {
             name: 'name',
             description: 'description',
             image: 'image',
+            elementsIds: [1, 2, 3],
             createdAt: '2023-11-29T13:45:27.130Z',
             leaderId: 2,
             membersIds: [2, 3],
             status: 'test',
         };
+        const InvElement1 = {
+            name: 'name',
+            image: 'image',
+            category: 'category',
+            quantity: 6,
+            available: 6,
+            description: 'description',
+        };
+        const InvElement2 = {
+            name: 'name',
+            image: 'image',
+            category: 'category',
+            quantity: 2,
+            available: 6,
+            description: 'description',
+        };
+        const InvElement3 = {
+            name: 'name',
+            image: 'image',
+            category: 'category',
+            quantity: 18,
+            available: 20,
+            description: 'description',
+        };
 
+        await repository2.save(InvElement1);
+        await repository2.save(InvElement2);
+        await repository2.save(InvElement3);
         const res = await chai.request(app).post('/projects').send(newProject);
         expect(res).to.have.status(201);
 
@@ -147,6 +178,14 @@ describe('Project', () => {
         expect(res2.body.leaderId).to.equal(newProject.leaderId);
         expect(res2.body.membersIds).to.deep.equal(newProject.membersIds);
         expect(res2.body.status).to.equal(newProject.status);
+
+        const resInv1 = await chai.request(app).get('/inventory/1');
+        const resInv2 = await chai.request(app).get('/inventory/2');
+        const resInv3 = await chai.request(app).get('/inventory/3');
+
+        expect(resInv1.body.quantity).to.equal(5);
+        expect(resInv2.body.quantity).to.equal(1);
+        expect(resInv3.body.quantity).to.equal(17);
     });
 
     it('should Delete a project by ID on /projects/:id DELETE', async () => {
