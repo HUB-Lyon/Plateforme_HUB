@@ -6,6 +6,7 @@ import Modal from '@mui/material/Modal';
 import dynamic from 'next/dynamic';
 import 'react-quill/dist/quill.snow.css';
 import { API_URL } from '../config.js';
+import AddArticleModal from './component/addArticle';
 import {
     TrashIcon,
     PlusIcon,
@@ -16,7 +17,6 @@ const admin = true;
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
-const STORAGE_KEY = 'ARTICLE_POST';
 const STORAGE_KEY2 = 'ARTICLE_PATCH';
 
 const style = {
@@ -85,14 +85,10 @@ const Article: React.FC<ArticleProps> = ({ articlesData: initialArticlesData }) 
     const [openAdd, setOpenAdd] = useState(false);
     const handleOpenAdd = () => setOpenAdd(true);
     const handleCloseAdd = () => setOpenAdd(false);
-
-    const [valueAdd, setValueAdd] = useState('');
-    useEffect(() => {
-        setValueAdd(localStorage.getItem(STORAGE_KEY) || '');
-    }, []);
-    const updateAdd = (newValue: string) => {
-        localStorage.setItem(STORAGE_KEY, newValue);
-        setValueAdd(newValue);
+    const handleAddArticle = async (content: string) => {
+        const response = await addArticle(`Article_${new Date().toISOString()}`, content);
+        const newarticle = await response.json();
+        setArticlesData((old) => [...old, newarticle]);
     };
 
     const [openPatch, setOpenPatch] = useState(false);
@@ -118,30 +114,7 @@ const Article: React.FC<ArticleProps> = ({ articlesData: initialArticlesData }) 
             <h1 id="openModal" className="text-4xl text-center font-bold">Articles</h1>
             { admin && (<button onClick={handleOpenAdd} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded ml-8 flex items-center" ><PlusIcon className="lg:w-9 lg:h-9 md:w-7 md:h-7 sm:w-5 sm:h-5 w-5 h-5 inline-block"/> Add
             </button>)}
-            <Modal
-                open={openAdd}
-                onClose={handleCloseAdd}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                <Box sx={style} >
-                    <ReactQuill
-                        theme="snow"
-                        value={valueAdd}
-                        onChange={updateAdd}
-                        className="h-full text-black"
-                    />
-                    <button
-                        onClick={async () => {
-                            const response = await addArticle(`Article_${new Date().toISOString()}`, valueAdd);
-                            const newarticle = await response.json();
-                            setArticlesData(old => [...old, newarticle]);
-                            setOpenAdd(false);
-                            updateAdd('');
-                        }}
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-6" >Add Article</button>
-                </Box>
-            </Modal>
+            <AddArticleModal open={openAdd} onClose={handleCloseAdd} onAddArticle={handleAddArticle} />
             <div className="markdown flex flex-col items-center gap-y-10 mb-10">
                 {articlesData.map(({ content, id, name}, index) => (
                     <div key={index} className="group markdown">
