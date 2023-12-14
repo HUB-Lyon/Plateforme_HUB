@@ -12,6 +12,8 @@ import {
     PencilIcon,
 } from '@heroicons/react/24/outline';
 
+const admin = true;
+
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
 const STORAGE_KEY = 'ARTICLE_POST';
@@ -114,8 +116,8 @@ const Article: React.FC<ArticleProps> = ({ articlesData: initialArticlesData }) 
     return (
         <div>
             <h1 id="openModal" className="text-4xl text-center font-bold">Articles</h1>
-            <button onClick={handleOpen} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded ml-8 flex items-center" ><PlusIcon className="lg:w-9 lg:h-9 md:w-7 md:h-7 sm:w-5 sm:h-5 w-5 h-5 inline-block"/> Add
-            </button>
+            { admin && (<button onClick={handleOpen} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded ml-8 flex items-center" ><PlusIcon className="lg:w-9 lg:h-9 md:w-7 md:h-7 sm:w-5 sm:h-5 w-5 h-5 inline-block"/> Add
+            </button>)}
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -149,19 +151,19 @@ const Article: React.FC<ArticleProps> = ({ articlesData: initialArticlesData }) 
                                 options={{ tables: true, emoji: true }}
                                 flavor="github"
                             />
-                            <button
+                            { admin && (<button
                                 onClick={() => {
                                     deleteArticle(id);
                                     setArticlesData(old => old.filter(article => article.id !== id));
                                 }}
                                 className="py-2 px-4 rounded absolute right-0 top-0">
                                 <TrashIcon className="group-hover:text-red-500 lg:text-white xl:text-white text-red-500 lg:w-9 lg:h-9 md:w-7 md:h-7 sm:w-5 sm:h-5 w-5 h-5"/>
-                            </button>
-                            <button
+                            </button>)}
+                            { admin && (<button
                                 onClick={() => handleOpen2(content)}
                                 className="py-2 px-4 rounded absolute right-0 bottom-0">
                                 <PencilIcon className="group-hover:text-orange-500 lg:text-white xl:text-white text-orange-500 lg:w-9 lg:h-9 md:w-7 md:h-7 sm:w-5 sm:h-5 w-5 h-5"/>
-                            </button>
+                            </button>)}
                             <Modal
                                 open={open2}
                                 onClose={handleClose2}
