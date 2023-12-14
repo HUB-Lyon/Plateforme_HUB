@@ -100,7 +100,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
         };
     } catch (error) {
         toast.error('Error fetching data');
-        console.error('Error fetching data:', error);
         return {
             redirect: {
                 destination: '/error',
