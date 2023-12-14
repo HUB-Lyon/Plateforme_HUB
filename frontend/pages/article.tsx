@@ -82,33 +82,33 @@ function patchArticle(id: number, name: string, content: string) {
 }
 
 const Article: React.FC<ArticleProps> = ({ articlesData: initialArticlesData }) => {
-    const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const [openAdd, setOpenAdd] = useState(false);
+    const handleOpenAdd = () => setOpenAdd(true);
+    const handleCloseAdd = () => setOpenAdd(false);
 
-    const [open2, setOpen2] = useState(false);
-    const handleOpen2 = (content: string) => {
-        setValue2(content);
-        setOpen2(true);
-    };
-    const handleClose2 = () => setOpen2(false);
-
-    const [value, setValue] = useState('');
+    const [valueAdd, setValueAdd] = useState('');
     useEffect(() => {
-        setValue(localStorage.getItem(STORAGE_KEY) || '');
+        setValueAdd(localStorage.getItem(STORAGE_KEY) || '');
     }, []);
-    const update = (newValue: string) => {
+    const updateAdd = (newValue: string) => {
         localStorage.setItem(STORAGE_KEY, newValue);
-        setValue(newValue);
+        setValueAdd(newValue);
     };
 
-    const [value2, setValue2] = useState('');
+    const [openPatch, setOpenPatch] = useState(false);
+    const handleOpenPatch = (content: string) => {
+        setValuePatch(content);
+        setOpenPatch(true);
+    };
+    const handleClosePatch = () => setOpenPatch(false);
+
+    const [valuePatch, setValuePatch] = useState('');
     useEffect(() => {
-        setValue2(localStorage.getItem(STORAGE_KEY2) || '');
+        setValuePatch(localStorage.getItem(STORAGE_KEY2) || '');
     }, []);
-    const update2 = (newValue: string) => {
+    const updatePatch = (newValue: string) => {
         localStorage.setItem(STORAGE_KEY2, newValue);
-        setValue2(newValue);
+        setValuePatch(newValue);
     };
 
     const [articlesData, setArticlesData] = useState(initialArticlesData);
@@ -116,28 +116,28 @@ const Article: React.FC<ArticleProps> = ({ articlesData: initialArticlesData }) 
     return (
         <div>
             <h1 id="openModal" className="text-4xl text-center font-bold">Articles</h1>
-            { admin && (<button onClick={handleOpen} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded ml-8 flex items-center" ><PlusIcon className="lg:w-9 lg:h-9 md:w-7 md:h-7 sm:w-5 sm:h-5 w-5 h-5 inline-block"/> Add
+            { admin && (<button onClick={handleOpenAdd} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded ml-8 flex items-center" ><PlusIcon className="lg:w-9 lg:h-9 md:w-7 md:h-7 sm:w-5 sm:h-5 w-5 h-5 inline-block"/> Add
             </button>)}
             <Modal
-                open={open}
-                onClose={handleClose}
+                open={openAdd}
+                onClose={handleCloseAdd}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style} >
                     <ReactQuill
                         theme="snow"
-                        value={value}
-                        onChange={update}
+                        value={valueAdd}
+                        onChange={updateAdd}
                         className="h-full text-black"
                     />
                     <button
                         onClick={async () => {
-                            const response = await addArticle(`Article_${new Date().toISOString()}`, value);
+                            const response = await addArticle(`Article_${new Date().toISOString()}`, valueAdd);
                             const newarticle = await response.json();
                             setArticlesData(old => [...old, newarticle]);
-                            setOpen(false);
-                            update('');
+                            setOpenAdd(false);
+                            updateAdd('');
                         }}
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-6" >Add Article</button>
                 </Box>
@@ -160,30 +160,30 @@ const Article: React.FC<ArticleProps> = ({ articlesData: initialArticlesData }) 
                                 <TrashIcon className="group-hover:text-red-500 lg:text-white xl:text-white text-red-500 lg:w-9 lg:h-9 md:w-7 md:h-7 sm:w-5 sm:h-5 w-5 h-5"/>
                             </button>)}
                             { admin && (<button
-                                onClick={() => handleOpen2(content)}
+                                onClick={() => handleOpenPatch(content)}
                                 className="py-2 px-4 rounded absolute right-0 bottom-0">
                                 <PencilIcon className="group-hover:text-orange-500 lg:text-white xl:text-white text-orange-500 lg:w-9 lg:h-9 md:w-7 md:h-7 sm:w-5 sm:h-5 w-5 h-5"/>
                             </button>)}
                             <Modal
-                                open={open2}
-                                onClose={handleClose2}
+                                open={openPatch}
+                                onClose={handleClosePatch}
                                 aria-labelledby="modal-modal-title"
                                 aria-describedby="modal-modal-description"
                             >
                                 <Box sx={style} >
                                     <ReactQuill
                                         theme="snow"
-                                        value={value2}
-                                        onChange={update2}
+                                        value={valuePatch}
+                                        onChange={updatePatch}
                                         className="h-full text-black"
                                     />
                                     <button
                                         onClick={async () => {
-                                            const response = await patchArticle(id, name, value2);
+                                            const response = await patchArticle(id, name, valuePatch);
                                             const updatedarticle = await response.json();
                                             setArticlesData(old => old.map(article => (article.id === id ? updatedarticle : article)));
-                                            setOpen2(false);
-                                            update2('');
+                                            setOpenPatch(false);
+                                            updatePatch('');
                                         }}
                                         className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded mt-6" >Edit Article</button>
                                 </Box>
