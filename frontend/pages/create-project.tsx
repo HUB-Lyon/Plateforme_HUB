@@ -5,8 +5,6 @@ import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import { toast } from 'react-toastify';
 import { CheckCircleIcon, PhotoIcon } from '@heroicons/react/24/solid';
-import MemberInput from './../components/memberInput';
-import { toastConfig } from './../components/toastConfig';
 import { API_URL } from './../config';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -120,11 +118,13 @@ const CreateProject: React.FC = () => {
                     body: formData,
                 });
                 if (!response.ok)
-                    toast.error(`HTTP error! Status: ${response.status}`, toastConfig);
-                toast.success('Your project has been created!', toastConfig);
-                formik.resetForm();
+                    toast.error(`HTTP error! Status: ${response.status}`, );
+                else {
+                    toast.success('Your project has been created!');
+                    formik.resetForm();
+                }
             } catch (error: unknown) {
-                toast.error(`An error occurred: ${error}`, toastConfig);
+                toast.error(`An error occurred: ${error}`);
             }
         },
     });
@@ -158,12 +158,20 @@ const CreateProject: React.FC = () => {
                             <label htmlFor="members" className="block text-sm font-medium leading-6 text-gray-900">
                                 Members
                             </label>
-                            <MemberInput
-                                value={newMembers}
-                                onChange={handleMemberChange}
-                                onKeyDown={(e) => handleKeyDown(e, addMembers)}
-                                onAdd={addMembers}
-                            />
+                            <div className="flex mt-2">
+                                <input
+                                    type="text"
+                                    id="members"
+                                    name="newMembers"
+                                    className="mr-2 form-box"
+                                    value={newMembers}
+                                    onChange={handleMemberChange}
+                                    onKeyDown={(e) => handleKeyDown(e, addMembers)}
+                                />
+                                <button type="button" className="bg-blue-500 text-white text-sm p-1 rounded-md" onClick={addMembers}>
+                                    Add
+                                </button>
+                            </div>
                             <div className="mt-2 break-all">
                                 {formik.values.members.map((guest, index) => (
                                     <div key={index} className="text-sm">
