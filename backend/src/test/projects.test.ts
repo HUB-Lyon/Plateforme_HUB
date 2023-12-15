@@ -10,8 +10,8 @@ const expect = chai.expect;
 
 describe('Project', () => {
 
-    let repository: Repository<Project>;
-    let repository2: Repository<Inventory>;
+    let repositoryProject: Repository<Project>;
+    let repositoryInventory: Repository<Inventory>;
 
     beforeAll(async () => {
         await dataBase
@@ -19,12 +19,12 @@ describe('Project', () => {
             .catch((err) => {
                 console.log('Error connecting to database', err);
             });
-        repository = dataBase.getRepository(Project);
-        repository2 = dataBase.getRepository(Inventory);
+        repositoryProject = dataBase.getRepository(Project);
+        repositoryInventory = dataBase.getRepository(Inventory);
     });
 
     afterEach(async () => {
-        await repository.query('DELETE from project;');
+        await repositoryProject.query('DELETE from project;');
     });
 
     it('should return all Projects on /projects GET', async () => {
@@ -37,7 +37,7 @@ describe('Project', () => {
             membersIds: [2, 3],
             status: 'test',
         };
-        const value = await repository.save(data);
+        const value = await repositoryProject.save(data);
         const data2 = {
             name: 'name',
             description: 'description',
@@ -47,7 +47,7 @@ describe('Project', () => {
             membersIds: [2, 3],
             status: 'test',
         };
-        const value2 = await repository.save(data2);
+        const value2 = await repositoryProject.save(data2);
 
         const res = await chai.request(app).get('/projects');
         expect(res).to.have.status(200);
@@ -81,7 +81,7 @@ describe('Project', () => {
             membersIds: [2, 3],
             status: 'test',
         };
-        const value = await repository.save(data);
+        const value = await repositoryProject.save(data);
 
         const res = await chai.request(app).get(`/projects/${value.id}`);
         expect(res).to.have.status(200);
@@ -108,7 +108,7 @@ describe('Project', () => {
             membersIds: [2, 3],
             status: 'test',
         };
-        const value = await repository.save(data);
+        const value = await repositoryProject.save(data);
 
         const res = await chai.request(app).get('/projects/status/test');
         expect(res).to.have.status(200);
@@ -161,9 +161,9 @@ describe('Project', () => {
             description: 'description',
         };
 
-        await repository2.save(InvElement1);
-        await repository2.save(InvElement2);
-        await repository2.save(InvElement3);
+        await repositoryInventory.save(InvElement1);
+        await repositoryInventory.save(InvElement2);
+        await repositoryInventory.save(InvElement3);
         const res = await chai.request(app).post('/projects').send(newProject);
         expect(res).to.have.status(201);
 
@@ -183,9 +183,9 @@ describe('Project', () => {
         const resInv2 = await chai.request(app).get('/inventory/2');
         const resInv3 = await chai.request(app).get('/inventory/3');
 
-        expect(resInv1.body.quantity).to.equal(5);
-        expect(resInv2.body.quantity).to.equal(1);
-        expect(resInv3.body.quantity).to.equal(17);
+        expect(resInv1.body.quantity).to.equal(InvElement1.quantity - 1);
+        expect(resInv2.body.quantity).to.equal(InvElement2.quantity - 1);
+        expect(resInv3.body.quantity).to.equal(InvElement3.quantity - 1);
     });
 
     it('should Delete a project by ID on /projects/:id DELETE', async () => {
@@ -198,7 +198,7 @@ describe('Project', () => {
             membersIds: [2, 3],
             status: 'test',
         };
-        const value = await repository.save(data);
+        const value = await repositoryProject.save(data);
 
         const res = await chai.request(app).delete(`/projects/${value.id}`);
         expect(res).to.have.status(202);
@@ -218,7 +218,7 @@ describe('Project', () => {
             membersIds: [2, 3],
             status: 'test',
         };
-        const value = await repository.save(data);
+        const value = await repositoryProject.save(data);
 
         const newProject = {
             name: 'new name',
