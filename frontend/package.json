@@ -17,7 +17,6 @@
     "@heroicons/react": "^2.0.18",
     "autoprefixer": "10.4.15",
     "dotenv": "^16.3.1",
-    "@mui/material": "^5.14.20",
     "formik": "^2.4.5",
     "gray-matter": "^4.0.3",
     "next": "14.0.2",
