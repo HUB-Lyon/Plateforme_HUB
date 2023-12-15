@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { dataBase } from '../../config/db.js';
 import { Project } from '../../entity/projects.js';
+import { Inventory } from '../../entity/inventory.js';
 
 const projectRouter = Router();
 
@@ -23,6 +24,10 @@ const projectRouter = Router();
  *           type: string
  *           description: The project description.
  *           example: This is a sample project.
+ *         elementsIds:
+ *           type: array
+ *           description: An array of arrays containing the IDs of the elements and the quantity to used in the project.
+ *           example: [[1, 1], [2, 4], [3, 2]]
  *         image:
  *           type: string
  *           description: The image URL for the project.
@@ -174,6 +179,11 @@ projectRouter.get('/status/:id', async (req: Request, res: Response) => {
 
 projectRouter.post('/', async (req: Request, res: Response) => {
     try {
+        await Promise.all(req.body.elementsIds.map(async ([elementId, quantityToReduce]: [number, number]) => {
+            const result: any = await dataBase.getRepository(Inventory).createQueryBuilder('inventory').where('inventory.id = :id', { id: elementId }).setParameter('id', String(elementId)).getOne();
+            result.quantity -= quantityToReduce;
+            await dataBase.getRepository(Inventory).createQueryBuilder('inventory').update().set({ quantity: result.quantity }).where('inventory.id = :id', { id: elementId }).execute();
+        }));        
         const result = await dataBase.getRepository(Project).createQueryBuilder('project').insert().values(req.body).execute();
         res.status(201).json(result);
     } catch (err) {

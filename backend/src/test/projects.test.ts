@@ -3,13 +3,15 @@ import chaiHttp from 'chai-http';
 import { app, server, dataBase } from '../app.js';
 import { Repository } from 'typeorm';
 import { Project } from '../entity/projects.js';
+import { Inventory } from '../entity/inventory.js';
 
 chai.use(chaiHttp);
 const expect = chai.expect;
 
 describe('Project', () => {
 
-    let repository: Repository<Project>;
+    let projectRepository: Repository<Project>;
+    let inventoryRepository: Repository<Inventory>;
 
     beforeAll(async () => {
         await dataBase
@@ -17,11 +19,12 @@ describe('Project', () => {
             .catch((err) => {
                 console.log('Error connecting to database', err);
             });
-        repository = dataBase.getRepository(Project);
+        projectRepository = dataBase.getRepository(Project);
+        inventoryRepository = dataBase.getRepository(Inventory);
     });
 
     afterEach(async () => {
-        await repository.query('DELETE from project;');
+        await projectRepository.query('DELETE from project;');
     });
 
     it('should return all Projects on /projects GET', async () => {
@@ -34,7 +37,7 @@ describe('Project', () => {
             membersIds: [2, 3],
             status: 'test',
         };
-        const value = await repository.save(data);
+        const value = await projectRepository.save(data);
         const data2 = {
             name: 'name',
             description: 'description',
@@ -44,7 +47,7 @@ describe('Project', () => {
             membersIds: [2, 3],
             status: 'test',
         };
-        const value2 = await repository.save(data2);
+        const value2 = await projectRepository.save(data2);
 
         const res = await chai.request(app).get('/projects');
         expect(res).to.have.status(200);
@@ -78,7 +81,7 @@ describe('Project', () => {
             membersIds: [2, 3],
             status: 'test',
         };
-        const value = await repository.save(data);
+        const value = await projectRepository.save(data);
 
         const res = await chai.request(app).get(`/projects/${value.id}`);
         expect(res).to.have.status(200);
@@ -105,7 +108,7 @@ describe('Project', () => {
             membersIds: [2, 3],
             status: 'test',
         };
-        const value = await repository.save(data);
+        const value = await projectRepository.save(data);
 
         const res = await chai.request(app).get('/projects/status/test');
         expect(res).to.have.status(200);
@@ -127,12 +130,40 @@ describe('Project', () => {
             name: 'name',
             description: 'description',
             image: 'image',
+            elementsIds: [[1, 5], [2, 1], [3, 10]],
             createdAt: '2023-11-29T13:45:27.130Z',
             leaderId: 2,
             membersIds: [2, 3],
             status: 'test',
         };
+        const InvElement1 = {
+            name: 'name',
+            image: 'image',
+            category: 'category',
+            quantity: 6,
+            available: 6,
+            description: 'description',
+        };
+        const InvElement2 = {
+            name: 'name',
+            image: 'image',
+            category: 'category',
+            quantity: 2,
+            available: 6,
+            description: 'description',
+        };
+        const InvElement3 = {
+            name: 'name',
+            image: 'image',
+            category: 'category',
+            quantity: 18,
+            available: 20,
+            description: 'description',
+        };
 
+        await inventoryRepository.save(InvElement1);
+        await inventoryRepository.save(InvElement2);
+        await inventoryRepository.save(InvElement3);
         const res = await chai.request(app).post('/projects').send(newProject);
         expect(res).to.have.status(201);
 
@@ -147,6 +178,14 @@ describe('Project', () => {
         expect(res2.body.leaderId).to.equal(newProject.leaderId);
         expect(res2.body.membersIds).to.deep.equal(newProject.membersIds);
         expect(res2.body.status).to.equal(newProject.status);
+
+        const resInv1 = await chai.request(app).get('/inventory/1');
+        const resInv2 = await chai.request(app).get('/inventory/2');
+        const resInv3 = await chai.request(app).get('/inventory/3');
+
+        expect(resInv1.body.quantity).to.equal(InvElement1.quantity - newProject.elementsIds[0][1]);
+        expect(resInv2.body.quantity).to.equal(InvElement2.quantity - newProject.elementsIds[1][1]);
+        expect(resInv3.body.quantity).to.equal(InvElement3.quantity - newProject.elementsIds[2][1]);
     });
 
     it('should Delete a project by ID on /projects/:id DELETE', async () => {
@@ -159,7 +198,7 @@ describe('Project', () => {
             membersIds: [2, 3],
             status: 'test',
         };
-        const value = await repository.save(data);
+        const value = await projectRepository.save(data);
 
         const res = await chai.request(app).delete(`/projects/${value.id}`);
         expect(res).to.have.status(202);
@@ -179,7 +218,7 @@ describe('Project', () => {
             membersIds: [2, 3],
             status: 'test',
         };
-        const value = await repository.save(data);
+        const value = await projectRepository.save(data);
 
         const newProject = {
             name: 'new name',

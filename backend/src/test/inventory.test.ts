@@ -30,7 +30,7 @@ describe('Inventory', () => {
             image: 'image',
             category: 'category',
             quantity: 2,
-            available: true,
+            available: 2,
             description: 'description',
         };
         const value = await repository.save(data);
@@ -39,7 +39,7 @@ describe('Inventory', () => {
             image: 'image',
             category: 'category',
             quantity: 2,
-            available: true,
+            available: 2,
             description: 'description',
         };
         const value2 = await repository.save(data2);
@@ -71,7 +71,7 @@ describe('Inventory', () => {
             image: 'image',
             category: 'category',
             quantity: 2,
-            available: true,
+            available: 2,
             description: 'description',
         };
         const value = await repository.save(data);
@@ -96,7 +96,7 @@ describe('Inventory', () => {
             image: 'image',
             category: 'boite',
             quantity: 2,
-            available: true,
+            available: 2,
             description: 'description',
         };
         const value = await repository.save(data);
@@ -121,7 +121,7 @@ describe('Inventory', () => {
             image: 'image',
             category: 'category',
             quantity: 2,
-            available: true,
+            available: 2,
             description: 'description',
         };
 
@@ -145,7 +145,7 @@ describe('Inventory', () => {
             image: 'image',
             category: 'category',
             quantity: 2,
-            available: true,
+            available: 2,
             description: 'description',
         };
         const value = await repository.save(data);
@@ -163,7 +163,7 @@ describe('Inventory', () => {
             image: 'image',
             category: 'category',
             quantity: 2,
-            available: true,
+            available: 2,
             description: 'description',
         };
         const value = await repository.save(data);
@@ -172,7 +172,7 @@ describe('Inventory', () => {
             image: 'New image',
             category: 'category',
             quantity: 2,
-            available: true,
+            available: 2,
             description: 'description',
         };
 

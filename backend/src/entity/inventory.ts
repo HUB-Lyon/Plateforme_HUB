@@ -19,8 +19,8 @@ export class Inventory {
     @Column({ type: 'bigint', nullable: false })
     quantity: number;
 
-    @Column({ type: 'boolean', nullable: false, default: true })
-    available: boolean;
+    @Column({ type: 'bigint', nullable: false })
+    available: number;
 
     @Column({ type: 'text', nullable: false })
     description: string;
