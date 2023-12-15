@@ -14,10 +14,10 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
         <>
             <MsalProvider instance={msalInstance}>
                 <LoginPage/>
+                <RootLayout>
+                    <Component {...pageProps} />
+                </RootLayout>
             </MsalProvider>
-            <RootLayout>
-                <Component {...pageProps} />
-            </RootLayout>
         </>
     );
 };
