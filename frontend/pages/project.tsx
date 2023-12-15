@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import { Project, User } from '../model';
 
@@ -36,44 +37,78 @@ const Project: React.FC<{ projects: Project[], users: User[] }> = ({ projects, u
         return users.find(user => user.id === leaderId);
     };
 
+    const router = useRouter();
+
+    const [showAllProjects, setShowAllProjects] = useState<boolean>(false);
+
     if (projects.length === 0) {
         return (
             <div className="h-auto p-2 m-4 max-w-screen break-words">
                 <div className="p-2">
                     <h1 className="text-5xl text-slate-900">No Projects Available</h1>
-                    <Link href="/create-project" title="Create project" className="text-xl text-slate-900 hover:text-2xl focus:font-semibold font-bold justify-content: space-between">Create Project</Link>
+                    <button className="bg-blue-500 text-white p-2 rounded-lg m-2 mb-4 transition ease-in-out delay-100 hover:scale-105 duration-250"
+                        onClick={() => router.push('/create-project')}>
+                        Create Project
+                    </button>
                 </div>
             </div>
         );
     }
 
+    const userEmail = 'vivien.boitard@epitech.eu';
+
+    const getFilteredProjects = (): Project[] => {
+        return projects.filter((project) => {
+            const leaderUser = getUserInfo(project.leaderId);
+
+            const isUserProject = !showAllProjects && leaderUser && leaderUser.email === userEmail;
+
+            const isMemberOfProject = project.membersIds.some(memberId => {
+                const memberUser = getUserInfo(memberId);
+                return memberUser && memberUser.email === userEmail;
+            });
+
+            return showAllProjects || isUserProject || isMemberOfProject;
+        });
+    };
+
+    const filteredProjects = getFilteredProjects();
+
     return (
         <div className="h-auto p-2 m-4 mb-6 max-w-screen break-words">
             <div className="p-2 mb-4 flex items-center justify-between flex-wrap">
                 <h1 className="text-5xl text-slate-900">Projects</h1>
-                <Link href="/create-project" title="Create project" className="text-xl text-slate-900 hover:text-2xl focus:font-semibold font-bold justify-content: space-between">Create Project</Link>
+                <div>
+                    <button className="bg-blue-500 text-white p-2 rounded-lg m-2 mb-4 transition ease-in-out delay-100 hover:scale-105 duration-250"
+                        onClick={() => router.push('/create-project')}>
+                        Create Project
+                    </button>
+                    <button className="bg-blue-500 text-white p-2 rounded-lg m-2 mb-4 transition ease-in-out delay-100 hover:scale-105 duration-250"
+                        onClick={() => setShowAllProjects(!showAllProjects)}>
+                        {showAllProjects ? 'All Projects' : 'Your Projects'}
+                    </button>
+                </div>
             </div>
-            <div>
-                <ul className="gap-8 max-w-screen md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                    {projects.map((project: Project) => {
-                        const leaderUser = getUserInfo(project.leaderId);
-                        return (
-                            <li key={project.id} className={`m-2 hover:filter hover:contrast-125 flex flex-col justify-between relative rounded-xl bg-white text-black shadow-xl transition ease-in-out delay-100 hover:scale-105 duration-250 border-b-8 ${getStatus(project.status)}`}>
-                                <Link href={`/project/${project.id}`} title={`${getTitleStatus(project.status)}\n${project.name}`}>
-                                    <Image src={project.image} alt="" width={300} height={300} className="object-cover rounded-t-lg mx-auto w-full"/>
-                                    <div className="m-2 break-words">
-                                        <h1 className="text-center text-2xl break-words">{project.name}</h1>
-                                        <p className="line-clamp-5 mt-2 text-lg break-words">{project.description}</p>
-                                        <p className="italic font-light mt-8 p-2 text-sm">
-                                            {leaderUser ? (leaderUser.email) : ('unknown')}
-                                        </p>
-                                    </div>
-                                </Link>
-                            </li>
-                        );
-                    })}
-                </ul>
-            </div>
+            <ul className="gap-8 max-w-screen md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {filteredProjects.map((project: Project) => {
+                    const leaderUser = getUserInfo(project.leaderId);
+                    return (
+                        <li key={project.id} className={`m-2 hover:filter hover:contrast-125 flex flex-col justify-between relative rounded-xl bg-white text-black shadow-xl transition ease-in-out delay-100 hover:scale-105 duration-250 border-b-8 ${getStatus(project.status)}`}>
+                            <Link href={`/project/${project.id}`} title={`${getTitleStatus(project.status)}\n${project.name}`}>  
+                                <Image src={project.image || '/image/default_project.jpg'}
+                                    alt="" width={300} height={300}
+                                    className="object-cover rounded-t-lg mx-auto w-full"
+                                />
+                                <h2 className="m-2 text-center text-2xl break-words">{project.name}</h2>
+                                <p className="m-2 line-clamp-5 mt-2 text-lg break-words">{project.description}</p>
+                                <p className="m-2 italic font-light mt-8 p-2 text-sm">
+                                    {leaderUser ? (leaderUser.email) : ('unknown')}
+                                </p>                
+                            </Link>
+                        </li>
+                    );
+                })}
+            </ul>
         </div>
     );
 };
