@@ -10,8 +10,8 @@ const expect = chai.expect;
 
 describe('Project', () => {
 
-    let repositoryProject: Repository<Project>;
-    let repositoryInventory: Repository<Inventory>;
+    let projectRepository: Repository<Project>;
+    let inventoryRepository: Repository<Inventory>;
 
     beforeAll(async () => {
         await dataBase
@@ -19,12 +19,12 @@ describe('Project', () => {
             .catch((err) => {
                 console.log('Error connecting to database', err);
             });
-        repositoryProject = dataBase.getRepository(Project);
-        repositoryInventory = dataBase.getRepository(Inventory);
+        projectRepository = dataBase.getRepository(Project);
+        inventoryRepository = dataBase.getRepository(Inventory);
     });
 
     afterEach(async () => {
-        await repositoryProject.query('DELETE from project;');
+        await projectRepository.query('DELETE from project;');
     });
 
     it('should return all Projects on /projects GET', async () => {
@@ -37,7 +37,7 @@ describe('Project', () => {
             membersIds: [2, 3],
             status: 'test',
         };
-        const value = await repositoryProject.save(data);
+        const value = await projectRepository.save(data);
         const data2 = {
             name: 'name',
             description: 'description',
@@ -47,7 +47,7 @@ describe('Project', () => {
             membersIds: [2, 3],
             status: 'test',
         };
-        const value2 = await repositoryProject.save(data2);
+        const value2 = await projectRepository.save(data2);
 
         const res = await chai.request(app).get('/projects');
         expect(res).to.have.status(200);
@@ -81,7 +81,7 @@ describe('Project', () => {
             membersIds: [2, 3],
             status: 'test',
         };
-        const value = await repositoryProject.save(data);
+        const value = await projectRepository.save(data);
 
         const res = await chai.request(app).get(`/projects/${value.id}`);
         expect(res).to.have.status(200);
@@ -108,7 +108,7 @@ describe('Project', () => {
             membersIds: [2, 3],
             status: 'test',
         };
-        const value = await repositoryProject.save(data);
+        const value = await projectRepository.save(data);
 
         const res = await chai.request(app).get('/projects/status/test');
         expect(res).to.have.status(200);
@@ -130,7 +130,7 @@ describe('Project', () => {
             name: 'name',
             description: 'description',
             image: 'image',
-            elementsIds: [1, 2, 3],
+            elementsIds: [[1, 5], [2, 1], [3, 10]],
             createdAt: '2023-11-29T13:45:27.130Z',
             leaderId: 2,
             membersIds: [2, 3],
@@ -161,9 +161,9 @@ describe('Project', () => {
             description: 'description',
         };
 
-        await repositoryInventory.save(InvElement1);
-        await repositoryInventory.save(InvElement2);
-        await repositoryInventory.save(InvElement3);
+        await inventoryRepository.save(InvElement1);
+        await inventoryRepository.save(InvElement2);
+        await inventoryRepository.save(InvElement3);
         const res = await chai.request(app).post('/projects').send(newProject);
         expect(res).to.have.status(201);
 
@@ -183,9 +183,9 @@ describe('Project', () => {
         const resInv2 = await chai.request(app).get('/inventory/2');
         const resInv3 = await chai.request(app).get('/inventory/3');
 
-        expect(resInv1.body.quantity).to.equal(InvElement1.quantity - 1);
-        expect(resInv2.body.quantity).to.equal(InvElement2.quantity - 1);
-        expect(resInv3.body.quantity).to.equal(InvElement3.quantity - 1);
+        expect(resInv1.body.quantity).to.equal(InvElement1.quantity - newProject.elementsIds[0][1]);
+        expect(resInv2.body.quantity).to.equal(InvElement2.quantity - newProject.elementsIds[1][1]);
+        expect(resInv3.body.quantity).to.equal(InvElement3.quantity - newProject.elementsIds[2][1]);
     });
 
     it('should Delete a project by ID on /projects/:id DELETE', async () => {
@@ -198,7 +198,7 @@ describe('Project', () => {
             membersIds: [2, 3],
             status: 'test',
         };
-        const value = await repositoryProject.save(data);
+        const value = await projectRepository.save(data);
 
         const res = await chai.request(app).delete(`/projects/${value.id}`);
         expect(res).to.have.status(202);
@@ -218,7 +218,7 @@ describe('Project', () => {
             membersIds: [2, 3],
             status: 'test',
         };
-        const value = await repositoryProject.save(data);
+        const value = await projectRepository.save(data);
 
         const newProject = {
             name: 'new name',
