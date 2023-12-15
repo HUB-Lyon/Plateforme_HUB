@@ -1,6 +1,6 @@
 import React from 'react';
-import NavBar from './NavBar';
 import Head from 'next/head';
+import NavBar from './NavBar';
 
 const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
     return (

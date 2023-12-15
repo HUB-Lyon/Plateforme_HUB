@@ -1,7 +1,7 @@
 import React from 'react';
-import Link from '../../node_modules/next/link';
+import Link from 'next/link';
 import Image from 'next/image';
-import classNames from './classNames';
+import classNames from './ClassNames';
 import { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import {
@@ -108,7 +108,7 @@ export default function NavBar() {
 
             <button type="button" className="-m-2.5 p-2.5 text-gray-700 lg:hidden" onClick={() => setSidebarOpen(true)}>
                 <span className="sr-only">Open sidebar</span>
-                <Bars3Icon className="fixed top-0 h-6 w-6 fixed" aria-hidden="true" />
+                <Bars3Icon className="fixed top-0 h-6 w-6" aria-hidden="true" />
             </button>
         </>
     );

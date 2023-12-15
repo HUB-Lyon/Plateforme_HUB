@@ -1,116 +1,95 @@
-import { FC, ReactNode, useState, useEffect } from 'react';
-import { API_URL } from '../config';
+import { FC } from 'react';
 import { toast } from 'react-toastify';
+import { useRouter } from 'next/router';
+import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
+import { InventoryLayoutProps, InventoryItem, InventoryPageProps } from '../model';
+import { API_URL } from '../config';
+import PaginationUtil from '../components/PaginationUtils';
 import 'react-toastify/dist/ReactToastify.css';
 
-interface InventoryLayoutProps {
-    children: ReactNode;
-}
+const ITEMSPERPAGE = 10;
 
 const InventoryLayout: FC<InventoryLayoutProps> = ({ children }) => {
     return (
         <div className="container mx-auto mt-8">
-            <h1 className="text-4xl font-bold mb-4">Inventory</h1>
-            <div className="overflow-x-auto">{children}</div>
+            <h1 className="text-4xl font-bold mb-8">Inventory</h1>
+            <div className="overflow-x-y-auto">{children}</div>
         </div>
     );
 };
 
-interface InventoryItem {
-    id: number;
-    name: string;
-    description: string;
-    quantity: number;
-}
-
-interface InventoryPageProps {
-    inventoryData: InventoryItem[];
-}
-
 const InventoryPage: FC<InventoryPageProps> = ({ inventoryData }) => {
-    const itemsPerPage = 6;
-    const [currentPage, setCurrentPage] = useState(1);
-
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const router = useRouter();
+    const { page } = router.query;
+    const currentPage = page ? Number(page) : 1;
+    const totalPages = Math.ceil(inventoryData.length / ITEMSPERPAGE);
+  
+    const indexOfLastItem = currentPage * ITEMSPERPAGE;
+    const indexOfFirstItem = indexOfLastItem - ITEMSPERPAGE;
     const currentItems = inventoryData.slice(indexOfFirstItem, indexOfLastItem);
-
-    const totalPages = Math.ceil(inventoryData.length / itemsPerPage);
-
-    useEffect(() => {
-        // Update URL with page parameter
-        window.history.replaceState({}, '', `/inventory?page=${currentPage}`);
-    }, [currentPage]);
-
+  
+  
     const handlePageClick = (page: number) => {
-        setCurrentPage(page);
+        router.push(`/inventory?page=${page}`);
     };
-
-    const renderPageNumbers = () => {
-        const pageNumbers = [];
-        for (let i = 1; i <= totalPages; i++) {
-            pageNumbers.push(
-                <li key={i} className={currentPage === i ? 'active' : ''}>
-                    <a href={`?page=${i}`} onClick={(e) => { e.preventDefault(); handlePageClick(i); }}>
-                        {i}
-                    </a>
-                </li>
-            );
-        }
-        return pageNumbers;
-    };
-
+  
+    const tableCellStyle = 'py-3 px-4 border-b text-center';
+  
     return (
         <InventoryLayout>
             <table className="min-w-full bg-white border border-gray-300 mb-4">
                 <thead>
                     <tr>
-                        <th className="py-3 px-6 bg-gray-300 text-center">ID</th>
-                        <th className="py-3 px-6 bg-gray-300 text-center">Name</th>
-                        <th className="py-3 px-6 bg-gray-300 text-center">Description</th>
-                        <th className="py-3 px-6 bg-gray-300 text-center">Quantity</th>
+                        <th className={`${tableCellStyle} bg-blue-600`}>Name</th>
+                        <th className={`${tableCellStyle} bg-blue-600`}>Description</th>
+                        <th className={`${tableCellStyle} bg-blue-600`}>Available</th>
+                        <th className={`${tableCellStyle} bg-blue-600`}>Quantity</th>
                     </tr>
                 </thead>
                 <tbody>
                     {currentItems.map((item) => (
-                        <tr key={item.id} className="h-20 overflow-hidden">
-                            <td className="py-2 px-4 border-b text-center">{item.id}</td>
-                            <td className="py-2 px-4 border-b text-center">{item.name}</td>
-                            <td className="py-2 px-4 border-b text-center">{item.description}</td>
-                            <td className="py-2 px-4 border-b text-center">{item.quantity}</td>
+                        <tr key={item.id} className="h-16 overflow-hidden">
+                            <td className={tableCellStyle}>{item.name}</td>
+                            <td className={tableCellStyle}>{item.description}</td>
+                            <td className={tableCellStyle}>{item.available}</td>
+                            <td className={tableCellStyle}>{item.quantity}</td>
                         </tr>
                     ))}
                 </tbody>
             </table>
-            <ul className="pagination flex gap-2">
-                <li className={currentPage === 1 ? 'disabled' : ''}>
-                    <a
-                        href={`?page=${currentPage - 1}`}
-                        onClick={(e) => {
-                            e.preventDefault();
-                            if (currentPage > 1) {
-                                handlePageClick(currentPage - 1);
-                            }
-                        }}
-                    >
-                        &laquo; Prev
-                    </a>
-                </li>
-                {renderPageNumbers()}
-                <li className={currentPage === totalPages ? 'disabled' : ''}>
-                    <a
-                        href={`?page=${currentPage + 1}`}
-                        onClick={(e) => {
-                            e.preventDefault();
-                            if (currentPage < totalPages) {
-                                handlePageClick(currentPage + 1);
-                            }
-                        }}
-                    >
-                        Next &raquo;
-                    </a>
-                </li>
-            </ul>
+            <div className="flex justify-center mx-auto">
+                <ul className="pagination flex gap-5">
+                    {currentPage > 1 && (
+                        <li>
+                            <button
+                                onClick={() => {
+                                    handlePageClick(currentPage - 1);
+                                }}
+                                className="inline-block w-8 h-8 text-center"
+                            >
+                                <ArrowLeftIcon className="w-5 h-5 mx-auto" /> Prev
+                            </button>
+                        </li>
+                    )}
+                    <PaginationUtil
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        handlePageClick={handlePageClick}
+                    />
+                    {currentPage < totalPages && (
+                        <li>
+                            <button
+                                onClick={() => {
+                                    handlePageClick(currentPage + 1);
+                                }}
+                                className="inline-block w-8 h-8 text-center"
+                            >
+                    Next <ArrowRightIcon className="w-5 h-5 mx-auto" />
+                            </button>
+                        </li>
+                    )}
+                </ul>
+            </div>
         </InventoryLayout>
     );
 };
@@ -120,22 +99,18 @@ export const getServerSideProps = async () => {
     try {
         const response = await fetch(`${API_URL}/inventory`);
         const data: InventoryItem[] = await response.json();
-
-        return {
-            props: {
-                inventoryData: data,
-            },
-        };
-    } catch (error) {
-        toast.error(`An error occurred: ${error}`, {
-            position: 'top-right',
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: false,
-        });
-
+        
+        if (!response.ok)
+            toast.error(`HTTP error! Status: ${response.status}`, );
+        else {
+            return {
+                props: {
+                    inventoryData: data,
+                },
+            };
+        }
+    } catch (error: unknown) {
+        toast.error(`An error occurred: ${error}`);
         return {
             props: {
                 inventoryData: [],
