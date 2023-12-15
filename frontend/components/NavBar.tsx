@@ -11,7 +11,7 @@ import {
     XMarkIcon,
     ArrowLeftOnRectangleIcon,
 } from '@heroicons/react/24/outline';
-import classNames from './classNames';
+import classNames from './ClassNames';
 
 const navigation = [
     { name: 'Projects', href: '/project', icon: FolderIcon, current: false },

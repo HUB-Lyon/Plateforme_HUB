@@ -129,13 +129,16 @@ const CreateProject: React.FC = () => {
         },
     });
 
+    const buttonBox = 'w-full px-3 py-2 md:w-auto text-sm text-white font-semibold shadow-sm rounded-md focus-visible:outline-2 focus-visible:outline-offset-2';
+    const label = 'block text-sm font-medium leading-6 text-gray-900';
+
     return (
         <div className="flex flex-col items-center mt-24 mb-24">
             <div className="w-4/5 bg-white rounded-lg shadow-lg h-auto p-10">
                 <form onSubmit={formik.handleSubmit}>
                     <div className="flex flex-col md:flex-row items-start">
                         <div className="md:col-span-3 mb-4 md:mb-0">
-                            <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
+                            <label htmlFor="name" className={`${label}`}>
                                 Project name
                             </label>
                             <div className="mt-2">
@@ -155,7 +158,7 @@ const CreateProject: React.FC = () => {
                         </div>
 
                         <div className="md:col-span-3 md:ml-12 lg:ml-20">
-                            <label htmlFor="members" className="block text-sm font-medium leading-6 text-gray-900">
+                            <label htmlFor="members" className={`${label}`}>
                                 Members
                             </label>
                             <div className="flex mt-2">
@@ -187,7 +190,7 @@ const CreateProject: React.FC = () => {
 
                     <div className="flex flex-col md:flex-row items-start mt-10">
                         <div className="col-span-full mb-4 md:mb-0">
-                            <label htmlFor="description" className="block text-sm font-medium leading-6 text-gray-900">
+                            <label htmlFor="description" className={`${label}`}>
                                 Description
                             </label>
                             <div className="mt-2">
@@ -208,7 +211,7 @@ const CreateProject: React.FC = () => {
                         </div>
 
                         <div className="md:col-span-3 md:ml-12 lg:ml-20">
-                            <label htmlFor="material" className="block text-sm font-medium leading-6 text-gray-900">
+                            <label htmlFor="material" className={`${label}`}>
                                 Materials
                             </label>
                             <div className="flex mt-2">
@@ -239,7 +242,7 @@ const CreateProject: React.FC = () => {
                     </div>
 
                     <div className="col-span-full mt-10">
-                        <label htmlFor="cover-photo" className="block text-sm font-medium leading-6 text-gray-900">
+                        <label htmlFor="cover-photo" className={`${label}`}>
                             Cover photo
                         </label>
                         <div className="mt-2 flex flex-col items-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
@@ -268,11 +271,11 @@ const CreateProject: React.FC = () => {
                     </div>
                     <div className="mt-24 flex flex-col items-center justify-end gap-y-4 md:flex-row md:items-center md:justify-end md:gap-x-6">
                         <Link href="/project">
-                            <button type="button" className="bg-red-600 hover:bg-red-500 focus-visible:outline-red-600 button-box">
+                            <button type="button" className={`bg-red-600 hover:bg-red-500 focus-visible:outline-red-600 ${buttonBox}`}>
                                 Cancel
                             </button>
                         </Link>
-                        <button type="submit" className="bg-indigo-600 hover:bg-indigo-500 focus-visible:outline-indigo-600 button-box">
+                        <button type="submit" className={`bg-indigo-600 hover:bg-indigo-500 focus-visible:outline-indigo-600 ${buttonBox}`}>
                             Create Project
                         </button>
                     </div>
