@@ -3,9 +3,9 @@ import { newDb, DataType } from 'pg-mem';
 import { Inventory } from '../entity/inventory.js';
 import { Project } from '../entity/projects.js';
 import { User } from '../entity/user.js';
+import { Article } from '../entity/article.js';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { SeederOptions } from 'typeorm-extension';
-import { Article } from '../entity/article.js';
 
 dotenv.config();
 
