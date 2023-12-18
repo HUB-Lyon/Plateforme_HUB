@@ -6,9 +6,22 @@ const PaginationUtil: FC<RenderPageNumbersProps> = ({
     totalPages,
     handlePageClick,
 }) => {
+    const maxPagesToShow = 5;
+
     const renderPageButtons = () => {
         const pageButtons = [];
-        for (let pageN = 1; pageN <= totalPages; pageN++) {
+        const halfMaxPagesToShow = Math.floor(maxPagesToShow / 2);
+
+        // Calculate start and end pages to display based on the current page
+        let startPage = Math.max(1, currentPage - halfMaxPagesToShow);
+        const endPage = Math.min(startPage + maxPagesToShow - 1, totalPages);
+
+        // Adjust start and end pages if we reach the end of the total pages
+        if (endPage - startPage < maxPagesToShow - 1) {
+            startPage = Math.max(1, endPage - maxPagesToShow + 1);
+        }
+
+        for (let pageN = startPage; pageN <= endPage; pageN++) {
             pageButtons.push(
                 <li key={pageN} className={currentPage === pageN ? 'active' : ''}>
                     <button
@@ -23,6 +36,7 @@ const PaginationUtil: FC<RenderPageNumbersProps> = ({
                 </li>
             );
         }
+
         return pageButtons;
     };
 
