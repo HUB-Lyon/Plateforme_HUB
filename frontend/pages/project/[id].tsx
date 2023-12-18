@@ -4,6 +4,7 @@ import { GetServerSideProps } from 'next';
 import { format } from 'date-fns';
 import { getStatus } from '../project';
 import { Project, User } from '../../model';
+import { API_URL } from './../../config';
 
 const ProjectDetails: React.FC<{ project: Project; users: User[] | undefined }> = ({ project, users }) => {
     const getEmail = (member: number): string => {
@@ -47,8 +48,8 @@ const ProjectDetails: React.FC<{ project: Project; users: User[] | undefined }> 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     const projectId = params?.id as string;
     try {
-        const projectRes = await fetch(`http://localhost:3000/projects/${projectId}`, { method: 'GET' });
-        const usersRes = await fetch('http://localhost:3000/users/', { method: 'GET' });
+        const projectRes = await fetch(`${API_URL}/projects/${projectId}`, { method: 'GET' });
+        const usersRes = await fetch(`${API_URL}/users/`, { method: 'GET' });
         
         if (!projectRes.ok || !usersRes.ok) {
             throw new Error('Failed to fetch project or users');

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import { Project, User } from '../model';
+import { API_URL } from './../config';
 
 export const getStatus = (status: string): string => {
     const statusMap: Record<string, string> = {
@@ -74,18 +75,30 @@ const Project: React.FC<{ projects: Project[], users: User[] }> = ({ projects, u
 
     const filteredProjects = getFilteredProjects();
 
+    const buttonProject = 'flex-1 p-2 m-2 mb-4 transition ease-in-out delay-100 hover:scale-105 duration-250';
+
     return (
         <div className="h-auto p-2 m-4 mb-6 max-w-screen break-words">
             <div className="p-2 mb-4 flex items-center justify-between flex-wrap">
                 <h1 className="text-5xl text-slate-900">Projects</h1>
-                <div>
-                    <button className="bg-blue-500 text-white p-2 rounded-lg m-2 mb-4 transition ease-in-out delay-100 hover:scale-105 duration-250"
+                <div className="flex">
+                    <button className="rounded-lg bg-blue-500 text-white ${buttonProject}"
                         onClick={() => router.push('/create-project')}>
                         Create Project
                     </button>
-                    <button className="bg-blue-500 text-white p-2 rounded-lg m-2 mb-4 transition ease-in-out delay-100 hover:scale-105 duration-250"
-                        onClick={() => setShowAllProjects(!showAllProjects)}>
-                        {showAllProjects ? 'All Projects' : 'Your Projects'}
+                    <button
+                        className={`rounded-l-lg mr-0 ${buttonProject} ${showAllProjects ? 'bg-blue-500 text-white' : 'bg-gray-500 text-white cursor-not-allowed'}`}
+                        onClick={() => setShowAllProjects(!showAllProjects)}
+                        disabled={!showAllProjects}
+                    >
+                        Your Projects
+                    </button>
+                    <button
+                        className={`rounded-r-lg ml-0 ${buttonProject} ${!showAllProjects ? 'bg-blue-500 text-white' : 'bg-gray-500 text-white cursor-not-allowed'}`}
+                        onClick={() => setShowAllProjects(!showAllProjects)}
+                        disabled={showAllProjects}
+                    >
+                        All Projects
                     </button>
                 </div>
             </div>
@@ -95,10 +108,7 @@ const Project: React.FC<{ projects: Project[], users: User[] }> = ({ projects, u
                     return (
                         <li key={project.id} className={`m-2 hover:filter hover:contrast-125 flex flex-col justify-between relative rounded-xl bg-white text-black shadow-xl transition ease-in-out delay-100 hover:scale-105 duration-250 border-b-8 ${getStatus(project.status)}`}>
                             <Link href={`/project/${project.id}`} title={`${getTitleStatus(project.status)}\n${project.name}`}>  
-                                <Image src={project.image || '/image/default_project.jpg'}
-                                    alt="" width={300} height={300}
-                                    className="object-cover rounded-t-lg mx-auto w-full"
-                                />
+                                <Image src={project.image || '/image/default_project.jpg'} alt={`Image for ${project.name}`} width={300} height={300} className="object-cover rounded-t-lg mx-auto w-full"/>
                                 <h2 className="m-2 text-center text-2xl break-words">{project.name}</h2>
                                 <p className="m-2 line-clamp-5 mt-2 text-lg break-words">{project.description}</p>
                                 <p className="m-2 italic font-light mt-8 p-2 text-sm">
@@ -115,8 +125,8 @@ const Project: React.FC<{ projects: Project[], users: User[] }> = ({ projects, u
 
 export const getServerSideProps: GetServerSideProps = async () => {
     try {
-        const url_project = 'http://localhost:3000/projects/';
-        const url_users = 'http://localhost:3000/users/';
+        const url_project = `${API_URL}/projects/`;
+        const url_users = `${API_URL}/users/`;
         const ProjectRes = await fetch(url_project, { method: 'GET' });
         const UsersRes = await fetch(url_users, { method: 'GET' });
         
