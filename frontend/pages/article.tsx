@@ -119,6 +119,9 @@ const Article: React.FC<ArticleProps> = ({ articlesData: initialArticlesData }) 
             </button>)}
             <DialogComponent open={openAdd} title='Add Article' onClose={handleCloseAdd} value={valueAdd} update={updateAdd} action={() => addaction(valueAdd)}/>
             <div className="markdown flex flex-col items-center gap-y-10 mb-10">
+                {articlesData.length === 0 && (<h1>
+                    No items
+                </h1>)}
                 {articlesData.map(({ content, id, name}, index) => (
                     <div key={index} className="group markdown">
                         <div className="flex-box w-full md:px-8 px-4 md:py-8 py-4 relative">
