@@ -16,8 +16,15 @@ interface InventoryPageProps {
     inventoryData: InventoryItem[];
 }
 
+interface RenderPageNumbersProps {
+    currentPage: number;
+    totalPages: number;
+    handlePageClick: (page: number) => void;
+}
+
 export type {
     InventoryLayoutProps,
     InventoryItem,
-    InventoryPageProps
+    InventoryPageProps,
+    RenderPageNumbersProps
 };

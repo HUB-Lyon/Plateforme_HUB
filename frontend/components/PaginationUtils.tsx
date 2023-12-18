@@ -1,10 +1,5 @@
 import { FC } from 'react';
-
-interface RenderPageNumbersProps {
-  currentPage: number;
-  totalPages: number;
-  handlePageClick: (page: number) => void;
-}
+import { RenderPageNumbersProps } from '../model';
 
 const PaginationUtil: FC<RenderPageNumbersProps> = ({
     currentPage,

@@ -101,7 +101,7 @@ export const getServerSideProps = async () => {
         const data: InventoryItem[] = await response.json();
         
         if (!response.ok)
-            toast.error(`HTTP error! Status: ${response.status}`, );
+            toast.error('An error occurred while retrieving inventory data');
         else {
             return {
                 props: {
@@ -110,7 +110,7 @@ export const getServerSideProps = async () => {
             };
         }
     } catch (error: unknown) {
-        toast.error(`An error occurred: ${error}`);
+        toast.error('An error occurred while processing inventory data');
         return {
             props: {
                 inventoryData: [],
