@@ -75,26 +75,26 @@ const Project: React.FC<{ projects: Project[], users: User[] }> = ({ projects, u
 
     const filteredProjects = getFilteredProjects();
 
-    const buttonProject = 'flex-1 p-2 m-2 mb-4 transition ease-in-out delay-100 hover:scale-105 duration-250';
+    const buttonProject = 'p-2 m-2 mb-4 bg-blue-500 text-white transition ease-in-out delay-100 hover:scale-105 duration-250';
 
     return (
         <div className="h-auto p-2 m-4 mb-6 max-w-screen break-words">
             <div className="p-2 mb-4 flex items-center justify-between flex-wrap">
                 <h1 className="text-5xl text-slate-900">Projects</h1>
                 <div className="flex">
-                    <button className="rounded-lg bg-blue-500 text-white ${buttonProject}"
+                    <button className={`rounded-lg ${buttonProject}`}
                         onClick={() => router.push('/create-project')}>
                         Create Project
                     </button>
                     <button
-                        className={`rounded-l-lg mr-0 ${buttonProject} ${showAllProjects ? 'bg-blue-500 text-white' : 'bg-gray-500 text-white cursor-not-allowed'}`}
+                        className={`rounded-l-lg mr-0 ${buttonProject} ${showAllProjects ? '' : 'scale-105 border-2 border-slate-700 cursor-not-allowed'}`}
                         onClick={() => setShowAllProjects(!showAllProjects)}
                         disabled={!showAllProjects}
                     >
                         Your Projects
                     </button>
                     <button
-                        className={`rounded-r-lg ml-0 ${buttonProject} ${!showAllProjects ? 'bg-blue-500 text-white' : 'bg-gray-500 text-white cursor-not-allowed'}`}
+                        className={`rounded-r-lg ml-0 ${buttonProject} ${!showAllProjects ? '' : 'scale-105 border-2 border-slate-700 cursor-not-allowed'}`}
                         onClick={() => setShowAllProjects(!showAllProjects)}
                         disabled={showAllProjects}
                     >

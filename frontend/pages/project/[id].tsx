@@ -48,8 +48,10 @@ const ProjectDetails: React.FC<{ project: Project; users: User[] | undefined }> 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     const projectId = params?.id as string;
     try {
-        const projectRes = await fetch(`${API_URL}/projects/${projectId}`, { method: 'GET' });
-        const usersRes = await fetch(`${API_URL}/users/`, { method: 'GET' });
+        const url_project = `${API_URL}/projects/${projectId}`;
+        const url_users = `${API_URL}/users/`;
+        const projectRes = await fetch(url_project, { method: 'GET' });
+        const usersRes = await fetch(url_users, { method: 'GET' });
         
         if (!projectRes.ok || !usersRes.ok) {
             throw new Error('Failed to fetch project or users');
