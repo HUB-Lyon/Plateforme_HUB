@@ -1,4 +1,4 @@
-version: '3'
+version: '3.3'
 
 services:
   frontend:
@@ -8,25 +8,23 @@ services:
       - "3001:3001"
     depends_on:
       - backend
-    env_file:
-      - .env
 
   backend:
     build:
       context: ./backend
+    depends_on:
+      - db
     ports:
       - "3000:3000"
-    env_file:
-      - .env
+    volumes:
+      - ./data/server_logs:/logs
 
   db:
     image: postgres
     restart: always
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PASSWORD: postgres
     ports:
-      - "5432:5432"
+      - "8080:8080"
     volumes:
-      - ./data:/var/lib/postgresql/data
+      - ./data/db:/var/lib/postgresql/data
