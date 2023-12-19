@@ -22,7 +22,7 @@ const options: DataSourceOptions & SeederOptions = {
     entities: [Inventory, Project, User],
     logging: true,
     synchronize: true,
-    ssl: true,
+    ssl: false,
 };
 
 if (DEBUG) {
