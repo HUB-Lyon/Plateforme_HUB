@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
+import { useMsal } from '@azure/msal-react';
 import { Project, User } from '../model';
 import { API_URL } from './../config';
 
@@ -38,6 +39,18 @@ const Project: React.FC<{ projects: Project[], users: User[] }> = ({ projects, u
         return users.find(user => user.id === leaderId);
     };
 
+    const { accounts } = useMsal();
+    const account = accounts[0];
+    const [username, setUsername] = useState('');
+    useEffect(() => {
+        if (account) {
+            console.log('User ID:', account.localAccountId);
+            setUsername(account.username);
+        }
+    }, [account]);
+
+    const userEmail = username;
+
     const router = useRouter();
 
     const [showAllProjects, setShowAllProjects] = useState<boolean>(false);
@@ -53,8 +66,6 @@ const Project: React.FC<{ projects: Project[], users: User[] }> = ({ projects, u
             </div>
         );
     }
-
-    const userEmail = 'vivien.boitard@epitech.eu';
 
     const getFilteredProjects = (): Project[] => {
         return projects.filter((project) => {
