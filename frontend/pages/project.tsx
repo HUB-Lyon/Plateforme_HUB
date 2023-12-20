@@ -44,14 +44,12 @@ const Project: React.FC<{ projects: Project[], users: User[] }> = ({ projects, u
 
     if (projects.length === 0) {
         return (
-            <div className="h-auto p-2 m-4 max-w-screen break-words">
-                <div className="p-2">
-                    <h1 className="text-5xl text-slate-900">No Projects Available</h1>
-                    <button className="bg-blue-500 text-white p-2 rounded-lg m-2 mb-4 transition ease-in-out delay-100 hover:scale-105 duration-250"
-                        onClick={() => router.push('/create-project')}>
-                        Create Project
-                    </button>
-                </div>
+            <div className="flex h-auto p-2 m-4 max-w-screen break-words">
+                <h1 className="p-2 text-5xl text-slate-900">No Projects Available</h1>
+                <button className="p-2 bg-blue-500 text-white p-2 rounded-lg m-2 mb-4 transition ease-in-out delay-100 hover:scale-105 duration-250"
+                    onClick={() => router.push('/create-project')}>
+                    Create Project
+                </button>
             </div>
         );
     }
