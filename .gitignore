@@ -130,3 +130,6 @@ dist
 
 #package-lock
 package-lock.json
+
+#file
+next.config.js
