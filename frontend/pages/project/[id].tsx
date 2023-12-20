@@ -32,7 +32,7 @@ const ProjectDetails: React.FC<{ project: Project; users: User[] | undefined }> 
                 <div className="col-span-2 lg:border-r-2 lg:broder-black">
                     <p className="text-lg md:text-2xl break-words m-2">{project.description}</p>
                 </div>
-                <ul className={`list-inside ${manyMembers() ? 'list-short-dash' : 'list-none'}`}>
+                <ul className={`list-inside ${manyMembers() ? 'list-dash' : 'list-none'}`}>
                     <h3 className="ml-4 italic font-light text-lg md:text-xl">{manyMembers() ? 'Members:' : 'Member:'}</h3>
                     {project.membersIds.map((member: number, idx: number) => (
                         <li key={idx} className="ml-2 italic font-light text-lg md:text-xl break-words">

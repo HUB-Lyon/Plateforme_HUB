@@ -139,7 +139,3 @@ body {
 .markdown p {
   margin-top: 0;
 }
-
-.list-short-dash {
-  list-style-type: "- ";
-}

@@ -8,6 +8,9 @@ const config: Config = {
     ],
     theme: {
         extend: {
+            listStyleType: {
+                dash: '"- "',
+            },
         },
     },
     plugins: [],
