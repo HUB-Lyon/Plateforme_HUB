@@ -3,6 +3,7 @@ import { newDb, DataType } from 'pg-mem';
 import { Inventory } from '../entity/inventory.js';
 import { Project } from '../entity/projects.js';
 import { User } from '../entity/user.js';
+import { Article } from '../entity/article.js';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { SeederOptions } from 'typeorm-extension';
 
@@ -19,7 +20,7 @@ const options: DataSourceOptions & SeederOptions = {
     username: PGUSER!,
     password: PGPASSWORD!,
     database: PGDATABASE!,
-    entities: [Inventory, Project, User],
+    entities: [Inventory, Project, User, Article],
     logging: true,
     synchronize: true,
     ssl: false,
@@ -43,7 +44,7 @@ if (DEBUG) {
 
     dataBase = db.adapters.createTypeormDataSource({
         type: 'postgres',
-        entities: [Inventory, Project, User],
+        entities: [Inventory, Project, User, Article],
         synchronize: true,
     });
 } else {

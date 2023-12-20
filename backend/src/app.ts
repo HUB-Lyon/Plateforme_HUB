@@ -12,6 +12,7 @@ import authRouter from './routes/auth/auth.js';
 import inventoryRouter from './routes/inventory/inventory.js';
 import projectRouter from './routes/projects/projects.js';
 import usersRouter from './routes/users/router.users.js';
+import articleRouter from './routes/article/router.articles.js';
 
 const swaggerSpec = swaggerJSDoc({
     swaggerDefinition: {
@@ -65,6 +66,7 @@ app.use('/auth', authRouter);
 app.use('/inventory', inventoryRouter);
 app.use('/projects', projectRouter);
 app.use('/users', usersRouter);
+app.use('/article', articleRouter);
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerSpec, { explorer: true }));
 
 
