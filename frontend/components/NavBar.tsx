@@ -1,7 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import classNames from './ClassNames';
 import { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import {
@@ -11,6 +10,7 @@ import {
     XMarkIcon,
     ArrowLeftOnRectangleIcon,
 } from '@heroicons/react/24/outline';
+import classNames from './ClassNames';
 
 const navigation = [
     { name: 'Projects', href: '/project', icon: FolderIcon, current: false },
