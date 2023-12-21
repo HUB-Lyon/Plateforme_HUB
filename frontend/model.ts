@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 interface InventoryLayoutProps {
     children: ReactNode;
 }
-  
+
 interface InventoryItem {
     id: number;
     name: string;
@@ -11,7 +11,7 @@ interface InventoryItem {
     available: number;
     quantity: number;
 }
-  
+
 interface InventoryPageProps {
     inventoryData: InventoryItem[];
 }

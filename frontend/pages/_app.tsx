@@ -18,7 +18,7 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
                 <AuthenticatedTemplate>
                     <RootLayout>
                         <Component {...pageProps} />
-                        <ToastContainer 
+                        <ToastContainer
                             position= 'top-right'
                             autoClose= {5000}
                             hideProgressBar= {false}

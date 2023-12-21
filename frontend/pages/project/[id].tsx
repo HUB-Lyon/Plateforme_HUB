@@ -52,7 +52,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
         const url_users = `${API_URL}/users/`;
         const projectRes = await fetch(url_project, { method: 'GET' });
         const usersRes = await fetch(url_users, { method: 'GET' });
-        
+
         if (!projectRes.ok || !usersRes.ok) {
             throw new Error('Failed to fetch project or users');
         }

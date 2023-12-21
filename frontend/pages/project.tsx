@@ -111,7 +111,7 @@ const Project: React.FC<{ projects: Project[], users: User[] }> = ({ projects, u
                                 <p className="m-2 line-clamp-5 mt-2 text-lg break-words">{project.description}</p>
                                 <p className="m-2 italic font-light mt-8 p-2 text-sm">
                                     {leaderUser ? (leaderUser.email) : ('unknown')}
-                                </p>                
+                                </p>
                             </Link>
                         </li>
                     );
@@ -127,7 +127,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
         const url_users = `${API_URL}/users/`;
         const ProjectRes = await fetch(url_project, { method: 'GET' });
         const UsersRes = await fetch(url_users, { method: 'GET' });
-        
+
         if (!ProjectRes.ok) {
             toast.error('Failed to fetch projects');
             throw new Error('Failed to fetch projects');
