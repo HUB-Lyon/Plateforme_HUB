@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
+import { useMsal } from '@azure/msal-react';
 import { Project, User } from '../model';
 import { NEXT_PUBLIC_API_URL } from './../config';
 
@@ -38,6 +39,15 @@ const Project: React.FC<{ projects: Project[], users: User[] }> = ({ projects, u
         return users.find(user => user.id === leaderId);
     };
 
+    const { accounts } = useMsal();
+    const [username, setUsername] = useState('');
+
+    useEffect(() => {
+        if (accounts && accounts.length > 0) {
+            setUsername(accounts[0].username);
+        }
+    }, [accounts]);
+
     const router = useRouter();
 
     const [showAllProjects, setShowAllProjects] = useState<boolean>(false);
@@ -54,17 +64,15 @@ const Project: React.FC<{ projects: Project[], users: User[] }> = ({ projects, u
         );
     }
 
-    const userEmail = 'vivien.boitard@epitech.eu';
-
     const getFilteredProjects = (): Project[] => {
         return projects.filter((project) => {
             const leaderUser = getUserInfo(project.leaderId);
 
-            const isUserProject = !showAllProjects && leaderUser && leaderUser.email === userEmail;
+            const isUserProject = !showAllProjects && leaderUser && leaderUser.email === username;
 
             const isMemberOfProject = project.membersIds.some(memberId => {
                 const memberUser = getUserInfo(memberId);
-                return memberUser && memberUser.email === userEmail;
+                return memberUser && memberUser.email === username;
             });
 
             return showAllProjects || isUserProject || isMemberOfProject;
