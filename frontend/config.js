@@ -1,5 +1,5 @@
-const API_URL = process.env.NEXT_PUBLIC_DEBUG === 'true' ? 'http://localhost:3000' : process.env.API_URL;
+const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_DEBUG === 'true' ? 'http://localhost:3000' : process.env.NEXT_PUBLIC_API_URL;
 
 export {
-    API_URL,
+    NEXT_PUBLIC_API_URL,
 };

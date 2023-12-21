@@ -1,7 +1,7 @@
 import React, { useState, useEffect} from 'react';
 import matter from 'gray-matter';
 import MarkdownView from 'react-showdown';
-import { API_URL } from '../config.js';
+import { NEXT_PUBLIC_API_URL } from '../config.js';
 import {
     TrashIcon,
     PlusIcon,
@@ -31,7 +31,7 @@ function deleteArticle(id: number) {
             'Content-Type': 'application/json',
         },
     };
-    fetch(`${API_URL}/article/${id}`, options);
+    fetch(`${NEXT_PUBLIC_API_URL}/article/${id}`, options);
 }
 
 async function addArticle(name: string, content: string){
@@ -46,7 +46,7 @@ async function addArticle(name: string, content: string){
                 content: content,
             }),
     };
-    return fetch(`${API_URL}/article/`, options);
+    return fetch(`${NEXT_PUBLIC_API_URL}/article/`, options);
 }
 
 function patchArticle(id: number, name: string, content: string) {
@@ -61,7 +61,7 @@ function patchArticle(id: number, name: string, content: string) {
                 content: content,
             }),
     };
-    return fetch(`${API_URL}/article/${id}`, options);
+    return fetch(`${NEXT_PUBLIC_API_URL}/article/${id}`, options);
 }
 
 const Article: React.FC<ArticleProps> = ({ articlesData: initialArticlesData }) => {
@@ -159,7 +159,7 @@ export async function getServerSideProps() {
             'Content-Type': 'application/json',
         },
     };
-    const result = await fetch(`${API_URL}/article/`, options);
+    const result = await fetch(`${NEXT_PUBLIC_API_URL}/article/`, options);
     const articles = await result.json();
 
     const articlesData = articles.map((article: ArticleData) => {

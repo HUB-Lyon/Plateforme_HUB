@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import { toast } from 'react-toastify';
 import { CheckCircleIcon, PhotoIcon } from '@heroicons/react/24/solid';
-import { API_URL } from './../config';
+import { NEXT_PUBLIC_API_URL } from './../config';
 import 'react-toastify/dist/ReactToastify.css';
 
 const CreateProject: React.FC = () => {
@@ -113,7 +113,7 @@ const CreateProject: React.FC = () => {
                 values.material.forEach((material, index) => {
                     formData.append(`material[${index}]`, material);
                 });
-                const response = await fetch(`${API_URL}/projects`, {
+                const response = await fetch(`${NEXT_PUBLIC_API_URL}/projects`, {
                     method: 'POST',
                     body: formData,
                 });
