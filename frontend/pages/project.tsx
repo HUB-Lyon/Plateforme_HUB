@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import { Project, User } from '../model';
-import { API_URL } from './../config';
+import { NEXT_PUBLIC_API_URL } from './../config';
 
 export const getStatus = (status: string): string => {
     const statusMap: Record<string, string> = {
@@ -123,8 +123,8 @@ const Project: React.FC<{ projects: Project[], users: User[] }> = ({ projects, u
 
 export const getServerSideProps: GetServerSideProps = async () => {
     try {
-        const url_project = `${API_URL}/projects/`;
-        const url_users = `${API_URL}/users/`;
+        const url_project = `${NEXT_PUBLIC_API_URL}/projects/`;
+        const url_users = `${NEXT_PUBLIC_API_URL}/users/`;
         const ProjectRes = await fetch(url_project, { method: 'GET' });
         const UsersRes = await fetch(url_users, { method: 'GET' });
 

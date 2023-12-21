@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import { InventoryLayoutProps, InventoryItem, InventoryPageProps } from '../model';
-import { API_URL } from '../config';
+import { NEXT_PUBLIC_API_URL } from '../config';
 import PaginationUtil from '../components/PaginationUtils';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -97,7 +97,7 @@ const InventoryPage: FC<InventoryPageProps> = ({ inventoryData }) => {
 
 export const getServerSideProps = async () => {
     try {
-        const response = await fetch(`${API_URL}/inventory`);
+        const response = await fetch(`${NEXT_PUBLIC_API_URL}/inventory`);
         const data: InventoryItem[] = await response.json();
 
         if (!response.ok)

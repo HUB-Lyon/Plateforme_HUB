@@ -4,7 +4,7 @@ import { GetServerSideProps } from 'next';
 import { format } from 'date-fns';
 import { getStatus } from '../project';
 import { Project, User } from '../../model';
-import { API_URL } from './../../config';
+import { NEXT_PUBLIC_API_URL } from './../../config';
 
 const ProjectDetails: React.FC<{ project: Project; users: User[] | undefined }> = ({ project, users }) => {
     const getEmail = (member: number): string => {
@@ -48,8 +48,8 @@ const ProjectDetails: React.FC<{ project: Project; users: User[] | undefined }> 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     const projectId = params?.id as string;
     try {
-        const url_project = `${API_URL}/projects/${projectId}`;
-        const url_users = `${API_URL}/users/`;
+        const url_project = `${NEXT_PUBLIC_API_URL}/projects/${projectId}`;
+        const url_users = `${NEXT_PUBLIC_API_URL}/users/`;
         const projectRes = await fetch(url_project, { method: 'GET' });
         const usersRes = await fetch(url_users, { method: 'GET' });
 
