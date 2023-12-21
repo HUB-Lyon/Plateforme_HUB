@@ -8,7 +8,7 @@ export const msalConfig = {
         redirectUri: process.env.NEXT_PUBLIC_REDIRECT_URI || '',
     },
     cache: {
-        cacheLocation: 'sessionStorage', 
-        storeAuthStateInCookie: true, 
+        cacheLocation: 'sessionStorage',
+        storeAuthStateInCookie: true,
     },
 };

@@ -183,7 +183,7 @@ projectRouter.post('/', async (req: Request, res: Response) => {
             const result: any = await dataBase.getRepository(Inventory).createQueryBuilder('inventory').where('inventory.id = :id', { id: elementId }).setParameter('id', String(elementId)).getOne();
             result.quantity -= quantityToReduce;
             await dataBase.getRepository(Inventory).createQueryBuilder('inventory').update().set({ quantity: result.quantity }).where('inventory.id = :id', { id: elementId }).execute();
-        }));        
+        }));
         const result = await dataBase.getRepository(Project).createQueryBuilder('project').insert().values(req.body).execute();
         res.status(201).json(result);
     } catch (err) {

@@ -23,18 +23,18 @@ const InventoryPage: FC<InventoryPageProps> = ({ inventoryData }) => {
     const { page } = router.query;
     const currentPage = page ? Number(page) : 1;
     const totalPages = Math.ceil(inventoryData.length / ITEMSPERPAGE);
-  
+
     const indexOfLastItem = currentPage * ITEMSPERPAGE;
     const indexOfFirstItem = indexOfLastItem - ITEMSPERPAGE;
     const currentItems = inventoryData.slice(indexOfFirstItem, indexOfLastItem);
-  
-  
+
+
     const handlePageClick = (page: number) => {
         router.push(`/inventory?page=${page}`);
     };
-  
+
     const tableCellStyle = 'py-3 px-4 border-b text-center';
-  
+
     return (
         <InventoryLayout>
             <table className="min-w-full bg-white border border-gray-300 mb-4">
@@ -99,7 +99,7 @@ export const getServerSideProps = async () => {
     try {
         const response = await fetch(`${API_URL}/inventory`);
         const data: InventoryItem[] = await response.json();
-        
+
         if (!response.ok)
             toast.error('An error occurred while retrieving inventory data');
         else {
