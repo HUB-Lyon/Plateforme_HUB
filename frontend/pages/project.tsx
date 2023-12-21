@@ -40,16 +40,13 @@ const Project: React.FC<{ projects: Project[], users: User[] }> = ({ projects, u
     };
 
     const { accounts } = useMsal();
-    const account = accounts[0];
     const [username, setUsername] = useState('');
-    useEffect(() => {
-        if (account) {
-            console.log('User ID:', account.localAccountId);
-            setUsername(account.username);
-        }
-    }, [account]);
 
-    const userEmail = username;
+    useEffect(() => {
+        if (accounts && accounts.length > 0) {
+            setUsername(accounts[0].username);
+        }
+    }, [accounts]);
 
     const router = useRouter();
 
@@ -71,11 +68,11 @@ const Project: React.FC<{ projects: Project[], users: User[] }> = ({ projects, u
         return projects.filter((project) => {
             const leaderUser = getUserInfo(project.leaderId);
 
-            const isUserProject = !showAllProjects && leaderUser && leaderUser.email === userEmail;
+            const isUserProject = !showAllProjects && leaderUser && leaderUser.email === username;
 
             const isMemberOfProject = project.membersIds.some(memberId => {
                 const memberUser = getUserInfo(memberId);
-                return memberUser && memberUser.email === userEmail;
+                return memberUser && memberUser.email === username;
             });
 
             return showAllProjects || isUserProject || isMemberOfProject;
